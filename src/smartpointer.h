@@ -14,6 +14,17 @@ class Smartpointer
     ~Smartpointer() {}
 };
 
+class TempClass
+{
+private:
+  /* data */
+public:
+  TempClass(/* args */) { }
+  ~TempClass() { }
+  void Print(){}
+};
+
+
 void smartPointerDemo();
 } // namespace DuGu
 

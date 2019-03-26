@@ -1,0 +1,22 @@
+{
+    // See https://go.microsoft.com/fwlink/?LinkId=733558
+    // for the documentation about the tasks.json format
+    "version": "2.0.0",
+    "tasks": [
+        {
+            "label": "build",
+            "type": "shell",
+            "command": "g++",
+            "args": [
+                "-g",    //表示在生成的可执行文件中加入调试信息,如果你要调试程序,-g参数必不可少
+                "main.cpp"
+            ],
+            "presentation": {
+                "reveal": "never"
+            },
+            "problemMatcher": [
+                "$gcc"
+            ]
+        }
+    ]
+}

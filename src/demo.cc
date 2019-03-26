@@ -1,16 +1,6 @@
 
 #include "demo.h"
 
-Demo::Demo()
-{
-
-}
-
-Demo::~Demo()
-{
-    
-}
-
 static void constDemo(){
     int a1 = 3;   ///non-const data
     const int a2 = a1;    ///const data

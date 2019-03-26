@@ -3,14 +3,18 @@
 #ifndef _SMART_PONTER_H_
 #define _SMART_PONTER_H_
 
+namespace DuGu
+{
 class Smartpointer
 {
-private:
+  private:
     /* data */
-public:
-    Smartpointer(/* args */) { }
-    ~Smartpointer() { }
+  public:
+    Smartpointer(/* args */) {}
+    ~Smartpointer() {}
 };
 
-#endif
+void smartPointerDemo();
+} // namespace DuGu
 
+#endif

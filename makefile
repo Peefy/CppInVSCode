@@ -8,7 +8,7 @@ SRCS=./src/main.cpp\
 OBJS=$(SRCS:.cpp=.o)
 #定义变量，表示最终生成的可执行文件名
 EXEC=maincpp
-all:start run clean
+all:start run 
 #start，表示开始执行，冒号后面的$(OBJS)表示要生成最终可执行文件，需要依赖那些.o文件的
 start:$(OBJS)
         #相当于执行：g++ -o maincpp .o文件列表，-o表示生成的目标文件
@@ -19,8 +19,9 @@ start:$(OBJS)
         #-DMYLINUX:-D为参数，MYLINUX为在cpp源文件中定义的宏名称，如#ifdef MYLINUX。注意-D和宏名称中间没有空格
 		$(CC) -o $@ -c $< -DMYLINUX
 #执行make clean指令
+.PHONY:clean
 clean:
-		-rm -rf ./src/*.o
+		-rm -f ./src/*.o
         #执行make clean指令时，需要执行的操作，比如下面的指令时指删除所有.o文件
 		#rm -rf $(OBJS)
 		

@@ -17,12 +17,20 @@ C++ 是 C 的一个超集，事实上，任何合法的 C 程序都是合法的 
 ```cpp
 #include <iostream>
 using namespace std;
+// main() 是程序开始执行的地方
 int main()
 {
     cout << "Hello, world!" << endl;
     return 0;
 }
 ```
+
+* C++ 语言定义了一些头文件，这些头文件包含了程序中必需的或有用的信息。上面这段程序中，包含了头文件 `\<iostream\>`
+* `using namespace std`; 告诉编译器使用 std 命名空间。命名空间是 C++ 中一个相对新的概念
+* `// main() 是程序开始执行的地方` 是一个单行注释。单行注释以 // 开头，在行末结束
+* `int main()` 是主函数，程序从这里开始执行
+* `cout << "Hello World"`; 会在屏幕上显示消息 "Hello World"
+* `return 0`; 终止 main( )函数，并向调用进程返回值 0
 
 **C++面向对象程序设计**
 
@@ -92,6 +100,52 @@ C++ 程序可以定义为对象的集合，这些对象通过调用彼此的方�
 * **方法**-
 * **即时变量**-
 
+**C++ 中的分号 & 语句块**
+
+在 C++ 中，分号是语句结束符。也就是说，每个语句必须以分号结束。它表明一个逻辑实体的结束
+```c++
+x = y;
+y = y+1;
+add(x, y);
+```
+语句块是一组使用大括号括起来的按逻辑连接的语句。例如：
+```c++
+{
+   cout << "Hello World"; // 输出 Hello World
+   return 0;
+}
+```
+**C++ 标识符**
+C++ 标识符是用来标识变量、函数、类、模块，或任何其他用户自定义项目的名称。一个标识符以字母 A-Z 或 a-z 或下划线 _ 开始，后跟零个或多个字母、下划线和数字（0-9）。
+C++ 标识符内不允许出现标点字符，比如 @、& 和 %。C++ 是区分大小写的编程语言。因此，在 C++ 中，Manpower 和 manpower 是两个不同的标识符。
+下面列出几个有效的标识符:
+```c++
+mohd       zara    abc   move_name  a_123
+myname50   _temp   j     a23b9      retVal
+```
+
+**C++关键字**
+
+关键字||||
+-|-|-|-
+asm|else|new|this
+auto|enum|operator|throw
+bool|explicit|private|true
+break|export|protected|try
+case|extern|public|typedef
+catch|false|register|typeid
+char|float|reinterpret_cast|typename
+class|for|return|union
+const|friend|short|unsigned
+const_cast|goto|signed|using
+continue|if|sizeof|virtual
+default|inline|static|void
+delete|int|static_cast|volatile
+do|long|struct|wchar_t
+double|mutable|switch|while
+dynamic_cast|namespace|template
+
+**三字符组**
 
 ## C++知识点
 

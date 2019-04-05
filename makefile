@@ -26,4 +26,4 @@ clean:
 		#rm -rf $(OBJS)
 		
 run:
-	$(EXEC)
+	./$(EXEC)

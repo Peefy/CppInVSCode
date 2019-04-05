@@ -10,3 +10,5 @@ static void constDemo(){
     int const * const a6 = &a1;   ///const data,const pointer
     const int * const a7 = &a1;   ///const data,const pointer
 }
+
+

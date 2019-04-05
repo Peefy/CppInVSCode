@@ -21,6 +21,8 @@ int main()
 
     DuGu::smartPointerDemo();
 
+    auto plane = PlaneType::Bo737;
+
     return 0;
 }
 

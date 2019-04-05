@@ -13,10 +13,10 @@ using namespace std;
 
 int main()
 { 
-    printf_s("hello cpp in vs code\n");
+    printf("hello cpp in vs code\n");
     for(int i = 0; i < 3; i++)
     {
-        printf_s("%d\n", i);
+        printf("%d\n", i);
     }
 
     DuGu::smartPointerDemo();

@@ -147,6 +147,318 @@ dynamic_cast|namespace|template
 
 **三字符组**
 
+三字符组就是用于表示另一个字符的三个字符序列，又称为三字符序列。三字符序列总是以两个问号开头。
+
+三字符序列不太常见，但 C++ 标准允许把某些字符指定为三字符序列。以前为了表示键盘上没有的字符，这是必不可少的一种方法。
+
+三字符序列可以出现在任何地方，包括字符串、字符序列、注释和预处理指令。
+
+下面列出了最常用的三字符序列：
+
+三字符组|替换
+-|-
+??=|#
+??/|\\
+??'|^
+??(|[
+??)|]
+??!|\|
+??<|{
+??>|}
+??-|~
+
+如果希望在源程序中有两个连续的问号，且不希望被预处理器替换，这种情况出现在字符常量、字符串字面值或者是程序注释中，可选办法是用字符串的自动连接："...?""?..."或者转义序列："...?\?..."。
+
+从Microsoft Visual C++ 2010版开始，该编译器默认不再自动替换三字符组。如果需要使用三字符组替换（如为了兼容古老的软件代码），需要设置编译器命令行选项/Zc:trigraphs
+
+g++仍默认支持三字符组，但会给出编译警告。
+
+**C++注释**
+
+程序的注释是解释性语句，您可以在 C++ 代码中包含注释，这将提高源代码的可读性。所有的编程语言都允许某种形式的注释。
+
+C++ 支持单行注释和多行注释。注释中的所有字符会被 C++ 编译器忽略。
+
+C++ 注释以 /* 开始，以 */ 终止。例如：
+
+**C++数据类型**
+
+C++ 为程序员提供了种类丰富的内置数据类型和用户自定义的数据类型。下表列出了七种基本的 C++ 数据类型：
+
+类型|关键字
+-|-
+布尔型|bool
+字符型|char
+整型|int
+浮点型|float
+双浮点型|double
+无类型|void
+宽字符型|wchar_t
+
+其实 wchar_t 是这样来的：
+```c++
+typedef wchar_t short int;
+```
+
+所以 wchar_t 实际上的空间是和 short int 一样。
+
+一些基本类型可以使用一个或多个类型修饰符进行修饰：
+
+* signed
+* unsigned
+* short
+* long
+
+下表显示了各种变量类型在内存中存储值时需要占用的内存，以及该类型的变量所能存储的最大值和最小值。
+
+注意：不同系统会有所差异。
+
+类型|位|范围
+-|-|-
+char|1 个字节|-128 到 127 或者 0 到 255
+unsigned char|1 个字节|0 到 255
+signed char|1 个字节|-128 到 127
+int|4 个字节|-2147483648 到 2147483647
+unsigned int|4 个字节|0 到 4294967295
+signed int|4 个字节|-2147483648 到 2147483647
+short int|2 个字节|-32768 到 32767
+unsigned short int|2 个字节|0 到 65,535
+signed short int|2 个字节|-32768 到 32767
+long int|8 个字节|-9,223,372,036,854,775,808 到 9,223,372,036,854,775,807
+signed long int|8 个字节|-9,223,372,036,854,775,808 到 9,223,372,036,854,775,807
+unsigned long int|8 个字节|0 to 18,446,744,073,709,551,615
+float|4 个字节|+/- 3.4e +/- 38 (~7 个数字)
+double|8 个字节|+/- 1.7e +/- 308 (~15 个数字)
+long double|16 个字节|+/- 1.7e +/- 308 (~15 个数字)
+wchar_t|2 或 4 个字节|1 个宽字符
+
+从上表可得知，变量的大小会根据编译器和所使用的电脑而有所不同。
+
+```c++
+#include<iostream>  
+#include<string>  
+#include <limits>  
+using namespace std;  
+  
+int main()  
+{  
+    cout << "type: \t\t" << "************size**************"<< endl;  
+    cout << "bool: \t\t" << "所占字节数：" << sizeof(bool);  
+    cout << "\t最大值：" << (numeric_limits<bool>::max)();  
+    cout << "\t\t最小值：" << (numeric_limits<bool>::min)() << endl;  
+    cout << "char: \t\t" << "所占字节数：" << sizeof(char);  
+    cout << "\t最大值：" << (numeric_limits<char>::max)();  
+    cout << "\t\t最小值：" << (numeric_limits<char>::min)() << endl;  
+    cout << "signed char: \t" << "所占字节数：" << sizeof(signed char);  
+    cout << "\t最大值：" << (numeric_limits<signed char>::max)();  
+    cout << "\t\t最小值：" << (numeric_limits<signed char>::min)() << endl;  
+    cout << "unsigned char: \t" << "所占字节数：" << sizeof(unsigned char);  
+    cout << "\t最大值：" << (numeric_limits<unsigned char>::max)();  
+    cout << "\t\t最小值：" << (numeric_limits<unsigned char>::min)() << endl;  
+    cout << "wchar_t: \t" << "所占字节数：" << sizeof(wchar_t);  
+    cout << "\t最大值：" << (numeric_limits<wchar_t>::max)();  
+    cout << "\t\t最小值：" << (numeric_limits<wchar_t>::min)() << endl;  
+    cout << "short: \t\t" << "所占字节数：" << sizeof(short);  
+    cout << "\t最大值：" << (numeric_limits<short>::max)();  
+    cout << "\t\t最小值：" << (numeric_limits<short>::min)() << endl;  
+    cout << "int: \t\t" << "所占字节数：" << sizeof(int);  
+    cout << "\t最大值：" << (numeric_limits<int>::max)();  
+    cout << "\t最小值：" << (numeric_limits<int>::min)() << endl;  
+    cout << "unsigned: \t" << "所占字节数：" << sizeof(unsigned);  
+    cout << "\t最大值：" << (numeric_limits<unsigned>::max)();  
+    cout << "\t最小值：" << (numeric_limits<unsigned>::min)() << endl;  
+    cout << "long: \t\t" << "所占字节数：" << sizeof(long);  
+    cout << "\t最大值：" << (numeric_limits<long>::max)();  
+    cout << "\t最小值：" << (numeric_limits<long>::min)() << endl;  
+    cout << "unsigned long: \t" << "所占字节数：" << sizeof(unsigned long);  
+    cout << "\t最大值：" << (numeric_limits<unsigned long>::max)();  
+    cout << "\t最小值：" << (numeric_limits<unsigned long>::min)() << endl;  
+    cout << "double: \t" << "所占字节数：" << sizeof(double);  
+    cout << "\t最大值：" << (numeric_limits<double>::max)();  
+    cout << "\t最小值：" << (numeric_limits<double>::min)() << endl;  
+    cout << "long double: \t" << "所占字节数：" << sizeof(long double);  
+    cout << "\t最大值：" << (numeric_limits<long double>::max)();  
+    cout << "\t最小值：" << (numeric_limits<long double>::min)() << endl;  
+    cout << "float: \t\t" << "所占字节数：" << sizeof(float);  
+    cout << "\t最大值：" << (numeric_limits<float>::max)();  
+    cout << "\t最小值：" << (numeric_limits<float>::min)() << endl;  
+    cout << "size_t: \t" << "所占字节数：" << sizeof(size_t);  
+    cout << "\t最大值：" << (numeric_limits<size_t>::max)();  
+    cout << "\t最小值：" << (numeric_limits<size_t>::min)() << endl;  
+    cout << "string: \t" << "所占字节数：" << sizeof(string) << endl;  
+    // << "\t最大值：" << (numeric_limits<string>::max)() << "\t最小值：" << (numeric_limits<string>::min)() << endl;  
+    cout << "type: \t\t" << "************size**************"<< endl;  
+    return 0;  
+}
+```
+
+**typedef 声明**
+
+可以使用 `typedef` 为一个已有的类型取一个新的名字。下面是使用 `typedef` 定义一个新类型的语法：
+
+**枚举类型**
+
+枚举类型(enumeration)是C++中的一种派生数据类型，它是由用户定义的若干枚举常量的集合。
+
+如果一个变量只有几种可能的值，可以定义为枚举(enumeration)类型。所谓"枚举"是指将变量的值一一列举出来，变量的值只能在列举出来的值的范围内。
+
+C++包含两种枚举：限定作用域的和不限定作用域的。这里主要介绍限定作用域的。
+
+*不限定作用域*
+
+创建枚举，需要使用关键字 `enum`。枚举类型的一般形式为：
+
+```c++
+enum 枚举名{ 
+     标识符[=整型常数], 
+     标识符[=整型常数], 
+... 
+    标识符[=整型常数]
+} 枚举变量;
+```
+
+*限定作用域*
+
+```c++
+#include "enum_class.hpp"
+#include <iostream>
+ 
+namespace enum_class_ {
+ 
+typedef short int16_t;
+ 
+////////////////////////////////////////////////////////////////////
+// reference: http://en.cppreference.com/w/cpp/language/enum
+// enum that takes 16 bits
+enum smallenum : int16_t {
+	a,
+	b,
+	c
+};
+ 
+// color may be red (value 0), yellow (value 1), green (value 20), or blue (value 21)
+enum color {
+	red,
+	yellow,
+	green = 20,
+	blue
+};
+ 
+// altitude may be altitude::high or altitude::low
+enum class altitude : char {
+	high = 'h',
+	low = 'l', // C++11 allows the extra comma
+};
+ 
+// the constant d is 0, the constant e is 1, the constant f is 3
+enum {
+	d,
+	e,
+	f = e + 2
+};
+ 
+//enumeration types (both scoped and unscoped) can have overloaded operators
+std::ostream& operator << (std::ostream& os, color c)
+{
+	switch (c) {
+		case red: os << "red";    break;
+		case yellow: os << "yellow"; break;
+		case green: os << "green";  break;
+		case blue: os << "blue";   break;
+		default: os.setstate(std::ios_base::failbit);
+	}
+ 
+	return os;
+}
+ 
+std::ostream& operator << (std::ostream& os, altitude al)
+{
+	return os << static_cast<char>(al);
+}
+ 
+int test_enum_class_1()
+{
+	color col = red;
+	altitude a;
+	a = altitude::low;
+ 
+	std::cout << "col = " << col << '\n'
+		<< "a = " << a << '\n'
+		<< "f = " << f << '\n';
+ 
+	return 0;
+}
+ 
+// C++ has two kinds of enum: enum classes, Plain enums
+enum Color { red1, green1, blue1 };                    // plain enum
+enum Card { red_card, green_card, yellow_card };    // another plain enum
+enum class Animal { dog, deer, cat, bird, human };  // enum class
+enum class Mammal { kangaroo, deer, human };        // another enum class
+ 
+int test_enum_class_2()
+{
+	// examples of bad use of plain enums:
+	Color color = Color::red1;
+	Card card = Card::green_card;
+ 
+	int num = color;    // no problem
+ 
+	if (color == Card::red_card) // no problem (bad)
+		std::cout << "bad" << std::endl;
+ 
+	if (card == Color::green1)   // no problem (bad)
+		std::cout << "bad" << std::endl;
+ 
+	// examples of good use of enum classes (safe)
+	Animal a = Animal::deer;
+	Mammal m = Mammal::deer;
+ 
+	//int num2 = a;   // error
+	//if (m == a)     // error (good)
+	//	std::cout << "bad" << std::endl;
+ 
+	//if (a == Mammal::deer) // error (good)
+	//	std::cout << "bad" << std::endl;
+ 
+	return 0;
+}
+ 
+int test_enum_class_3()
+{
+	enum class Color { // "enum class" defines this as an scoped enumeration instead of a standard enumeration
+		RED, // RED is inside the scope of Color
+		BLUE
+	};
+ 
+	enum class Fruit {
+		BANANA, // BANANA is inside the scope of Fruit
+		APPLE
+	};
+ 
+	Color color = Color::RED; // note: RED is not directly accessible any more, we have to use Color::RED
+	Fruit fruit = Fruit::BANANA; // note: BANANA is not directly accessible any more, we have to use Fruit::BANANA
+ 
+	//if (color == fruit) // compile error here, as the compiler doesn't know how to compare different types Color and Fruit
+	//	std::cout << "color and fruit are equal\n";
+	//else
+	//	std::cout << "color and fruit are not equal\n";
+ 
+	if (color == Color::RED) // this is okay
+		std::cout << "The color is red!\n";
+	else if (color == Color::BLUE)
+		std::cout << "The color is blue!\n";
+ 
+	//std::cout << color; // won't work, because there's no implicit conversion to int
+	color = Color::BLUE;
+	std::cout << static_cast<int>(color) << std::endl; // will print 1
+ 
+	return 0;
+}
+ 
+} // namespace enum_class_
+
+```
+
 ## C++知识点
 
 * **智能指针**

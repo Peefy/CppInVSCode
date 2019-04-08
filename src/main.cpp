@@ -19,6 +19,8 @@ int main()
         printf("%d\n", i);
     }
 
+    typeOfDataDemo();
+
     DuGu::smartPointerDemo();
 
     return 0;

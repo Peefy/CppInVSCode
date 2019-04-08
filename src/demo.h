@@ -16,4 +16,6 @@ public:
     }
 };
 
+void typeOfDataDemo();
+
 #endif

@@ -19,6 +19,8 @@ int main()
         printf("%d\n", i);
     }
 
+    thread_local std::vector<int> v;
+
     typeOfDataDemo();
 
     DuGu::smartPointerDemo();

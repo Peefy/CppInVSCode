@@ -717,6 +717,232 @@ pointer|NULL
 \\ooo	|一到三位的八进制数
 \\xhh . . .|	一个或多个数字的十六进制数
 
+**字符串常量**
+
+字符串字面值或常量是括在双引号 "" 中的。一个字符串包含类似于字符常量的字符：普通的字符、转义序列和通用的字符。
+
+您可以使用空格做分隔符，把一个很长的字符串常量进行分行。
+
+下面的实例显示了一些字符串常量。下面这三种形式所显示的字符串是相同的。
+
+```c++
+"hello, dear"
+
+"hello, \
+
+dear"
+
+"hello, " "d" "ear"
+```
+
+**定义常量**
+
+在C++中，有两种简单的定义常量的方式
+* 使用 `#define` 预处理器
+* 使用 `const` 关键字
+
+**#define 预处理器**
+
+下面是使用#define预处理器定义常量的方式
+```c++
+#define identifier value
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+#define LENGTH 10   
+#define WIDTH  5
+#define NEWLINE '\n'
+ 
+int main()
+{
+   int area;  
+   area = LENGTH * WIDTH;
+   cout << area;
+   cout << NEWLINE;
+   return 0;
+}
+```
+
+**const关键字**
+
+您可以使用 `const` 前缀声明指定类型的常量，如下所示：
+```c++
+const type variable = value;
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+   const int  LENGTH = 10;
+   const int  WIDTH  = 5;
+   const char NEWLINE = '\n';
+   int area;  
+   
+   area = LENGTH * WIDTH;
+   cout << area;
+   cout << NEWLINE;
+   return 0;
+}
+```
+
+**C++修饰符类型**
+
+C++ 允许在 `char`、`int` 和 `double` 数据类型前放置修饰符。修饰符用于改变基本类型的含义，所以它更能满足各种情境的需求。
+
+* signed
+* unsigned
+* long
+* short
+
+修饰符 `signed`、`unsigned`、`long` 和 `short` 可应用于整型，`signed` 和 `unsigned` 可应用于字符型，`long` 可应用于双精度型。
+
+修饰符 `signed` 和 `unsigned` 也可以作为 `long` 或 `short` 修饰符的前缀。例如：`unsigned long int`。
+
+C++ 允许使用速记符号来声明无符号短整数或无符号长整数。可以不写 `int`，只写单词 `unsigned`、`short` 或 `unsigned`、`long`，`int` 是隐含的。例如，下面的两个语句都声明了无符号整型变量。
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+/* 
+ * 这个程序演示了有符号整数和无符号整数之间的差别
+*/
+int main()
+{
+   short int i;           // 有符号短整数
+   short unsigned int j;  // 无符号短整数
+ 
+   j = 50000;
+ 
+   i = j;
+   cout << i << " " << j;
+ 
+   return 0;
+}
+```
+
+**C++中的类型限定符**
+
+限定符|含义
+-|-
+const|const 类型的对象在程序执行期间不能被修改改变。
+volatile|修饰符 volatile 告诉编译器不需要优化volatile声明的变量，让程序可以直接从内存中读取变量。对于一般的变量编译器会对变量进行优化，将内存中的变量值放在寄存器中以加快读写效率。
+restrict|由 restrict 修饰的指针是唯一一种访问它所指向的对象的方式。只有 C99 增加了新的类型限定符 restrict。
+
+**C++存储类**
+
+存储类定义 C++ 程序中变量/函数的范围（可见性）和生命周期。这些说明符放置在它们所修饰的类型之前。下面列出 C++ 程序中可用的存储类：
+* auto
+* register
+* static
+* extern
+* mutable
+* thread_local (C++11)
+
+从C++11开始，auto关键字不再是C++存储类说明符，且register关键字被弃用
+
+**auto 存储类**
+
+自 C++ 11 以来，**auto** 关键字用于两种情况：声明变量时根据初始化表达式自动推断该变量的类型、声明函数时函数返回值的占位符。
+
+**register存储类**
+
+**register** 存储类用于定义存储在寄存器中而不是 RAM 中的局部变量。这意味着变量的最大尺寸等于寄存器的大小（通常是一个词），且不能对它应用一元的 '&' 运算符（因为它没有内存位置）。
+
+```c++
+{
+   register int  miles;
+}
+```
+
+**static存储类**
+
+static存储类指示编译器在程序的生命周期内保持局部变量的存在，而不需要在每次它进入和离开作用域时进行创建和销毁。因此，使用 static 修饰局部变量可以在函数调用之间保持局部变量的值。
+
+static 修饰符也可以应用于全局变量。当 static 修饰全局变量时，会使变量的作用域限制在声明它的文件内。
+
+在 C++ 中，当 static 用在类数据成员上时，会导致仅有一个该成员的副本被类的所有对象共享。
+
+```c++
+#include <iostream>
+ 
+// 函数声明 
+void func(void);
+ 
+static int count = 10; /* 全局变量 */
+ 
+int main()
+{
+    while(count--)
+    {
+       func();
+    }
+    return 0;
+}
+// 函数定义
+void func( void )
+{
+    static int i = 5; // 局部静态变量
+    i++;
+    std::cout << "变量 i 为 " << i ;
+    std::cout << " , 变量 count 为 " << count << std::endl;
+}
+```
+
+**extern 存储类**
+
+extern 存储类用于提供一个全局变量的引用，全局变量对所有的程序文件都是可见的。当您使用 'extern' 时，对于无法初始化的变量，会把变量名指向一个之前定义过的存储位置。
+
+当您有多个文件且定义了一个可以在其他文件中使用的全局变量或函数时，可以在其他文件中使用 extern 来得到已定义的变量或函数的引用。可以这么理解，extern 是用来在另一个文件中声明一个全局变量或函数。
+
+extern 修饰符通常用于当有两个或多个文件共享相同的全局变量或函数的时候，
+
+```c++
+#include <iostream>
+ 
+int count ;
+extern void write_extern();
+ 
+int main()
+{
+   count = 5;
+   write_extern();
+}
+```
+
+**multable存储类**
+
+mutable 说明符仅适用于类的对象，它允许对象的成员替代常量。也就是说，mutable 成员可以通过 const 成员函数修改。
+
+**thread_local 存储类**
+
+使用 thread_local 说明符声明的变量仅可在它在其上创建的线程上访问。 变量在创建线程时创建，并在销毁线程时销毁。 每个线程都有其自己的变量副本。
+
+thread_local 说明符可以与 static 或 extern 合并。
+
+可以将 thread_local 仅应用于数据声明和定义，thread_local 不能用于函数声明或定义。
+
+以下演示了可以被声明为 thread_local 的变量：
+```c++
+thread_local int x;  // 命名空间下的全局变量
+class X
+{
+    static thread_local std::string s; // 类的static成员变量
+};
+static thread_local std::string X::s;  // X::s 是需要定义的
+ 
+void foo()
+{
+    thread_local std::vector<int> v;  // 本地变量
+}
+```
+
 ## C++知识点
 
 * **智能指针**
@@ -724,7 +950,7 @@ pointer|NULL
 C++程序设计中使用堆内存是非常频繁的操作，堆内存的申请和释放都是程序员自己管理。程序员自己管理内存可以提高程序的效率，但是整体来说堆内存的管理是麻烦的，C++引入智能指针的概念，方便内存管理。使用普通指针，容易造成内存泄露(忘记释放),二次释放,程序发生异常内存泄露等问题,使用智能指针能更好的管理内存
 
 智能指针的原理:
-* 1.智能指针使用了RALL(获取资源即初始化)的技术对普通的指针进行封装,使得智能的指针实质是个对象,行为表现却像一个指针
+* 1.智能指针使用了`RALL` `(获取资源即初始化)`的技术对普通的指针进行封装,使得智能的指针实质是个对象,行为表现却像一个指针
 * 2.智能指针的作用是防止忘记调用delete释放内存和程序异常的进入catch块忘记释放内存.另外指针的释放时机非常考究，多次释放同一个指针会造成程序崩溃
 * 3.智能指针的作用还有一个作用是把值语义转变为引用语义
 

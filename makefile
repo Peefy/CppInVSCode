@@ -7,13 +7,7 @@ SRCS=./src/main.cpp\
 #定义变量OBJS,表示将原文件中所有以.cpp结尾的文件替换成以.o结尾，即将.cpp源文件编译成.o文件
 OBJS=$(SRCS:.cpp=.o)
 
-OS_NAME = $(shell uname -o)
-LC_OS_NAME = $(shell echo $(OS_NAME) | tr '[A-Z]' '[a-z]')
-ifeq ($(LC_OS_NAME), cygwin)
-CLEAN_PATH = ".\\src\\*.o"
-else
-CLEAN_PATH = "./src/*.o"
-endif
+#
  
 #定义变量，表示最终生成的可执行文件名
 EXEC=maincpp
@@ -30,9 +24,7 @@ start:$(OBJS)
 #执行make clean指令
 .PHONY:clean
 clean:
-		-rm -f $(CLEAN_PATH)
+		-rm -rf $(OBJS)
         #执行make clean指令时，需要执行的操作，比如下面的指令时指删除所有.o文件
-		#rm -rf $(OBJS)
-		
 run:
 	./$(EXEC)

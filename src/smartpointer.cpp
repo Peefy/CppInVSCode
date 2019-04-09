@@ -17,6 +17,7 @@ static void sharedptrDemo(){
     int *pb = &a;
     //std::shared_ptr<int> ptrb = pb;  //error
     std::shared_ptr<int> ptrb = std::shared_ptr<int>(&b);
+    //std::shared_ptr<int> ptrb = std::make_shared<int>(b);
     printf("the use count of ptrb is %d\n", ptrb.use_count());
     ptra = ptrb;
     pb = ptrb.get();

@@ -17,5 +17,6 @@ public:
 };
 
 void typeOfDataDemo();
+void noteDemo();
 
 #endif

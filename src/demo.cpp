@@ -64,3 +64,7 @@ void typeOfDataDemo(){
     // << "\t最大值：" << (numeric_limits<string>::max)() << "\t最小值：" << (numeric_limits<string>::min)() << endl;  
     cout << "type: \t\t" << "************size**************"<< endl;  
 }
+
+void noteDemo(){
+    
+}

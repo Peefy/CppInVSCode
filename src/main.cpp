@@ -22,6 +22,7 @@ int main()
     thread_local std::vector<int> v;
 
     typeOfDataDemo();
+    noteDemo();
 
     DuGu::smartPointerDemo();
 

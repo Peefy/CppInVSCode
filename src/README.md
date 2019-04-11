@@ -1366,6 +1366,1078 @@ Exp1 ? Exp2 : Exp3;
 
 **C++函数**
 
+函数是一组一起执行一个任务的语句。每个 C++ 程序都至少有一个函数，即主函数 main() ，所有简单的程序都可以定义其他额外的函数。
+
+您可以把代码划分到不同的函数中。如何划分代码到不同的函数中是由您来决定的，但在逻辑上，划分通常是根据每个函数执行一个特定的任务来进行的。
+
+函数声明告诉编译器函数的名称、返回类型和参数。函数定义提供了函数的实际主体。
+
+C++ 标准库提供了大量的程序可以调用的内置函数。例如，函数 strcat() 用来连接两个字符串，函数 memcpy() 用来复制内存到另一个位置。
+
+函数还有很多叫法，比如方法、子例程或程序，等等。
+
+**定义函数**
+
+C++ 中的函数定义的一般形式如下：
+
+```c++
+return_type function_name( parameter list )
+{
+   body of the function
+}
+```
+
+在 C++ 中，函数由一个函数头和一个函数主体组成。下面列出一个函数的所有组成部分：
+* **返回类型**-一个函数可以返回一个值。`return_type` 是函数返回的值的数据类型。有些函数执行所需的操作而不返回值，在这种情况下，`return_type` 是关键字 `void`。
+* **函数名称**-这是函数的实际名称。函数名和参数列表一起构成了函数签名。
+* **参数**-参数就像是占位符。当函数被调用时，您向参数传递一个值，这个值被称为实际参数。参数列表包括函数参数的类型、顺序、数量。参数是可选的，也就是说，函数可能不包含参数。
+* **函数主体**-函数主体包含一组定义函数执行任务的语句。
+
+**函数声明**
+
+函数声明会告诉编译器函数名称及如何调用函数。函数的实际主体可以单独定义。
+
+函数声明包括以下几个部分：
+
+```c++
+return_type function_name( parameter list );
+```
+
+```c++
+int max(int num1, int num2);
+```
+
+**调用函数**
+
+创建 C++ 函数时，会定义函数做什么，然后通过调用函数来完成已定义的任务。
+
+当程序调用函数时，程序控制权会转移给被调用的函数。被调用的函数执行已定义的任务，当函数的返回语句被执行时，或到达函数的结束括号时，会把程序控制权交还给主程序。
+
+调用函数时，传递所需参数，如果函数返回一个值，则可以存储返回值。例如：
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+// 函数声明
+int max(int num1, int num2);
+ 
+int main ()
+{
+   // 局部变量声明
+   int a = 100;
+   int b = 200;
+   int ret;
+ 
+   // 调用函数来获取最大值
+   ret = max(a, b);
+ 
+   cout << "Max value is : " << ret << endl;
+ 
+   return 0;
+}
+ 
+// 函数返回两个数中较大的那个数
+int max(int num1, int num2) 
+{
+   // 局部变量声明
+   int result;
+ 
+   if (num1 > num2)
+      result = num1;
+   else
+      result = num2;
+ 
+   return result; 
+}
+```
+
+**函数参数**
+
+如果函数要使用参数，则必须声明接受参数值的变量。这些变量称为函数的形式参数。
+
+形式参数就像函数内的其他局部变量，在进入函数时被创建，退出函数时被销毁。
+
+当调用函数时，有两种向函数传递参数的方式：
+
+调用类型|描述
+-|-
+传值调用 |该方法把参数的实际值复制给函数的形式参数。在这种情况下，修改函数内的形式参数对实际参数没有影响。
+指针调用	|该方法把参数的地址复制给形式参数。在函数内，该地址用于访问调用中要用到的实际参数。这意味着，修改形式参数会影响实际参数。
+引用调用	|该方法把参数的引用复制给形式参数。在函数内，该引用用于访问调用中要用到的实际参数。这意味着，修改形式参数会影响实际参数。
+
+**参数的默认值**
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int sum(int a, int b=20)
+{
+  int result;
+ 
+  result = a + b;
+  
+  return (result);
+}
+ 
+int main ()
+{
+   // 局部变量声明
+   int a = 100;
+   int b = 200;
+   int result;
+ 
+   // 调用函数来添加值
+   result = sum(a, b);
+   cout << "Total value is :" << result << endl;
+ 
+   // 再次调用函数
+   result = sum(a);
+   cout << "Total value is :" << result << endl;
+ 
+   return 0;
+}
+```
+
+**Lambda 函数与表达式**
+
+C++11 提供了对匿名函数的支持,称为 Lambda 函数(也叫 Lambda 表达式)。
+
+Lambda 表达式把函数看作对象。Lambda 表达式可以像对象一样使用，比如可以将它们赋给变量和作为参数传递，还可以像函数一样对其求值。
+
+Lambda 表达式本质上与函数声明非常类似。Lambda 表达式具体形式如下:
+
+```c++
+capture](parameters)->return-type{body}
+```
+
+例如：
+```c++
+[](int x, int y){ return x < y ; }
+```
+
+```c++
+[](int x, int y) -> int { int z = x + y; return z + x; }
+```
+
+如果 lambda 函数没有传回值（例如 void），其返回类型可被完全忽略。
+
+在Lambda表达式内可以访问当前作用域的变量，这是Lambda表达式的闭包（Closure）行为。 与JavaScript闭包不同，C++变量传递有传值和传引用的区别。可以通过前面的[]来指定：
+
+```c++
+[]      // 沒有定义任何变量。使用未定义变量会引发错误。
+[x, &y] // x以传值方式传入（默认），y以引用方式传入。
+[&]     // 任何被使用到的外部变量都隐式地以引用方式加以引用。
+[=]     // 任何被使用到的外部变量都隐式地以传值方式加以引用。
+[&, x]  // x显式地以传值方式加以引用。其余变量以引用方式加以引用。
+[=, &z] // z显式地以引用方式加以引用。其余变量以传值方式加以引用。
+```
+
+另外有一点需要注意。对于[=]或[&]的形式，lambda 表达式可以直接使用 this 指针。但是，对于[]的形式，如果要使用 this 指针，必须显式传入：
+```c++
+[this]() { this->someFunc(); }();
+```
+
+**C++ 数字**
+
+通常，当我们需要用到数字时，我们会使用原始的数据类型，如 int、short、long、float 和 double 等等。这些用于数字的数据类型，其可能的值和数值范围，我们已经在 C++ 数据类型一章中讨论过。
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main ()
+{
+   // 数字定义
+   short  s;
+   int    i;
+   long   l;
+   float  f;
+   double d;
+   
+   // 数字赋值
+   s = 10;      
+   i = 1000;    
+   l = 1000000; 
+   f = 230.47;  
+   d = 30949.374;
+   
+   // 数字输出
+   cout << "short  s :" << s << endl;
+   cout << "int    i :" << i << endl;
+   cout << "long   l :" << l << endl;
+   cout << "float  f :" << f << endl;
+   cout << "double d :" << d << endl;
+ 
+   return 0;
+}
+```
+
+**C++数学运算**
+
+在 C++ 中，除了可以创建各种函数，还包含了各种有用的函数供您使用。这些函数写在标准 C 和 C++ 库中，叫做`内置`函数。您可以在程序中引用这些函数。
+
+C++ 内置了丰富的数学函数，可对各种数字进行运算。下表列出了 C++ 中一些有用的内置的数学函数。
+
+为了利用这些函数，您需要引用数学头文件 `\<cmath\>`。
+
+序号|函数 & 描述
+-|-
+1	|double cos(double);
+该函数返回弧度角（double 型）的余弦。
+2	|double sin(double);
+该函数返回弧度角（double 型）的正弦。
+3	|double tan(double);
+该函数返回弧度角（double 型）的正切。
+4	|double log(double);
+该函数返回参数的自然对数。
+5	|double pow(double, double);
+假设第一个参数为 x，第二个参数为 y，则该函数返回 x 的 y 次方。
+6	|double hypot(double, double);
+该函数返回两个参数的平方总和的平方根，也就是说，参数为一个直角三角形的两个直角边，函数会返回斜边的长度。
+7	|double sqrt(double);
+该函数返回参数的平方根。
+8	|int abs(int);
+该函数返回整数的绝对值。
+9	|double fabs(double);
+该函数返回任意一个十进制数的绝对值。
+10	|double floor(double);
+该函数返回一个小于或等于传入参数的最大整数。
+
+```c++
+#include <iostream>
+#include <cmath>
+using namespace std;
+ 
+int main ()
+{
+   // 数字定义
+   short  s = 10;
+   int    i = -1000;
+   long   l = 100000;
+   float  f = 230.47;
+   double d = 200.374;
+ 
+   // 数学运算
+   cout << "sin(d) :" << sin(d) << endl;
+   cout << "abs(i)  :" << abs(i) << endl;
+   cout << "floor(d) :" << floor(d) << endl;
+   cout << "sqrt(f) :" << sqrt(f) << endl;
+   cout << "pow( d, 2) :" << pow(d, 2) << endl;
+ 
+   return 0;
+}
+```
+
+**C++随机数**
+
+在许多情况下，需要生成随机数。关于随机数生成器，有两个相关的函数。一个是 `rand()`，该函数只返回一个伪随机数。生成随机数之前必须先调用 `srand()` 函数。
+
+下面是一个关于生成随机数的简单实例。实例中使用了 `time()` 函数来获取系统时间的秒数，通过调用 `rand()` 函数来生成随机数：
+
+```c++
+#include <iostream>
+#include <ctime>
+#include <cstdlib>
+ 
+using namespace std;
+ 
+int main ()
+{
+   int i,j;
+ 
+   // 设置种子
+   srand( (unsigned)time( NULL ) );
+ 
+   /* 生成 10 个随机数 */
+   for( i = 0; i < 10; i++ )
+   {
+      // 生成实际的随机数
+      j= rand();
+      cout <<"随机数： " << j << endl;
+   }
+ 
+   return 0;
+}
+```
+
+**C++数组**
+
+C++ 支持`数组`数据结构，它可以存储一个固定大小的相同类型元素的顺序集合。数组是用来存储一系列数据，但它往往被认为是一系列相同类型的变量。
+
+数组的声明并不是声明一个个单独的变量，比如 number0、number1、...、number99，而是声明一个数组变量，比如 numbers，然后使用 numbers[0]、numbers[1]、...、numbers[99] 来代表一个个单独的变量。数组中的特定元素可以通过索引访问。
+
+所有的数组都是由连续的内存位置组成。最低的地址对应第一个元素，最高的地址对应最后一个元素。
+
+```c++
+type arrayName [ arraySize ];
+```
+
+```c++
+double balance[10];
+```
+
+**初始化数组**
+
+在 C++ 中，可以逐个初始化数组，也可以使用一个初始化语句，如下所示：
+
+```c++
+double balance[5] = {1000.0, 2.0, 3.4, 7.0, 50.0};
+```
+
+大括号 { } 之间的值的数目不能大于我们在数组声明时在方括号 [ ] 中指定的元素数目。
+
+如果您省略掉了数组的大小，数组的大小则为初始化时元素的个数。因此，如果：
+
+```c++
+double balance[] = {1000.0, 2.0, 3.4, 7.0, 50.0};
+```
+
+**访问数组元素**
+
+数组元素可以通过数组名称加索引进行访问。元素的索引是放在方括号内，跟在数组名称的后边。例如：
+```c++
+double salary = balance[9];
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+#include <iomanip>
+using std::setw;
+ 
+int main ()
+{
+   int n[ 10 ]; // n 是一个包含 10 个整数的数组
+ 
+   // 初始化数组元素          
+   for ( int i = 0; i < 10; i++ )
+   {
+      n[ i ] = i + 100; // 设置元素 i 为 i + 100
+   }
+   cout << "Element" << setw( 13 ) << "Value" << endl;
+ 
+   // 输出数组中每个元素的值                     
+   for ( int j = 0; j < 10; j++ )
+   {
+      cout << setw( 7 )<< j << setw( 13 ) << n[ j ] << endl;
+   }
+ 
+   return 0;
+}
+```
+上面的程序使用了 `setw()` 函数来格式化输出。当上面的代码被编译和执行时，它会产生下列结果：
+
+**C++多维数组**
+
+```c++
+type name[size1][size2]...[sizeN];
+```
+```c++
+int threedim[5][10][4];
+```
+
+**二维数组**
+
+多维数组最简单的形式是二维数组。一个二维数组，在本质上，是一个一维数组的列表。声明一个 x 行 y 列的二维整型数组，形式如下：
+```c++
+type arrayName [ x ][ y ];
+```
+
+**初始化二维数组**
+
+```c++
+int a[3][4] = {  
+ {0, 1, 2, 3} ,   /*  初始化索引号为 0 的行 */
+ {4, 5, 6, 7} ,   /*  初始化索引号为 1 的行 */
+ {8, 9, 10, 11}   /*  初始化索引号为 2 的行 */
+};
+
+int a[3][4] = {0,1,2,3,4,5,6,7,8,9,10,11};
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main ()
+{
+   // 一个带有 5 行 2 列的数组
+   int a[5][2] = { {0,0}, {1,2}, {2,4}, {3,6},{4,8}};
+ 
+   // 输出数组中每个元素的值                      
+   for ( int i = 0; i < 5; i++ )
+      for ( int j = 0; j < 2; j++ )
+      {
+         cout << "a[" << i << "][" << j << "]: ";
+         cout << a[i][j]<< endl;
+      }
+ 
+   return 0;
+}
+```
+
+**vector容器实现的二维数组**
+
+```c++
+#include <cstdio> 
+#include <vector>
+#include <algorithm>
+using namespace std;
+int main()
+{
+    vector< vector<int> > arry; //写成arry(5) 可理解为设定大小5行 
+    vector<int> d;        //定义一个一维的数组; 
+    int i, j, k, n;
+    int number;
+    
+    scanf("%d", &n );
+    /*可以这样实现对vector二维的初始化，得到的是n行n列的矩阵*/ 
+    for( i=0; i<n; i++ ){ 
+        for( j=0; j<n; j++ ){
+            scanf("%d", &number );
+            d.push_back( number ); 
+        }
+        sort( d.begin(), d.end() ); //pai xu xuyao头文件algorithm 
+        arry.push_back( d );
+        //d.clear();        //清空一维的数组 
+        d.resize(0);
+    }
+    /*遍历输出*/ 
+    if( arry.empty() )
+        printf("0\n");
+    else{
+        for( i=0; i<arry.size(); i++ ) {
+            for( j=0; j<arry[0].size(); j++ ){
+                printf("%d ", arry[i][j] );
+            }
+            printf("\n");
+        }
+    } 
+    
+    return 0;
+}
+```
+
+**C++指向数组的指针**
+
+`balance` 是一个指向 &balance[0] 的指针，即数组 `balance` 的第一个元素的地址。因此，下面的程序片段把 p 赋值为 balance 的第一个元素的地址：
+
+```c++
+double *p;
+double balance[10];
+p = balance;
+```
+
+使用数组名作为常量指针是合法的，反之亦然。因此，*(balance + 4) 是一种访问 balance[4] 数据的合法方式。
+
+一旦您把第一个元素的地址存储在 p 中，您就可以使用 *p、*(p+1)、*(p+2) 等来访问数组元素。下面的实例演示了上面讨论到的这些概念：
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main ()
+{
+   // 带有 5 个元素的双精度浮点型数组
+   double balance[5] = {1000.0, 2.0, 3.4, 17.0, 50.0};
+   double *p;
+ 
+   p = balance;
+ 
+   // 输出数组中每个元素的值
+   cout << "使用指针的数组值 " << endl; 
+   for ( int i = 0; i < 5; i++ )
+   {
+       cout << "*(p + " << i << ") : ";
+       cout << *(p + i) << endl;
+   }
+ 
+   cout << "使用 balance 作为地址的数组值 " << endl;
+   for ( int i = 0; i < 5; i++ )
+   {
+       cout << "*(balance + " << i << ") : ";
+       cout << *(balance + i) << endl;
+   }
+ 
+   return 0;
+}
+```
+
+C++ 中，将 char * 或 char[] 传递给 cout 进行输出，结果会是整个字符串，如果想要获得字符串的地址（第一个字符的内存地址），可使用以下方法：
+
+强制转化为其他指针（非 char*）。可以是 void *，int *，float *， double * 等。* 使用 &s[0] 不能输出 s[0]（首字符）的地址。因为 &s[0] 将返回 char*，对于 char*（char 指针），cout 会将其作为字符串来处理，向下查找字符并输出直到字符结束 *。
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+const int MAX = 3;
+ 
+int main ()
+{
+   char  var[MAX] = {'a', 'b', 'c'};
+   char  *ptr;
+ 
+   // 指针中的数组地址
+   ptr = var;
+            
+   for (int i = 0; i < MAX; i++)
+   {
+
+      cout << "Address of var[" << i << "] = ";
+      cout << (int *)ptr << endl;
+ 
+      cout << "Value of var[" << i << "] = ";
+      cout << *ptr << endl;
+ 
+      // 移动到下一个位置
+      ptr++;
+   }
+   return 0;
+}
+```
+
+**C++ 传递数组给函数**
+
+C++ 中您可以通过指定不带索引的数组名来传递一个指向数组的指针。
+
+C++ 传数组给一个函数，数组类型自动转换为指针类型，因而传的实际是地址。
+
+如果您想要在函数中传递一个一维数组作为参数，您必须以下面三种方式来声明函数形式参数，这三种声明方式的结果是一样的，因为每种方式都会告诉编译器将要接收一个整型指针。同样地，您也可以传递一个多维数组作为形式参数。
+
+* 方式1 形式参数是一个指针：
+
+```c++
+void myFunction(int *param)
+{
+.
+.
+.
+}
+```
+
+* 方式2 形式参数是一个已定义大小的数组：
+
+```c++
+void myFunction(int param[10])
+{
+.
+.
+.
+}
+```
+
+* 方式3 形式参数是一个未定义大小的数组：
+
+```c++
+void myFunction(int param[])
+{
+.
+.
+.
+}
+```
+
+**实例**
+
+现在，让我们来看下面这个函数，它把数组作为参数，同时还传递了另一个参数，根据所传的参数，会返回数组中各元素的平均值：
+
+```c++
+double getAverage(int arr[], int size)
+{
+  int    i, sum = 0;       
+  double avg;          
+ 
+  for (i = 0; i < size; ++i)
+  {
+    sum += arr[i];
+   }
+ 
+  avg = double(sum) / size;
+ 
+  return avg;
+}
+```
+```c++
+#include <iostream>
+using namespace std;
+ 
+// 函数声明
+double getAverage(int arr[], int size);
+ 
+int main ()
+{
+   // 带有 5 个元素的整型数组
+   int balance[5] = {1000, 2, 3, 17, 50};
+   double avg;
+ 
+   // 传递一个指向数组的指针作为参数
+   avg = getAverage( balance, 5 ) ;
+ 
+   // 输出返回值
+   cout << "平均值是：" << avg << endl; 
+    
+   return 0;
+}
+```
+
+**C++ 从函数返回数组**
+
+C++ 不允许返回一个完整的数组作为函数的参数。但是，您可以通过指定不带索引的数组名来返回一个指向数组的指针。
+
+```c++
+int * myFunction()
+{
+.
+.
+.
+}
+```
+
+另外，C++ 不支持在函数外返回局部变量的地址，除非定义局部变量为 static 变量。
+
+```c++
+#include <iostream>
+#include <cstdlib>
+#include <ctime>
+ 
+using namespace std;
+ 
+// 要生成和返回随机数的函数
+int * getRandom( )
+{
+  static int  r[10];
+ 
+  // 设置种子
+  srand( (unsigned)time( NULL ) );
+  for (int i = 0; i < 10; ++i)
+  {
+    r[i] = rand();
+    cout << r[i] << endl;
+  }
+ 
+  return r;
+}
+ 
+// 要调用上面定义函数的主函数
+int main ()
+{
+   // 一个指向整数的指针
+   int *p;
+ 
+   p = getRandom();
+   for ( int i = 0; i < 10; i++ )
+   {
+       cout << "*(p + " << i << ") : ";
+       cout << *(p + i) << endl;
+   }
+ 
+   return 0;
+}
+```
+
+**C++字符串**
+
+C++ 提供了以下两种类型的字符串表示形式：
+* C 风格字符串
+* C++ 引入的 string 类类型
+
+**C 风格字符串**
+
+C 风格的字符串起源于 C 语言，并在 C++ 中继续得到支持。字符串实际上是使用 null 字符 '\0' 终止的一维字符数组。因此，一个以 null 结尾的字符串，包含了组成字符串的字符。
+
+下面的声明和初始化创建了一个 "Hello" 字符串。由于在数组的末尾存储了空字符，所以字符数组的大小比单词 "Hello" 的字符数多一个
+
+```c++
+char greeting[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
+```
+
+```c++
+char greeting[] = "Hello";
+```
+
+其实，您不需要把 null 字符放在字符串常量的末尾。C++ 编译器会在初始化数组时，自动把 '\0' 放在字符串的末尾。让我们尝试输出上面的字符串：
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main ()
+{
+   char greeting[6] = {'H', 'e', 'l', 'l', 'o', '\0'};
+ 
+   cout << "Greeting message: ";
+   cout << greeting << endl;
+ 
+   return 0;
+}
+```
+
+```c++
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+ 
+int main ()
+{
+   char str1[11] = "Hello";
+   char str2[11] = "World";
+   char str3[11];
+   int  len ;
+ 
+   // 复制 str1 到 str3
+   strcpy( str3, str1);
+   cout << "strcpy( str3, str1) : " << str3 << endl;
+ 
+   // 连接 str1 和 str2
+   strcat( str1, str2);
+   cout << "strcat( str1, str2): " << str1 << endl;
+ 
+   // 连接后，str1 的总长度
+   len = strlen(str1);
+   cout << "strlen(str1) : " << len << endl;
+ 
+   return 0;
+}
+```
+
+**C++ 中的 String 类**
+
+C++ 标准库提供了 string 类类型，支持上述所有的操作，另外还增加了其他更多的功能。我们将学习 C++ 标准库中的这个类，现在让我们先来看看下面这个实例：
+
+现在您可能还无法透彻地理解这个实例，因为到目前为止我们还没有讨论类和对象。所以现在您可以只是粗略地看下这个实例，等理解了面向对象的概念之后再回头来理解这个实例。
+
+```c++
+#include <iostream>
+#include <string>
+ 
+using namespace std;
+ 
+int main ()
+{
+   string str1 = "Hello";
+   string str2 = "World";
+   string str3;
+   int  len ;
+ 
+   // 复制 str1 到 str3
+   str3 = str1;
+   cout << "str3 : " << str3 << endl;
+ 
+   // 连接 str1 和 str2
+   str3 = str1 + str2;
+   cout << "str1 + str2 : " << str3 << endl;
+ 
+   // 连接后，str3 的总长度
+   len = str3.size();
+   cout << "str3.size() :  " << len << endl;
+ 
+   return 0;
+}
+```
+
+**C++ 指针**
+
+学习 C++ 的指针既简单又有趣。通过指针，可以简化一些 C++ 编程任务的执行，还有一些任务，如动态内存分配，没有指针是无法执行的。所以，想要成为一名优秀的 C++ 程序员，学习指针是很有必要的。
+
+正如您所知道的，每一个变量都有一个内存位置，每一个内存位置都定义了可使用连字号（&）运算符访问的地址，它表示了在内存中的一个地址。请看下面的实例，它将输出定义的变量地址：
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main ()
+{
+   int  var1;
+   char var2[10];
+ 
+   cout << "var1 变量的地址： ";
+   cout << &var1 << endl;
+ 
+   cout << "var2 变量的地址： ";
+   cout << &var2 << endl;
+ 
+   return 0;
+}
+```
+
+**指针定义**
+
+指针是一个变量，其值为另一个变量的地址，即，内存位置的直接地址。就像其他变量或常量一样，您必须在使用指针存储其他变量地址之前，对其进行声明。指针变量声明的一般形式为：
+
+```c++
+type *var-name;
+```
+
+`type` 是指针的基类型，它必须是一个有效的 C++ 数据类型，`var-name` 是指针变量的名称。用来声明指针的星号 * 与乘法中使用的星号是相同的。但是，在这个语句中，星号是用来指定一个变量是指针。以下是有效的指针声明
+
+所有指针的值的实际数据类型，不管是整型、浮点型、字符型，还是其他的数据类型，都是一样的，都是一个代表内存地址的长的十六进制数。不同数据类型的指针之间唯一的不同是，指针所指向的变量或常量的数据类型不同。
+
+使用指针时会频繁进行以下几个操作：定义一个指针变量、把变量地址赋值给指针、访问指针变量中可用地址的值。这些是通过使用一元运算符 * 来返回位于操作数所指定地址的变量的值。下面的实例涉及到了这些操作：
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main ()
+{
+   int  var = 20;   // 实际变量的声明
+   int  *ip;        // 指针变量的声明
+ 
+   ip = &var;       // 在指针变量中存储 var 的地址
+ 
+   cout << "Value of var variable: ";
+   cout << var << endl;
+ 
+   // 输出在指针变量中存储的地址
+   cout << "Address stored in ip variable: ";
+   cout << ip << endl;
+ 
+   // 访问指针中地址的值
+   cout << "Value of *ip variable: ";
+   cout << *ip << endl;
+ 
+   return 0;
+}
+```
+
+**C++引用**
+
+引用变量是一个别名，也就是说，它是某个已存在变量的另一个名字。一旦把引用初始化为某个变量，就可以使用该引用名称或变量名称来指向变量。
+
+**C++引用与指针的比较**
+
+* 不存在空引用。引用必须连接到一块合法的内存。
+* 一旦引用被初始化为一个对象，就不能被指向到另一个对象。指针可以在任何时候指向到另一个对象。
+* 引用必须在创建时被初始化。指针可以在任何时间被初始化。
+
+**C++ 中创建引用**
+
+试想变量名称是变量附属在内存位置中的标签，您可以把引用当成是变量附属在内存位置中的第二个标签。因此，您可以通过原始变量名称或引用来访问变量的内容。例如：
+```c++
+int i = 17;
+int&  r = i;
+```
+
+在这些声明中，& 读作引用。因此，第一个声明可以读作 "r 是一个初始化为 i 的整型引用"，第二个声明可以读作 "s 是一个初始化为 d 的 double 型引用"。下面的实例使用了 int 和 double 引用：
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main ()
+{
+   // 声明简单的变量
+   int    i;
+   double d;
+ 
+   // 声明引用变量
+   int&    r = i;
+   double& s = d;
+   
+   i = 5;
+   cout << "Value of i : " << i << endl;
+   cout << "Value of i reference : " << r  << endl;
+ 
+   d = 11.7;
+   cout << "Value of d : " << d << endl;
+   cout << "Value of d reference : " << s  << endl;
+   
+   return 0;
+}
+```
+
+引用可以用于函数参数列表和函数返回值
+
+**C++ 日期 & 时间**
+
+C++ 标准库没有提供所谓的日期类型。C++ 继承了 C 语言用于日期和时间操作的结构和函数。为了使用日期和时间相关的函数和结构，需要在 C++ 程序中引用 `<ctime>` 头文件。
+
+有四个与时间相关的类型：`clock_t`、`time_t`、`size_t` 和 `tm`。类型 `clock_t`、`size_t` 和 `time_t` 能够把系统时间和日期表示为某种整数。
+
+结构类型 tm 把日期和时间以 C 结构的形式保存，tm 结构的定义如下：
+
+```c++
+struct tm {
+  int tm_sec;   // 秒，正常范围从 0 到 59，但允许至 61
+  int tm_min;   // 分，范围从 0 到 59
+  int tm_hour;  // 小时，范围从 0 到 23
+  int tm_mday;  // 一月中的第几天，范围从 1 到 31
+  int tm_mon;   // 月，范围从 0 到 11
+  int tm_year;  // 自 1900 年起的年数
+  int tm_wday;  // 一周中的第几天，范围从 0 到 6，从星期日算起
+  int tm_yday;  // 一年中的第几天，范围从 0 到 365，从 1 月 1 日算起
+  int tm_isdst; // 夏令时
+}
+```
+
+序号|函数 & 描述
+-|-
+1	|time_t time(time_t *time);
+该函数返回系统的当前日历时间，自 1970 年 1 月 1 日以来经过的秒数。如果系统没有时间，则返回 .1。
+2	|char *ctime(const time_t *time);
+该返回一个表示当地时间的字符串指针，字符串形式 day month year hours:minutes:seconds year\n\0。
+3	|struct tm *localtime(const time_t *time);
+该函数返回一个指向表示本地时间的 tm 结构的指针。
+4	|clock_t clock(void);
+该函数返回程序执行起（一般为程序的开头），处理器时钟所使用的时间。如果时间不可用，则返回 .1。
+5	|char * asctime ( const struct tm * time );
+该函数返回一个指向字符串的指针，字符串包含了 time 所指向结构中存储的信息，返回形式为：day month date hours:minutes:seconds year\n\0。
+6	|struct tm *gmtime(const time_t *time);
+该函数返回一个指向 time 的指针，time 为 tm 结构，用协调世界时（UTC）也被称为格林尼治标准时间（GMT）表示。
+7	|time_t mktime(struct tm *time);
+该函数返回日历时间，相当于 time 所指向结构中存储的时间。
+8	|double difftime ( time_t time2, time_t time1 );
+该函数返回 time1 和 time2 之间相差的秒数。
+9	|size_t strftime();
+该函数可用于格式化日期和时间为指定的格式。
+
+**当前日期和时间**
+
+```c++
+#include <iostream>
+#include <ctime>
+ 
+using namespace std;
+ 
+int main( )
+{
+   // 基于当前系统的当前日期/时间
+   time_t now = time(0);
+   
+   // 把 now 转换为字符串形式
+   char* dt = ctime(&now);
+ 
+   cout << "本地日期和时间：" << dt << endl;
+ 
+   // 把 now 转换为 tm 结构
+   tm *gmtm = gmtime(&now);
+   dt = asctime(gmtm);
+   cout << "UTC 日期和时间："<< dt << endl;
+}
+```
+
+**使用结构 tm 格式化时间**
+
+`tm` 结构在 C/C++ 中处理日期和时间相关的操作时，显得尤为重要。tm 结构以 C 结构的形式保存日期和时间。大多数与时间相关的函数都使用了 tm 结构。下面的实例使用了 tm 结构和各种与日期和时间相关的函数。
+
+在练习使用结构之前，需要对 C 结构有基本的了解，并懂得如何使用箭头 -> 运算符来访问结构成员。
+
+```c++
+#include <iostream>
+#include <ctime>
+ 
+using namespace std;
+ 
+int main( )
+{
+   // 基于当前系统的当前日期/时间
+   time_t now = time(0);
+ 
+   cout << "1970 到目前经过秒数:" << now << endl;
+ 
+   tm *ltm = localtime(&now);
+ 
+   // 输出 tm 结构的各个组成部分
+   cout << "年: "<< 1900 + ltm->tm_year << endl;
+   cout << "月: "<< 1 + ltm->tm_mon<< endl;
+   cout << "日: "<<  ltm->tm_mday << endl;
+   cout << "时间: "<< ltm->tm_hour << ":";
+   cout << ltm->tm_min << ":";
+   cout << ltm->tm_sec << endl;
+}
+```
+
+**C++ 基本的输入输出**
+
+C++ 标准库提供了一组丰富的输入/输出功能，我们将在后续的章节进行介绍。本章将讨论 C++ 编程中最基本和最常见的 I/O 操作。
+
+C++ 的 I/O 发生在流中，流是字节序列。如果字节流是从设备（如键盘、磁盘驱动器、网络连接等）流向内存，这叫做输入操作。如果字节流是从内存流向设备（如显示屏、打印机、磁盘驱动器、网络连接等），这叫做输出操作。
+
+**I/O库头文件**
+
+头文件|函数和描述
+-|-
+`\<iostream\>`	|该文件定义了 cin、cout、cerr 和 clog 对象，分别对应于标准输入流、标准输出流、非缓冲标准错误流和缓冲标准错误流。
+`\<iomanip\>`	|该文件通过所谓的参数化的流操纵器（比如 setw 和 setprecision），来声明对执行标准化 I/O 有用的服务。
+`\<fstream\>`	|该文件为用户控制的文件处理声明服务。我们将在文件和流的相关章节讨论它的细节。
+
+**标准输出流（cout）**
+
+预定义的对象 `cout` 是 `iostream` 类的一个实例。`cout` 对象"连接"到标准输出设备，通常是显示屏。`cout` 是与流插入运算符 << 结合使用的，如下所示：
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main( )
+{
+   char str[] = "Hello C++";
+ 
+   cout << "Value of str is : " << str << endl;
+}
+```
+
+**标准输入流（cin）**
+
+预定义的对象 `cin` 是 `iostream` 类的一个实例。`cin` 对象附属到标准输入设备，通常是键盘。`cin` 是与流提取运算符 >> 结合使用的，如下所示：
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main( )
+{
+   char name[50];
+ 
+   cout << "请输入您的名称： ";
+   cin >> name;
+   cout << "您的名称是： " << name << endl;
+ 
+}
+```
+
+**标准错误流（cerr）**
+
+预定义的对象 `cerr` 是 `iostream` 类的一个实例。`cerr` 对象附属到标准错误设备，通常也是显示屏，但是 `cerr 对象是非缓冲的，且每个流插入到 `cerr` 都会立即输出。
+
+`cerr` 也是与流插入运算符 << 结合使用的，如下所示：
+
+**标准日志流（clog）**
+
+定义的对象 clog 是 iostream 类的一个实例。clog 对象附属到标准错误设备，通常也是显示屏，但是 clog 对象是缓冲的。这意味着每个流插入到 clog 都会先存储在缓冲在，直到缓冲填满或者缓冲区刷新时才会输出。
+
+clog 也是与流插入运算符 << 结合使用的，如下所示：
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+int main( )
+{
+   char str[] = "Unable to read....";
+ 
+   clog << "Error message : " << str << endl;
+}
+```
+
+通过这些小实例，我们无法区分 cout、cerr 和 clog 的差异，但在编写和执行大型程序时，它们之间的差异就变得非常明显。所以良好的编程实践告诉我们，使用 cerr 流来显示错误消息，而其他的日志消息则使用 clog 流来输出。
+
+**C++数据结构**
+
+
+
 ## C++知识点
 
 * **智能指针**

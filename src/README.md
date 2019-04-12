@@ -2436,6 +2436,390 @@ int main( )
 
 **C++数据结构**
 
+C/C++ 数组允许定义可存储相同类型数据项的变量，但是结构是 C++ 中另一种用户自定义的可用的数据类型，它允许您存储不同类型的数据项。
+
+结构用于表示一条记录，假设您想要跟踪图书馆中书本的动态，您可能需要跟踪每本书的下列属性：
+
+* Title:标题
+* Author:作者
+* Subject:类目
+* Book ID:书的ID
+
+**定义结构**
+
+为了定义结构，必须使用 `struct` 语句。`struct` 语句定义了一个包含多个成员的新的数据类型，`struct` 语句的格式如下：
+
+```c++
+struct type_name {
+member_type1 member_name1;
+member_type2 member_name2;
+member_type3 member_name3;
+.
+.
+} object_names;
+```
+
+`type_name` 是结构体类型的名称，`member_type1` `member_name1` 是标准的变量定义，比如 `int i`; 或者 `float f`; 或者其他有效的变量定义。在结构定义的末尾，最后一个分号之前，您可以指定一个或多个结构变量，这是可选的。下面是声明一个结构体类型 `Books`，变量为 `book`：
+
+```c++
+struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+} book;
+```
+
+**访问结构成员**
+
+为了访问结构的成员，我们使用成员访问运算符 `（.）`。成员访问运算符是结构变量名称和我们要访问的结构成员之间的一个句号。
+
+下面的实例演示了结构的用法：
+
+```c++
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+ 
+// 声明一个结构体类型 Books 
+struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+};
+ 
+int main( )
+{
+   Books Book1;        // 定义结构体类型 Books 的变量 Book1
+   Books Book2;        // 定义结构体类型 Books 的变量 Book2
+ 
+   // Book1 详述
+   strcpy( Book1.title, "C++ 教程");
+   strcpy( Book1.author, "Runoob"); 
+   strcpy( Book1.subject, "编程语言");
+   Book1.book_id = 12345;
+ 
+   // Book2 详述
+   strcpy( Book2.title, "CSS 教程");
+   strcpy( Book2.author, "Runoob");
+   strcpy( Book2.subject, "前端技术");
+   Book2.book_id = 12346;
+ 
+   // 输出 Book1 信息
+   cout << "第一本书标题 : " << Book1.title <<endl;
+   cout << "第一本书作者 : " << Book1.author <<endl;
+   cout << "第一本书类目 : " << Book1.subject <<endl;
+   cout << "第一本书 ID : " << Book1.book_id <<endl;
+ 
+   // 输出 Book2 信息
+   cout << "第二本书标题 : " << Book2.title <<endl;
+   cout << "第二本书作者 : " << Book2.author <<endl;
+   cout << "第二本书类目 : " << Book2.subject <<endl;
+   cout << "第二本书 ID : " << Book2.book_id <<endl;
+ 
+   return 0;
+}
+```
+
+**结构作为函数参数**
+
+您可以把结构作为函数参数，传参方式与其他类型的变量或指针类似。您可以使用上面实例中的方式来访问结构变量：
+```c++
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+void printBook( struct Books book );
+ 
+// 声明一个结构体类型 Books 
+struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+};
+ 
+int main( )
+{
+   Books Book1;        // 定义结构体类型 Books 的变量 Book1
+   Books Book2;        // 定义结构体类型 Books 的变量 Book2
+ 
+    // Book1 详述
+   strcpy( Book1.title, "C++ 教程");
+   strcpy( Book1.author, "Runoob"); 
+   strcpy( Book1.subject, "编程语言");
+   Book1.book_id = 12345;
+ 
+   // Book2 详述
+   strcpy( Book2.title, "CSS 教程");
+   strcpy( Book2.author, "Runoob");
+   strcpy( Book2.subject, "前端技术");
+   Book2.book_id = 12346;
+ 
+   // 输出 Book1 信息
+   printBook( Book1 );
+ 
+   // 输出 Book2 信息
+   printBook( Book2 );
+ 
+   return 0;
+}
+void printBook( struct Books book )
+{
+   cout << "书标题 : " << book.title <<endl;
+   cout << "书作者 : " << book.author <<endl;
+   cout << "书类目 : " << book.subject <<endl;
+   cout << "书 ID : " << book.book_id <<endl;
+}
+```
+
+**指向结构的指针**
+
+您可以定义指向结构的指针，方式与定义指向其他类型变量的指针相似，如下所示：
+
+```c++
+struct Books *struct_pointer;
+```
+
+现在，您可以在上述定义的指针变量中存储结构变量的地址。为了查找结构变量的地址，请把 &运算符放在结构名称的前面，如下所示：
+
+为了使用指向该结构的指针访问结构的成员，您必须使用 -> 运算符，如下所示：
+
+```c++
+struct_pointer->title;
+```
+
+```c++
+#include <iostream>
+#include <cstring>
+ 
+using namespace std;
+void printBook( struct Books *book );
+ 
+struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+};
+ 
+int main( )
+{
+   Books Book1;        // 定义结构体类型 Books 的变量 Book1
+   Books Book2;        // 定义结构体类型 Books 的变量 Book2
+ 
+    // Book1 详述
+   strcpy( Book1.title, "C++ 教程");
+   strcpy( Book1.author, "Runoob"); 
+   strcpy( Book1.subject, "编程语言");
+   Book1.book_id = 12345;
+ 
+   // Book2 详述
+   strcpy( Book2.title, "CSS 教程");
+   strcpy( Book2.author, "Runoob");
+   strcpy( Book2.subject, "前端技术");
+   Book2.book_id = 12346;
+ 
+   // 通过传 Book1 的地址来输出 Book1 信息
+   printBook( &Book1 );
+ 
+   // 通过传 Book2 的地址来输出 Book2 信息
+   printBook( &Book2 );
+ 
+   return 0;
+}
+// 该函数以结构指针作为参数
+void printBook( struct Books *book )
+{
+   cout << "书标题  : " << book->title <<endl;
+   cout << "书作者 : " << book->author <<endl;
+   cout << "书类目 : " << book->subject <<endl;
+   cout << "书 ID : " << book->book_id <<endl;
+}
+```
+
+**typedef关键字**
+
+```c++
+typedef struct Books
+{
+   char  title[50];
+   char  author[50];
+   char  subject[100];
+   int   book_id;
+}Books;
+```
+
+现在，您可以直接使用 Books 来定义 Books 类型的变量，而不需要使用 struct 关键字。下面是实例：
+
+```c++
+Books Book1, Book2;
+```
+
+可以使用`typedef`关键字来定义非结构类型，如下所示
+```c++
+typedef long int *pint32;
+ 
+pint32 x, y, z;
+```
+
+**C++类&对象**
+
+C++ 在 C 语言的基础上增加了面向对象编程，C++ 支持面向对象程序设计。类是 C++ 的核心特性，通常被称为用户定义的类型。
+
+类用于指定对象的形式，它包含了数据表示法和用于处理数据的方法。类中的数据和方法称为类的成员。函数在一个类中被称为类的成员。
+
+--------------
+
+**C++ 类定义**
+
+定义一个类，本质上是定义一个数据类型的蓝图。这实际上并没有定义任何数据，但它定义了类的名称意味着什么，也就是说，它定义了类的对象包括了什么，以及可以在这个对象上执行哪些操作。
+
+类定义是以关键字 `class` 开头，后跟类的名称。类的主体是包含在一对花括号中。类定义后必须跟着一个分号或一个声明列表。例如，我们使用关键字 `class` 定义 `Box` 数据类型，如下所示：
+
+```c++
+class Box
+{
+   public:
+      double length;   // 盒子的长度
+      double breadth;  // 盒子的宽度
+      double height;   // 盒子的高度
+};
+```
+
+关键字 `public` 确定了类成员的访问属性。在类对象作用域内，公共成员在类的外部是可访问的。您也可以指定类的成员为 `private` 或 `protected`，这个我们稍后会进行讲解。
+
+**定义 C++ 对象**
+
+类提供了对象的蓝图，所以基本上，对象是根据类来创建的。声明类的对象，就像声明基本类型的变量一样。下面的语句声明了类 Box 的两个对象：
+
+```c++
+Box Box1;          // 声明 Box1，类型为 Box
+Box Box2;          // 声明 Box2，类型为 Box
+```
+
+**访问数据成员**
+
+类的对象的公共数据成员可以使用直接成员访问运算符 (.) 来访问。为了更好地理解这些概念:
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+class Box
+{
+   public:
+      double length;   // 长度
+      double breadth;  // 宽度
+      double height;   // 高度
+};
+ 
+int main( )
+{
+   Box Box1;        // 声明 Box1，类型为 Box
+   Box Box2;        // 声明 Box2，类型为 Box
+   double volume = 0.0;     // 用于存储体积
+ 
+   // box 1 详述
+   Box1.height = 5.0; 
+   Box1.length = 6.0; 
+   Box1.breadth = 7.0;
+ 
+   // box 2 详述
+   Box2.height = 10.0;
+   Box2.length = 12.0;
+   Box2.breadth = 13.0;
+ 
+   // box 1 的体积
+   volume = Box1.height * Box1.length * Box1.breadth;
+   cout << "Box1 的体积：" << volume <<endl;
+ 
+   // box 2 的体积
+   volume = Box2.height * Box2.length * Box2.breadth;
+   cout << "Box2 的体积：" << volume <<endl;
+   return 0;
+}
+```
+
+**类 & 对象详解**
+
+* **类成员函数**-类的成员函数是指那些把定义和原型写在类定义内部的函数，就像类定义中的其他变量一样。类成员函数是类的一个成员，它可以操作类的任意对象，可以访问对象中的所有成员。
+
+```c++
+class Box
+{
+   public:
+      double length;         // 长度
+      double breadth;        // 宽度
+      double height;         // 高度
+      double getVolume(void);// 返回体积
+};
+```
+
+成员函数可以定义在类定义内部，或者单独使用范围解析运算符 :: 来定义。在类定义中定义的成员函数把函数声明为内联的，即便没有使用 inline 标识符。所以您可以按照如下方式定义 Volume() 函数
+
+```c++
+class Box
+{
+   public:
+      double length;      // 长度
+      double breadth;     // 宽度
+      double height;      // 高度
+   
+      double getVolume(void)
+      {
+         return length * breadth * height;
+      }
+};
+```
+
+也可以在类的外部使用范围解析运算符 :: 定义该函数，如下所示：
+
+```c++
+double Box::getVolume(void)
+{
+    return length * breadth * height;
+}
+```
+
+
+* **类访问修饰符**-类成员可以被定义为 public、private 或 protected。默认情况下是定义为 private
+
+
+
+* **构造函数 & 析构函数**-类的构造函数是一种特殊的函数，在创建一个新的对象时调用。类的析构函数也是一种特殊的函数，在删除所创建的对象时调用
+
+
+
+* **C++ 拷贝构造函数**-拷贝构造函数，是一种特殊的构造函数，它在创建对象时，是使用同一类中之前创建的对象来初始化新创建的对象
+
+
+
+* **C++ 友元函数**-友元函数可以访问类的 private 和 protected 成员
+
+
+
+* **C++ 内联函数**-通过内联函数，编译器试图在调用函数的地方扩展函数体中的代码
+
+
+
+* **C++ 中的 this 指针**-每个对象都有一个特殊的指针 this，它指向对象本身
+
+
+
+* **C++ 中指向类的指针**-指向类的指针方式如同指向结构的指针。实际上，类可以看成是一个带有函数的结构
+
+
+
+* **C++ 类的静态成员**-类的数据成员和函数成员都可以被声明为静态的
+
 
 
 ## C++知识点

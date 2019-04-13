@@ -9,8 +9,11 @@
 #include <limits>  
 #include <ctime>
 #include <exception>
+#include <pthread.h>
 
 using namespace std;  
+
+#define concat(a, b) a ## b
 
 struct Books{
    char  title[50];
@@ -318,7 +321,7 @@ void noteDemo(){
     string s1 = "Hello"; 
     string s2 = "World"; 
     cout << "Max(s1, s2): " << Max(s1, s2) << endl;
-
+/*
     try{
         Stack<int> intStack;       // int 类型的栈
         Stack<string> stringStack; // string 类型的栈
@@ -336,6 +339,17 @@ void noteDemo(){
     catch (exception const &ex){
         cerr << "Exception: " << ex.what() << endl;
     }
+    */
+    int xy = 100;
+    cout << concat(x, y) << endl;
+
+    cout << "Value of __LINE__ : " << __LINE__ << endl;
+    cout << "Value of __FILE__ : " << __FILE__ << endl;
+    cout << "Value of __DATE__ : " << __DATE__ << endl;
+    cout << "Value of __TIME__ : " << __TIME__ << endl;
+
+
+
 }
 
 END_DEMO_NAMESPACE

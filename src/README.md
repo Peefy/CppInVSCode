@@ -3763,6 +3763,1813 @@ int main(void)
 
 **C++继承**
 
+面向对象程序设计中最重要的一个概念是继承。继承允许我们依据另一个类来定义一个类，这使得创建和维护一个应用程序变得更容易。这样做，也达到了重用代码功能和提高执行时间的效果。
+
+当创建一个类时，您不需要重新编写新的数据成员和成员函数，只需指定新建的类继承了一个已有的类的成员即可。这个已有的类称为基类，新建的类称为派生类。
+
+继承代表了 is a 关系。例如，哺乳动物是动物，狗是哺乳动物，因此，狗是动物，等等。
+
+**基类 & 派生类**
+
+一个类可以派生自多个类，这意味着，它可以从多个基类继承数据和函数。定义一个派生类，我们使用一个类派生列表来指定基类。类派生列表以一个或多个基类命名，形式如下：
+
+```c++
+class derived-class: access-specifier base-class
+```
+
+其中，访问修饰符 access-specifier 是 `public`、`protected` 或 `private` 其中的一个，base-class 是之前定义过的某个类的名称。如果未使用访问修饰符 access-specifier，则默认为 private。
+
+假设有一个基类 `Shape`，`Rectangle` 是它的派生类，如下所示：
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+// 基类
+class Shape 
+{
+   public:
+      void setWidth(int w)
+      {
+         width = w;
+      }
+      void setHeight(int h)
+      {
+         height = h;
+      }
+   protected:
+      int width;
+      int height;
+};
+ 
+// 派生类
+class Rectangle: public Shape
+{
+   public:
+      int getArea()
+      { 
+         return (width * height); 
+      }
+};
+ 
+int main(void)
+{
+   Rectangle Rect;
+ 
+   Rect.setWidth(5);
+   Rect.setHeight(7);
+ 
+   // 输出对象的面积
+   cout << "Total area: " << Rect.getArea() << endl;
+ 
+   return 0;
+}
+```
+
+**访问控制和继承**
+
+派生类可以访问基类中所有的非私有成员。因此基类成员如果不想被派生类的成员函数访问，则应在基类中声明为 private。
+
+我们可以根据访问权限总结出不同的访问类型，如下所示：
+
+访问	|public	|protected	|private
+-|-|-|-
+同一个类	|yes	|yes	|yes
+派生类	|yes	|yes	|no
+外部的类	|yes	|no	|no
+
+一个派生类继承了所有的基类方法，但下列情况除外：
+* 基类的构造函数、析构函数和拷贝构造函数
+* 基类的重载运算符
+* 基类的友元函数
+
+**继承类型**
+
+当一个类派生自基类，该基类可以被继承为 public、protected 或 private 几种类型。继承类型是通过上面讲解的访问修饰符 access-specifier 来指定的。
+
+我们几乎不使用 protected 或 private 继承，通常使用 public 继承。当使用不同类型的继承时，遵循以下几个规则：
+
+* **公有继承（public）：**-当一个类派生自公有基类时，基类的公有成员也是派生类的公有成员，基类的保护成员也是派生类的保护成员，基类的私有成员不能直接被派生类访问，但是可以通过调用基类的公有和保护成员来访问。
+* **保护继承（protected）：**-当一个类派生自保护基类时，基类的公有和保护成员将成为派生类的保护成员。
+* **私有继承（private）：**-当一个类派生自私有基类时，基类的公有和保护成员将成为派生类的私有成员。
+
+**多继承**
+
+多继承即一个子类可以有多个父类，它继承了多个父类的特性。
+
+C++ 类可以从多个类继承成员，语法如下：
+```c++
+class <派生类名>:<继承方式1><基类名1>,<继承方式2><基类名2>,…
+{
+<派生类类体>
+};
+```
+
+其中，访问修饰符继承方式是 `public`、`protected` 或 `private` 其中的一个，用来修饰每个基类，各个基类之间用逗号分隔，
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+// 基类 Shape
+class Shape 
+{
+   public:
+      void setWidth(int w)
+      {
+         width = w;
+      }
+      void setHeight(int h)
+      {
+         height = h;
+      }
+   protected:
+      int width;
+      int height;
+};
+ 
+// 基类 PaintCost
+class PaintCost 
+{
+   public:
+      int getCost(int area)
+      {
+         return area * 70;
+      }
+};
+ 
+// 派生类
+class Rectangle: public Shape, public PaintCost
+{
+   public:
+      int getArea()
+      { 
+         return (width * height); 
+      }
+};
+ 
+int main(void)
+{
+   Rectangle Rect;
+   int area;
+ 
+   Rect.setWidth(5);
+   Rect.setHeight(7);
+ 
+   area = Rect.getArea();
+   
+   // 输出对象的面积
+   cout << "Total area: " << Rect.getArea() << endl;
+ 
+   // 输出总花费
+   cout << "Total paint cost: $" << Rect.getCost(area) << endl;
+ 
+   return 0;
+}
+```
+
+**C++ 重载运算符和重载函数**
+
+C++ 允许在同一作用域中的某个函数和运算符指定多个定义，分别称为**函数重载**和**运算符重载**。
+
+重载声明是指一个与之前已经在该作用域内声明过的函数或方法具有相同名称的声明，但是它们的参数列表和定义（实现）不相同。
+
+当调用一个重载函数或重载运算符时，编译器通过把您所使用的参数类型与定义中的参数类型进行比较，决定选用最合适的定义。选择最合适的重载函数或重载运算符的过程，称为重载决策。
+
+**C++中的函数重载**
+
+在同一个作用域内，可以声明几个功能类似的同名函数，但是这些同名函数的形式参数（指参数的个数、类型或者顺序）必须不同。不能仅通过返回类型的不同来重载函数。
+
+下面的实例中，同名函数 print() 被用于输出不同的数据类型：
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+class printData
+{
+   public:
+      void print(int i) {
+        cout << "整数为: " << i << endl;
+      }
+ 
+      void print(double  f) {
+        cout << "浮点数为: " << f << endl;
+      }
+ 
+      void print(char c[]) {
+        cout << "字符串为: " << c << endl;
+      }
+};
+ 
+int main(void)
+{
+   printData pd;
+ 
+   // 输出整数
+   pd.print(5);
+   // 输出浮点数
+   pd.print(500.263);
+   // 输出字符串
+   char c[] = "Hello C++";
+   pd.print(c);
+ 
+   return 0;
+}
+```
+
+**C++ 中的运算符重载**
+
+可以重定义或重载大部分 C++ 内置的运算符。这样，您就能使用自定义类型的运算符。
+
+重载的运算符是带有特殊名称的函数，函数名是由关键字 operator 和其后要重载的运算符符号构成的。与其他函数一样，重载运算符有一个返回类型和一个参数列表。
+
+```c++
+Box operator+(const Box&);
+```
+
+声明加法运算符用于把两个 Box 对象相加，返回最终的 Box 对象。大多数的重载运算符可被定义为普通的非成员函数或者被定义为类成员函数。如果我们定义上面的函数为类的非成员函数，那么我们需要为每次操作传递两个参数，如下所示：
+
+```c++
+Box operator+(const Box&, const Box&);
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+class Box
+{
+   public:
+ 
+      double getVolume(void)
+      {
+         return length * breadth * height;
+      }
+      void setLength( double len )
+      {
+          length = len;
+      }
+ 
+      void setBreadth( double bre )
+      {
+          breadth = bre;
+      }
+ 
+      void setHeight( double hei )
+      {
+          height = hei;
+      }
+      // 重载 + 运算符，用于把两个 Box 对象相加
+      Box operator+(const Box& b)
+      {
+         Box box;
+         box.length = this->length + b.length;
+         box.breadth = this->breadth + b.breadth;
+         box.height = this->height + b.height;
+         return box;
+      }
+   private:
+      double length;      // 长度
+      double breadth;     // 宽度
+      double height;      // 高度
+};
+// 程序的主函数
+int main( )
+{
+   Box Box1;                // 声明 Box1，类型为 Box
+   Box Box2;                // 声明 Box2，类型为 Box
+   Box Box3;                // 声明 Box3，类型为 Box
+   double volume = 0.0;     // 把体积存储在该变量中
+ 
+   // Box1 详述
+   Box1.setLength(6.0); 
+   Box1.setBreadth(7.0); 
+   Box1.setHeight(5.0);
+ 
+   // Box2 详述
+   Box2.setLength(12.0); 
+   Box2.setBreadth(13.0); 
+   Box2.setHeight(10.0);
+ 
+   // Box1 的体积
+   volume = Box1.getVolume();
+   cout << "Volume of Box1 : " << volume <<endl;
+ 
+   // Box2 的体积
+   volume = Box2.getVolume();
+   cout << "Volume of Box2 : " << volume <<endl;
+ 
+   // 把两个对象相加，得到 Box3
+   Box3 = Box1 + Box2;
+ 
+   // Box3 的体积
+   volume = Box3.getVolume();
+   cout << "Volume of Box3 : " << volume <<endl;
+ 
+   return 0;
+}
+```
+
+**可重载运算符/不可重载运算符**
+
+运算符|列表
+-|-
+双目算术运算符	|+ (加)，-(减)，*(乘)，/(除)，% (取模)
+关系运算符	|==(等于)，!= (不等于)，< (小于)，> (大于>，<=(小于等于)，>=(大于等于)
+逻辑运算符	|\|\|(逻辑或)，&&(逻辑与)，!(逻辑非)
+单目运算符	|+ (正)，-(负)，*(指针)，&(取地址)
+自增自减运算符	|++(自增)，--(自减)
+位运算符	|\| (按位或)，& (按位与)，~(按位取反)，^(按位异或),，<< (左移)，>>(右移)
+赋值运算符|	=, +=, -=, *=, /= , % = , &=, |=, ^=, <<=, >>=
+空间申请与释放	|new, delete, new[ ] , delete[]
+其他运算符	|()(函数调用)，->(成员访问)，,(逗号)，\[\](下标)
+
+下面是不可重载的运算符列表：
+* `.`:成员访问运算符
+* `.*,->*`:成员指针访问运算符
+* `::`:域运算符
+* `sizeof`:长度运算符
+* `?:`:条件运算符
+* `#`:预处理符号
+
+*运算符重载注意*
+
+* 运算重载符不可以改变语法结构
+* 运算重载符不可以改变操作数的个数
+* 运算重载符不可以改变优先级
+* 运算重载符不可以改变结合性
+
+类重载、覆盖、重定义之间的区别：
+
+重载指的是函数具有的不同的参数列表，而函数名相同的函数。重载要求参数列表必须不同，比如参数的类型不同、参数的个数不同、参数的顺序不同。如果仅仅是函数的返回值不同是没办法重载的，因为重载要求参数列表必须不同。（发生在同一个类里）
+
+ 覆盖是存在类中，子类重写从基类继承过来的函数。被重写的函数不能是static的。必须是virtual的。但是函数名、返回值、参数列表都必须和基类相同（发生在基类和子类）
+
+ 重定义也叫做隐藏，子类重新定义父类中有相同名称的非虚函数 ( 参数列表可以不同 ) 。（发生在基类和子类）
+
+**C++多态**
+
+多态按字面的意思就是多种形态。当类之间存在层次结构，并且类之间是通过继承关联时，就会用到多态。
+
+C++ 多态意味着调用成员函数时，会根据调用函数的对象的类型来执行不同的函数。
+
+下面的实例中，基类 Shape 被派生为两个类，如下所示：
+
+```c++
+#include <iostream> 
+using namespace std;
+ 
+class Shape {
+   protected:
+      int width, height;
+   public:
+      Shape( int a=0, int b=0)
+      {
+         width = a;
+         height = b;
+      }
+      virtual int area()
+      {
+         cout << "Parent class area :" <<endl;
+         return 0;
+      }
+};
+class Rectangle: public Shape{
+   public:
+      Rectangle( int a=0, int b=0):Shape(a, b) { }
+      int area ()
+      { 
+         cout << "Rectangle class area :" <<endl;
+         return (width * height); 
+      }
+};
+class Triangle: public Shape{
+   public:
+      Triangle( int a=0, int b=0):Shape(a, b) { }
+      int area ()
+      { 
+         cout << "Triangle class area :" <<endl;
+         return (width * height / 2); 
+      }
+};
+// 程序的主函数
+int main( )
+{
+   Shape *shape;
+   Rectangle rec(10,7);
+   Triangle  tri(10,5);
+ 
+   // 存储矩形的地址
+   shape = &rec;
+   // 调用矩形的求面积函数 area
+   shape->area();
+ 
+   // 存储三角形的地址
+   shape = &tri;
+   // 调用三角形的求面积函数 area
+   shape->area();
+   
+   return 0;
+}
+```
+
+**虚函数**
+
+`虚函数` 是在基类中使用关键字 `virtual` 声明的函数。在派生类中重新定义基类中定义的虚函数时，会告诉编译器不要静态链接到该函数。
+
+我们想要的是在程序中任意点可以根据所调用的对象类型来选择调用的函数，这种操作被称为`动态链接`，或`后期绑定`。
+
+**纯虚函数**
+
+您可能想要在基类中定义虚函数，以便在派生类中重新定义该函数更好地适用于对象，但是您在基类中又不能对虚函数给出有意义的实现，这个时候就会用到纯虚函数。
+
+我们可以把基类中的虚函数 area() 改写如下：
+```c++
+class Shape {
+   protected:
+      int width, height;
+   public:
+      Shape( int a=0, int b=0)
+      {
+         width = a;
+         height = b;
+      }
+      // pure virtual function
+      virtual int area() = 0;
+};
+```
+
+**C++数据抽象**
+
+数据抽象是指，只向外界提供关键信息，并隐藏其后台的实现细节，即只表现必要的信息而不呈现细节。
+
+数据抽象是一种依赖于接口和实现分离的编程（设计）技术。
+
+让我们举一个现实生活中的真实例子，比如一台电视机，您可以打开和关闭、切换频道、调整音量、添加外部组件（如喇叭、录像机、DVD 播放器），但是您不知道它的内部实现细节，也就是说，您并不知道它是如何通过缆线接收信号，如何转换信号，并最终显示在屏幕上。
+
+因此，我们可以说电视把它的内部实现和外部接口分离开了，您无需知道它的内部实现原理，直接通过它的外部接口（比如电源按钮、遥控器、声量控制器）就可以操控电视。
+
+现在，让我们言归正传，就 C++ 编程而言，C++ 类为数据抽象提供了可能。它们向外界提供了大量用于操作对象数据的公共方法，也就是说，外界实际上并不清楚类的内部实现。
+
+例如，您的程序可以调用 `sort()` 函数，而不需要知道函数中排序数据所用到的算法。实际上，函数排序的底层实现会因库的版本不同而有所差异，只要接口不变，函数调用就可以照常工作。
+
+在 C++ 中，我们使用类来定义我们自己的抽象数据类型（ADT）。可以使用类 `iostrea`m 的 `cout` 对象来输出数据到标准输出，
+
+**访问标签强制抽象**
+
+在 C++ 中，我们使用访问标签来定义类的抽象接口。一个类可以包含零个或多个访问标签：
+* 使用公共标签定义的成员都可以访问该程序的所有部分。一个类型的数据抽象视图是由它的公共成员来定义的
+* 使用私有标签定义的成员无法访问到使用类的代码。私有部分对使用类型的代码隐藏了实现细节
+
+访问标签出现的频率没有限制。每个访问标签指定了紧随其后的成员定义的访问级别。指定的访问级别会一直有效，直到遇到下一个访问标签或者遇到类主体的关闭右括号为止
+
+------------
+
+**数据抽象的好处**
+
+数据抽象有两个重要的优势：
+* 类的内部受到保护，不会因无意的用户级错误导致对象状态受损
+* 类实现可能随着时间的推移而发生变化，以便应对不断变化的需求，或者应对那些要求不改变用户级代码的错误报告
+
+如果只在类的私有部分定义数据成员，编写该类的作者就可以随意更改数据。如果实现发生改变，则只需要检查类的代码，看看这个改变会导致哪些影响。如果数据是公有的，则任何直接访问旧表示形式的数据成员的函数都可能受到影响
+
+**数据抽象的实例**
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+class Adder{
+   public:
+      // 构造函数
+      Adder(int i = 0)
+      {
+        total = i;
+      }
+      // 对外的接口
+      void addNum(int number)
+      {
+          total += number;
+      }
+      // 对外的接口
+      int getTotal()
+      {
+          return total;
+      };
+   private:
+      // 对外隐藏的数据
+      int total;
+};
+int main( )
+{
+   Adder a;
+   
+   a.addNum(10);
+   a.addNum(20);
+   a.addNum(30);
+ 
+   cout << "Total " << a.getTotal() << endl;
+   return 0;
+}
+```
+
+**C++数据封装**
+
+所有的 C++ 程序都有以下两个基本要素：
+
+* **程序语句（代码）**-这是程序中执行动作的部分，它们被称为函数
+* **程序数据**-数据是程序的信息，会受到程序函数的影响
+
+封装是面向对象编程中的把数据和操作数据的函数绑定在一起的一个概念，这样能避免受到外界的干扰和误用，从而确保了安全。数据封装引申出了另一个重要的 OOP 概念，即数据隐藏。
+
+数据封装是一种把数据和操作数据的函数捆绑在一起的机制，数据抽象是一种仅向用户暴露接口而把具体的实现细节隐藏起来的机制。
+
+C++ 通过创建类来支持封装和数据隐藏（public、protected、private）。我们已经知道，类包含私有成员（private）、保护成员（protected）和公有成员（public）成员。默认情况下，在类中定义的所有项目都是私有的。例如：
+```c++
+class Box
+{
+   public:
+      double getVolume(void)
+      {
+         return length * breadth * height;
+      }
+   private:
+      double length;      // 长度
+      double breadth;     // 宽度
+      double height;      // 高度
+};
+```
+
+**数据封装的实例**
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+class Adder{
+   public:
+      // 构造函数
+      Adder(int i = 0)
+      {
+        total = i;
+      }
+      // 对外的接口
+      void addNum(int number)
+      {
+          total += number;
+      }
+      // 对外的接口
+      int getTotal()
+      {
+          return total;
+      };
+   private:
+      // 对外隐藏的数据
+      int total;
+};
+int main( )
+{
+   Adder a;
+   
+   a.addNum(10);
+   a.addNum(20);
+   a.addNum(30);
+ 
+   cout << "Total " << a.getTotal() <<endl;
+   return 0;
+}
+```
+
+C++中, 虚函数可以为private, 并且可以被子类覆盖（因为虚函数表的传递），但子类不能调用父类的private虚函数。虚函数的重载性和它声明的权限无关。
+
+一个成员函数被定义为private属性，标志着其只能被当前类的其他成员函数(或友元函数)所访问。而virtual修饰符则强调父类的成员函数可以在子类中被重写，因为重写之时并没有与父类发生任何的调用关系，故而重写是被允许的。
+
+编译器不检查虚函数的各类属性。被virtual修饰的成员函数，不论他们是private、protect或是public的，都会被统一的放置到虚函数表中。对父类进行派生时，子类会继承到拥有相同偏移地址的虚函数表（相同偏移地址指，各虚函数相对于VPTR指针的偏移），则子类就会被允许对这些虚函数进行重载。且重载时可以给重载函数定义新的属性，例如public，其只标志着该重载函数在该子类中的访问属性为public，和父类的private属性没有任何关系！
+
+纯虚函数可以设计成私有的，不过这样不允许在本类之外的非友元函数中直接调用它，子类中只有覆盖这种纯虚函数的义务，却没有调用它的权利。
+
+**C++接口(抽象类)**
+
+接口描述了类的行为和功能，而不需要完成类的特定实现。
+
+C++ 接口是使用抽象类来实现的，抽象类与数据抽象互不混淆，数据抽象是一个把实现细节与相关的数据分离开的概念。
+
+如果类中至少有一个函数被声明为纯虚函数，则这个类就是抽象类。纯虚函数是通过在声明中使用 "= 0" 来指定的，如下所示：
+
+```c++
+class Box
+{
+   public:
+      // 纯虚函数
+      virtual double getVolume() = 0;
+   private:
+      double length;      // 长度
+      double breadth;     // 宽度
+      double height;      // 高度
+};
+```
+
+设计`抽象类`（通常称为 ABC）的目的，是为了给其他类提供一个可以继承的适当的基类。抽象类不能被用于实例化对象，它只能作为接口使用。如果试图实例化一个抽象类的对象，会导致编译错误。
+
+因此，如果一个 ABC 的子类需要被实例化，则必须实现每个虚函数，这也意味着 C++ 支持使用 ABC 声明接口。如果没有在派生类中重写纯虚函数，就尝试实例化该类的对象，会导致编译错误。
+
+可用于实例化对象的类被称为`具体类`
+
+**抽象类的实例**
+
+```c++
+#include <iostream>
+ 
+using namespace std;
+ 
+// 基类
+class Shape 
+{
+public:
+   // 提供接口框架的纯虚函数
+   virtual int getArea() = 0;
+   void setWidth(int w)
+   {
+      width = w;
+   }
+   void setHeight(int h)
+   {
+      height = h;
+   }
+protected:
+   int width;
+   int height;
+};
+ 
+// 派生类
+class Rectangle: public Shape
+{
+public:
+   int getArea()
+   { 
+      return (width * height); 
+   }
+};
+class Triangle: public Shape
+{
+public:
+   int getArea()
+   { 
+      return (width * height)/2; 
+   }
+};
+ 
+int main(void)
+{
+   Rectangle Rect;
+   Triangle  Tri;
+ 
+   Rect.setWidth(5);
+   Rect.setHeight(7);
+   // 输出对象的面积
+   cout << "Total Rectangle area: " << Rect.getArea() << endl;
+ 
+   Tri.setWidth(5);
+   Tri.setHeight(7);
+   // 输出对象的面积
+   cout << "Total Triangle area: " << Tri.getArea() << endl; 
+ 
+   return 0;
+}
+```
+
+**设计策略**
+
+面向对象的系统可能会使用一个抽象基类为所有的外部应用程序提供一个适当的、通用的、标准化的接口。然后，派生类通过继承抽象基类，就把所有类似的操作都继承下来。
+
+外部应用程序提供的功能（即公有函数）在抽象基类中是以纯虚函数的形式存在的。这些纯虚函数在相应的派生类中被实现。
+
+这个架构也使得新的应用程序可以很容易地被添加到系统中，即使是在系统被定义之后依然可以如此。
+
+**C++ override**
+
+C++11 中的 override 关键字，可以显式的在派生类中声明，哪些成员函数需要被重写，如果没被重写，则编译器会报错。
+
+```c++
+class Derived: public Base {
+public:
+    virtual void mf1() override;
+    virtual void mf2(unsigned int x) override;
+    virtual void mf3() && override;
+    virtual void mf4() const override;
+};
+```
+
+**C++文件和流**
+
+到目前为止，我们已经使用了 `iostream` 标准库，它提供了 `cin` 和 `cout` 方法分别用于从标准输入读取流和向标准输出写入流。
+
+本教程介绍如何从文件读取流和向文件写入流。这就需要用到 C++ 中另一个标准库 `fstream`，它定义了三个新的数据类型：
+
+数据类型	|描述
+-|-
+ofstream	|该数据类型表示输出文件流，用于创建文件并向文件写入信息。
+ifstream	|该数据类型表示输入文件流，用于从文件读取信息。
+fstream	|该数据类型通常表示文件流，且同时具有 ofstream 和 ifstream 两种功能，这意味着它可以创建文件，向文件写入信息，从文件读取信息。
+
+**打开文件**
+
+在从文件读取信息或者向文件写入信息之前，必须先打开文件。ofstream 和 fstream 对象都可以用来打开文件进行写操作，如果只需要打开文件进行读操作，则使用 ifstream 对象。
+
+下面是 open() 函数的标准语法，open() 函数是 fstream、ifstream 和 ofstream 对象的一个成员。
+
+```c++
+void open(const char *filename, ios::openmode mode);
+```
+
+在这里，open() 成员函数的第一参数指定要打开的文件的名称和位置，第二个参数定义文件被打开的模式。
+
+模式标志	|描述
+-|-
+ios::app	|追加模式。所有写入都追加到文件末尾。
+ios::ate	|文件打开后定位到文件末尾。
+ios::in	|打开文件用于读取。
+ios::out	|打开文件用于写入。
+ios::trunc	|如果该文件已经存在，其内容将在打开文件之前被截断，即把文件长度设为 0。
+
+**关闭文件**
+
+当 C++ 程序终止时，它会自动关闭刷新所有流，释放所有分配的内存，并关闭所有打开的文件。但程序员应该养成一个好习惯，在程序终止前关闭所有打开的文件。
+
+下面是 close() 函数的标准语法，close() 函数是 fstream、ifstream 和 ofstream 对象的一个成员
+
+```c++
+void close();
+```
+
+**写入文件**
+
+在 C++ 编程中，我们使用流插入运算符（ << ）向文件写入信息，就像使用该运算符输出信息到屏幕上一样。唯一不同的是，在这里您使用的是 ofstream 或 fstream 对象，而不是 cout 对象。
+
+**读取文件**
+
+在 C++ 编程中，我们使用流提取运算符（ >> ）从文件读取信息，就像使用该运算符从键盘输入信息一样。唯一不同的是，在这里您使用的是 `ifstream` 或 `fstream` 对象，而不是 `cin` 对象
+
+**读取 & 写入实例**
+
+```c++
+#include <fstream>
+#include <iostream>
+using namespace std;
+ 
+int main ()
+{
+    
+   char data[100];
+ 
+   // 以写模式打开文件
+   ofstream outfile;
+   outfile.open("afile.dat");
+ 
+   cout << "Writing to the file" << endl;
+   cout << "Enter your name: "; 
+   cin.getline(data, 100);
+ 
+   // 向文件写入用户输入的数据
+   outfile << data << endl;
+ 
+   cout << "Enter your age: "; 
+   cin >> data;
+   cin.ignore();
+   
+   // 再次向文件写入用户输入的数据
+   outfile << data << endl;
+ 
+   // 关闭打开的文件
+   outfile.close();
+ 
+   // 以读模式打开文件
+   ifstream infile; 
+   infile.open("afile.dat"); 
+ 
+   cout << "Reading from the file" << endl; 
+   infile >> data; 
+ 
+   // 在屏幕上写入数据
+   cout << data << endl;
+   
+   // 再次从文件读取数据，并显示它
+   infile >> data; 
+   cout << data << endl; 
+ 
+   // 关闭打开的文件
+   infile.close();
+ 
+   return 0;
+}
+```
+
+**文件位置指针**
+
+`istream` 和 `ostream` 都提供了用于重新定位文件位置指针的成员函数。这些成员函数包括关于 `istream` 的 `seekg`（"seek get"）和关于 ostream 的 seekp（"seek put"）。
+
+seekg 和 seekp 的参数通常是一个长整型。第二个参数可以用于指定查找方向。查找方向可以是 `ios::beg`（默认的，从流的开头开始定位），也可以是 `ios::cur`（从流的当前位置开始定位），也可以是 `ios::end`（从流的末尾开始定位）。
+
+文件位置指针是一个整数值，指定了从文件的起始位置到指针所在位置的字节数。下面是关于定位 "get" 文件位置指针的实例：
+
+```c++
+// 定位到 fileObject 的第 n 个字节（假设是 ios::beg）
+fileObject.seekg( n );
+ 
+// 把文件的读指针从 fileObject 当前位置向后移 n 个字节
+fileObject.seekg( n, ios::cur );
+ 
+// 把文件的读指针从 fileObject 末尾往回移 n 个字节
+fileObject.seekg( n, ios::end );
+ 
+// 定位到 fileObject 的末尾
+fileObject.seekg( 0, ios::end );
+```
+
+**C++ 异常处理**
+
+异常是程序在执行期间产生的问题。C++ 异常是指在程序运行时发生的特殊情况，比如尝试除以零的操作。
+
+异常提供了一种转移程序控制权的方式。C++ 异常处理涉及到三个关键字：`try`、`catch`、`throw`。
+
+* `throw`: 当问题出现时，程序会抛出一个异常。这是通过使用 `throw` 关键字来完成的
+* `catch`: 在您想要处理问题的地方，通过异常处理程序捕获异常。`catch` 关键字用于捕获异常
+* `try`: `try` 块中的代码标识将被激活的特定异常。它后面通常跟着一个或多个 catch 块
+
+```c++
+try
+{
+   // 保护代码
+}catch( ExceptionName e1 )
+{
+   // catch 块
+}catch( ExceptionName e2 )
+{
+   // catch 块
+}catch( ExceptionName eN )
+{
+   // catch 块
+}
+```
+
+**抛出异常**
+
+可以使用 throw 语句在代码块中的任何地方抛出异常。throw 语句的操作数可以是任意的表达式，表达式的结果的类型决定了抛出的异常的类型。
+
+以下是尝试除以零时抛出异常的实例：
+
+```c++
+double division(int a, int b)
+{
+   if( b == 0 )
+   {
+      throw "Division by zero condition!";
+   }
+   return (a/b);
+}
+```
+
+**捕获异常**
+
+`catch` 块跟在 `try` 块后面，用于捕获异常。您可以指定想要捕捉的异常类型，这是由 `catch` 关键字后的括号内的异常声明决定的
+
+```c++
+try
+{
+   // 保护代码
+}catch( ExceptionName e )
+{
+  // 处理 ExceptionName 异常的代码
+}
+```
+
+```c++
+try
+{
+   // 保护代码
+}catch(...)
+{
+  // 能处理任何异常的代码
+}
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+double division(int a, int b)
+{
+   if( b == 0 )
+   {
+      throw "Division by zero condition!";
+   }
+   return (a/b);
+}
+ 
+int main ()
+{
+   int x = 50;
+   int y = 0;
+   double z = 0;
+ 
+   try {
+     z = division(x, y);
+     cout << z << endl;
+   }catch (const char* msg) {
+     cerr << msg << endl;
+   }
+ 
+   return 0;
+}
+```
+
+**C++标准的异常**
+
+C++ 提供了一系列标准的异常，定义在 <exception> 中，我们可以在程序中使用这些标准的异常。它们是以父子类层次结构组织起来的
+
+异常	|描述
+-|-
+std::exception	|该异常是所有标准 C++ 异常的父类。
+std::bad_alloc	|该异常可以通过 new 抛出。
+std::bad_cast	|该异常可以通过 dynamic_cast 抛出。
+std::bad_exception	|这在处理 C++ 程序中无法预期的异常时非常有用。
+std::bad_typeid	|该异常可以通过 typeid 抛出。
+std::logic_error	|理论上可以通过读取代码来检测到的异常。
+std::domain_error	|当使用了一个无效的数学域时，会抛出该异常。
+std::invalid_argument	|当使用了无效的参数时，会抛出该异常。
+std::length_error	|当创建了太长的 std::string 时，会抛出该异常。
+std::out_of_range	|该异常可以通过方法抛出，例如 std::vector 和 std::bitset<>::operator\[\]()。
+std::runtime_error	|理论上不可以通过读取代码来检测到的异常。
+std::overflow_error	|当发生数学上溢时，会抛出该异常。
+std::range_error	|当尝试存储超出范围的值时，会抛出该异常。
+std::underflow_error	|当发生数学下溢时，会抛出该异常。
+
+**定义新的异常**
+
+```c++
+#include <iostream>
+#include <exception>
+using namespace std;
+ 
+struct MyException : public exception
+{
+  const char * what () const throw ()
+  {
+    return "C++ Exception";
+  }
+};
+ 
+int main()
+{
+  try
+  {
+    throw MyException();
+  }
+  catch(MyException& e)
+  {
+    std::cout << "MyException caught" << std::endl;
+    std::cout << e.what() << std::endl;
+  }
+  catch(std::exception& e)
+  {
+    //其他的错误
+  }
+}
+```
+
+**C++动态内存**
+
+了解动态内存在 C++ 中是如何工作的是成为一名合格的 C++ 程序员必不可少的。C++ 程序中的内存分为两个部分：
+* **栈**：在函数内部声明的所有变量都将占用栈内存
+* **堆**：这是程序中未使用的内存，在程序运行时可用于动态分配内存
+
+很多时候，无法提前预知需要多少内存来存储某个定义变量中的特定信息，所需内存的大小需要在运行时才能确定。
+
+在 C++ 中，您可以使用特殊的运算符为给定类型的变量在运行时分配堆内的内存，这会返回所分配的空间地址。这种运算符即 `new` 运算符。
+
+如果您不再需要动态分配的内存空间，可以使用 `delete` 运算符，删除之前由 `new` 运算符分配的内存
+
+**new 和 delete 运算符**
+
+```c++
+new data-type;
+```
+
+在这里，`data-type` 可以是包括数组在内的任意内置的数据类型，也可以是包括类或结构在内的用户自定义的任何数据类型。让我们先来看下内置的数据类型。例如，我们可以定义一个指向 double 类型的指针，然后请求内存，该内存在执行时被分配。我们可以按照下面的语句使用 `new` 运算符来完成这点：
+
+```c++
+double* pvalue  = NULL; // 初始化为 null 的指针
+pvalue  = new double;   // 为变量请求内存
+```
+
+如果自由存储区已被用完，可能无法成功分配内存。所以建议检查 new 运算符是否返回 NULL 指针，并采取以下适当的操作：
+
+```c++
+double* pvalue  = NULL;
+if( !(pvalue  = new double ))
+{
+   cout << "Error: out of memory." <<endl;
+   exit(1);
+}
+```
+
+`malloc()` 函数在 C 语言中就出现了，在 C++ 中仍然存在，但建议尽量不要使用 malloc() 函数。`new` 与 `malloc()` 函数相比，其主要的优点是，new 不只是分配了内存，它还创建了对象。
+
+在任何时候，当觉得某个已经动态分配内存的变量不再需要使用时，您可以使用 delete 操作符释放它所占用的内存，如下所示：
+
+```c++
+delete pvalue;        // 释放 pvalue 所指向的内存
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main ()
+{
+   double* pvalue  = NULL; // 初始化为 null 的指针
+   pvalue  = new double;   // 为变量请求内存
+ 
+   *pvalue = 29494.99;     // 在分配的地址存储值
+   cout << "Value of pvalue : " << *pvalue << endl;
+ 
+   delete pvalue;         // 释放内存
+ 
+   return 0;
+}
+```
+
+**数组的动态内存分配**
+
+假设我们要为一个字符数组（一个有 20 个字符的字符串）分配内存，我们可以使用上面实例中的语法来为数组动态地分配内存，如下所示：
+
+```c++
+char* pvalue  = NULL;   // 初始化为 null 的指针
+pvalue  = new char[20]; // 为变量请求内存
+```
+
+要删除刚才创建的数组，语句如下：
+
+```c++
+delete [] pvalue;        // 删除 pvalue 所指向的数组
+```
+
+下面是 new 操作符的通用语法，可以为多维数组分配内存，如下所示：
+
+*一维数组*
+
+```c++
+// 动态分配,数组长度为 m
+int *array=new int [m]；
+ 
+//释放内存
+delete [] array;
+```
+
+*二维数组*
+
+```c++
+int **array
+// 假定数组第一维长度为 m， 第二维长度为 n
+// 动态分配空间
+array = new int *[m];
+for( int i=0; i<m; i++ )
+{
+    array[i] = new int [n]  ;
+}
+//释放
+for( int i=0; i<m; i++ )
+{
+    delete [] arrar[i];
+}
+delete [] array;
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main()
+{
+    int **p;   
+    int i,j;   //p[4][8] 
+    //开始分配4行8列的二维数据   
+    p = new int *[4];
+    for(i=0;i<4;i++){
+        p[i]=new int [8];
+    }
+ 
+    for(i=0; i<4; i++){
+        for(j=0; j<8; j++){
+            p[i][j] = j*i;
+        }
+    }   
+    //打印数据   
+    for(i=0; i<4; i++){
+        for(j=0; j<8; j++)     
+        {   
+            if(j==0) cout<<endl;   
+            cout<<p[i][j]<<"\t";   
+        }
+    }   
+    //开始释放申请的堆   
+    for(i=0; i<4; i++){
+        delete [] p[i];   
+    }
+    delete [] p;   
+    return 0;
+}
+```
+
+**对象的动态内存分配**
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+class Box
+{
+   public:
+      Box() { 
+         cout << "调用构造函数！" <<endl; 
+      }
+      ~Box() { 
+         cout << "调用析构函数！" <<endl; 
+      }
+};
+ 
+int main( )
+{
+   Box* myBoxArray = new Box[4];
+ 
+   delete [] myBoxArray; // 删除数组
+   return 0;
+}
+```
+
+**C++命名空间**
+
+假设这样一种情况，当一个班上有两个名叫 Zara 的学生时，为了明确区分它们，我们在使用名字之外，不得不使用一些额外的信息，比如他们的家庭住址，或者他们父母的名字等等。
+
+同样的情况也出现在 C++ 应用程序中。例如，您可能会写一个名为 xyz() 的函数，在另一个可用的库中也存在一个相同的函数 xyz()。这样，编译器就无法判断您所使用的是哪一个 xyz() 函数。
+
+因此，引入了命名空间这个概念，专门用于解决上面的问题，它可作为附加信息来区分不同库中相同名称的函数、类、变量等。使用了命名空间即定义了上下文。本质上，命名空间就是定义了一个范围。
+
+```c++
+namespace namespace_name {
+   // 代码声明
+}
+```
+
+为了调用带有命名空间的函数或变量，需要在前面加上命名空间的名称，如下所示：
+```c++
+name::code;  // code 可以是变量或函数
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+// 第一个命名空间
+namespace first_space{
+   void func(){
+      cout << "Inside first_space" << endl;
+   }
+}
+// 第二个命名空间
+namespace second_space{
+   void func(){
+      cout << "Inside second_space" << endl;
+   }
+}
+int main ()
+{
+ 
+   // 调用第一个命名空间中的函数
+   first_space::func();
+   
+   // 调用第二个命名空间中的函数
+   second_space::func(); 
+ 
+   return 0;
+}
+```
+
+**using指令**
+
+```c++
+您可以使用 using namespace 指令，这样在使用命名空间时就可以不用在前面加上命名空间的名称。这个指令会告诉编译器，后续的代码将使用指定的命名空间中的名称。
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+// 第一个命名空间
+namespace first_space{
+   void func(){
+      cout << "Inside first_space" << endl;
+   }
+}
+// 第二个命名空间
+namespace second_space{
+   void func(){
+      cout << "Inside second_space" << endl;
+   }
+}
+using namespace first_space;
+int main ()
+{
+ 
+   // 调用第一个命名空间中的函数
+   func();
+   
+   return 0;
+}
+```
+
+`using` 指令引入的名称遵循正常的范围规则。名称从使用 `using` 指令开始是可见的，直到该范围结束。此时，在范围以外定义的同名实体是隐藏的。
+
+**不连续的命名空间**
+
+命名空间可以定义在几个不同的部分中，因此命名空间是由几个单独定义的部分组成的。一个命名空间的各个组成部分可以分散在多个文件中。
+
+所以，如果命名空间中的某个组成部分需要请求定义在另一个文件中的名称，则仍然需要声明该名称。下面的命名空间定义可以是定义一个新的命名空间，也可以是为已有的命名空间增加新的元素：
+```c++
+namespace namespace_name {
+   // 代码声明
+}
+```
+
+**嵌套的命名空间**
+
+```c++
+namespace namespace_name1 {
+   // 代码声明
+   namespace namespace_name2 {
+      // 代码声明
+   }
+}
+```
+
+**C++模板**
+
+模板是泛型编程的基础，泛型编程即以一种独立于任何特定类型的方式编写代码。
+
+模板是创建泛型类或函数的蓝图或公式。库容器，比如迭代器和算法，都是泛型编程的例子，它们都使用了模板的概念。
+
+每个容器都有一个单一的定义，比如 向量，我们可以定义许多不同类型的向量，比如 `vector\<int\>` 或 `vector\<string\>`
+
+**函数模板**
+
+```c++
+template <class type> ret-type func-name(parameter list)
+{
+   // 函数的主体
+}
+```
+
+```c++
+#include <iostream>
+#include <string>
+ 
+using namespace std;
+ 
+template <typename T>
+inline T const& Max (T const& a, T const& b) 
+{ 
+    return a < b ? b:a; 
+} 
+int main ()
+{
+ 
+    int i = 39;
+    int j = 20;
+    cout << "Max(i, j): " << Max(i, j) << endl; 
+ 
+    double f1 = 13.5; 
+    double f2 = 20.7; 
+    cout << "Max(f1, f2): " << Max(f1, f2) << endl; 
+ 
+    string s1 = "Hello"; 
+    string s2 = "World"; 
+    cout << "Max(s1, s2): " << Max(s1, s2) << endl; 
+ 
+   return 0;
+}
+```
+
+**类模板**
+
+```c++
+template <class type> class class-name {
+.
+.
+.
+}
+```
+
+```c++
+#include <iostream>
+#include <vector>
+#include <cstdlib>
+#include <string>
+#include <stdexcept>
+ 
+using namespace std;
+ 
+template <class T>
+class Stack { 
+  private: 
+    vector<T> elems;     // 元素 
+ 
+  public: 
+    void push(T const&);  // 入栈
+    void pop();               // 出栈
+    T top() const;            // 返回栈顶元素
+    bool empty() const{       // 如果为空则返回真。
+        return elems.empty(); 
+    } 
+}; 
+ 
+template <class T>
+void Stack<T>::push (T const& elem) 
+{ 
+    // 追加传入元素的副本
+    elems.push_back(elem);    
+} 
+ 
+template <class T>
+void Stack<T>::pop () 
+{ 
+    if (elems.empty()) { 
+        throw out_of_range("Stack<>::pop(): empty stack"); 
+    }
+    // 删除最后一个元素
+    elems.pop_back();         
+} 
+ 
+template <class T>
+T Stack<T>::top () const 
+{ 
+    if (elems.empty()) { 
+        throw out_of_range("Stack<>::top(): empty stack"); 
+    }
+    // 返回最后一个元素的副本 
+    return elems.back();      
+} 
+ 
+int main() 
+{ 
+    try { 
+        Stack<int>         intStack;  // int 类型的栈 
+        Stack<string> stringStack;    // string 类型的栈 
+ 
+        // 操作 int 类型的栈 
+        intStack.push(7); 
+        cout << intStack.top() <<endl; 
+ 
+        // 操作 string 类型的栈 
+        stringStack.push("hello"); 
+        cout << stringStack.top() << std::endl; 
+        stringStack.pop(); 
+        stringStack.pop(); 
+    } 
+    catch (exception const& ex) { 
+        cerr << "Exception: " << ex.what() <<endl; 
+        return -1;
+    } 
+}
+```
+
+**C++预处理器**
+
+预处理器是一些指令，指示编译器在实际编译之前所需完成的预处理。
+
+所有的预处理器指令都是以井号（#）开头，只有空格字符可以出现在预处理指令之前。预处理指令不是 C++ 语句，所以它们不会以分号（;）结尾。
+
+我们已经看到，之前所有的实例中都有 #include 指令。这个宏用于把头文件包含到源文件中。
+
+C++ 还支持很多预处理指令，比如 #include、#define、#if、#else、#line 等，让我们一起看看这些重要指令
+
+**#define预处理**
+
+\#define 预处理指令用于创建符号常量。该符号常量通常称为宏，指令的一般形式是：
+
+```c++
+#define macro-name replacement-text 
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+#define PI 3.14159
+ 
+int main ()
+{
+ 
+    cout << "Value of PI :" << PI << endl; 
+ 
+    return 0;
+}
+```
+
+**参数宏**
+
+可以使用 #define 来定义一个带有参数的宏，如下所示：
+```c++
+#include <iostream>
+using namespace std;
+ 
+#define MIN(a,b) (a<b ? a : b)
+ 
+int main ()
+{
+   int i, j;
+   i = 100;
+   j = 30;
+   cout <<"较小的值为：" << MIN(i, j) << endl;
+ 
+    return 0;
+}
+```
+
+**条件编译**
+
+```c++
+#include <iostream>
+using namespace std;
+#define DEBUG
+ 
+#define MIN(a,b) (((a)<(b)) ? a : b)
+ 
+int main ()
+{
+   int i, j;
+   i = 100;
+   j = 30;
+#ifdef DEBUG
+   cerr <<"Trace: Inside main function" << endl;
+#endif
+ 
+#if 0
+   /* 这是注释部分 */
+   cout << MKSTR(HELLO C++) << endl;
+#endif
+ 
+   cout <<"The minimum is " << MIN(i, j) << endl;
+ 
+#ifdef DEBUG
+   cerr <<"Trace: Coming out of main function" << endl;
+#endif
+    return 0;
+}
+```
+
+**# 和 ## 运算符**
+
+\# 和 ## 预处理运算符在 C++ 和 ANSI/ISO C 中都是可用的。# 运算符会把 replacement-text 令牌转换为用引号引起来的字符串。
+
+请看下面的宏定义：
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+#define MKSTR( x ) #x
+ 
+int main ()
+{
+    cout << MKSTR(HELLO C++) << endl;
+ 
+    return 0;
+}
+```
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+#define concat(a, b) a ## b
+int main()
+{
+   int xy = 100;
+   
+   cout << concat(x, y);
+   return 0;
+}
+```
+
+**C++中的预定义宏**
+
+宏	|描述
+-|-
+\_\_LINE\_\_	|这会在程序编译时包含当前行号。
+\_\_FILE\_\_	|这会在程序编译时包含当前文件名。
+\_\_DATE\_\_	|这会包含一个形式为 month/day/year 的字符串，它表示把源文件转换为目标代码的日期。
+\_\_TIME\_\_	|这会包含一个形式为 hour:minute:second 的字符串，它表示程序被编译的时间
+
+```c++
+#include <iostream>
+using namespace std;
+ 
+int main ()
+{
+   cout << "Value of __LINE__ : " << __LINE__ << endl;
+   cout << "Value of __FILE__ : " << __FILE__ << endl;
+   cout << "Value of __DATE__ : " << __DATE__ << endl;
+   cout << "Value of __TIME__ : " << __TIME__ << endl;
+   return 0;
+}
+```
+
+**C++信号处理**
+
+信号是由操作系统传给进程的中断，会提早终止一个程序。在 UNIX、LINUX、Mac OS X 或 Windows 系统上，可以通过按 Ctrl+C 产生中断。
+
+有些信号不能被程序捕获，但是下表所列信号可以在程序中捕获，并可以基于信号采取适当的动作。这些信号是定义在 C++ 头文件 `<csignal>` 中。
+
+信号	|描述
+-|-
+SIGABRT	|程序的异常终止，如调用 abort。
+SIGFPE	|错误的算术运算，比如除以零或导致溢出的操作。
+SIGILL	|检测非法指令。
+SIGINT	|接收到交互注意信号。
+SIGSEGV	|非法访问内存。
+SIGTERM	|发送到程序的终止请求。
+
+**signal() 函数**
+
+C++ 信号处理库提供了 signal 函数，用来捕获突发事件。以下是 signal() 函数的语法：
+```c++
+void (*signal (int sig, void (*func)(int)))(int);
+```
+
+这个函数接收两个参数：第一个参数是一个整数，代表了信号的编号；第二个参数是一个指向信号处理函数的指针。
+
+让我们编写一个简单的 C++ 程序，使用 signal() 函数捕获 SIGINT 信号。不管您想在程序中捕获什么信号，您都必须使用 signal 函数来注册信号，并将其与信号处理程序相关联。看看下面的实例：
+
+```c++
+#include <iostream>
+#include <csignal>
+#include <unistd.h>
+ 
+using namespace std;
+ 
+void signalHandler( int signum )
+{
+    cout << "Interrupt signal (" << signum << ") received.\n";
+ 
+    // 清理并关闭
+    // 终止程序  
+ 
+   exit(signum);  
+ 
+}
+ 
+int main ()
+{
+    // 注册信号 SIGINT 和信号处理程序
+    signal(SIGINT, signalHandler);  
+ 
+    while(1){
+       cout << "Going to sleep...." << endl;
+       sleep(1);
+    }
+ 
+    return 0;
+}
+```
+
+**raise() 函数**
+
+可以使用函数 raise() 生成信号，该函数带有一个整数信号编号作为参数，语法如下：
+```c++
+int raise (signal sig);
+```
+
+在这里，sig 是要发送的信号的编号，这些信号包括：SIGINT、SIGABRT、SIGFPE、SIGILL、SIGSEGV、SIGTERM、SIGHUP。以下是我们使用 raise() 函数内部生成信号的实例：
+
+```c++
+#include <iostream>
+#include <csignal>
+#include <unistd.h>
+ 
+using namespace std;
+ 
+void signalHandler( int signum )
+{
+    cout << "Interrupt signal (" << signum << ") received.\n";
+ 
+    // 清理并关闭
+    // 终止程序 
+ 
+   exit(signum);  
+ 
+}
+ 
+int main ()
+{
+    int i = 0;
+    // 注册信号 SIGINT 和信号处理程序
+    signal(SIGINT, signalHandler);  
+ 
+    while(++i){
+       cout << "Going to sleep...." << endl;
+       if( i == 3 ){
+          raise( SIGINT);
+       }
+       sleep(1);
+    }
+ 
+    return 0;
+}
+```
+
+**C++多线程**
+
+多线程是多任务处理的一种特殊形式，多任务处理允许让电脑同时运行两个或两个以上的程序。一般情况下，两种类型的多任务处理：`基于进程和基于线程`。
+
+* 基于进程的多任务处理是程序的并发执行
+* 基于线程的多任务处理是同一程序的片段的并发执行
+
+多线程程序包含可以同时运行的两个或多个部分。这样的程序中的每个部分称为一个线程，每个线程定义了一个单独的执行路径。
+
+本教程假设您使用的是 Linux 操作系统，我们要使用 POSIX 编写多线程 C++ 程序。POSIX Threads 或 Pthreads 提供的 API 可在多种类 Unix POSIX 系统上可用，比如 FreeBSD、NetBSD、GNU/Linux、Mac OS X 和 Solaris
+
+**创建线程**
+
+```c++
+#include <pthread.h>
+pthread_create (thread, attr, start_routine, arg) 
+```
+
+在这里，pthread_create 创建一个新的线程，并让它可执行。下面是关于参数的说明：
+参数|描述
+-|-
+thread	|指向线程标识符指针。
+attr	|一个不透明的属性对象，可以被用来设置线程属性。您可以指定线程属性对象，也可以使用默认值 NULL。
+start_routine	|线程运行函数起始地址，一旦线程被创建就会执行。
+arg	|运行函数的参数。它必须通过把引用作为指针强制转换为 void 类型进行传递。如果没有传递参数，则使用 NULL。
+
+**终止线程**
+
+```c++
+#include <pthread.h>
+pthread_exit (status) 
+```
+
+在这里，`pthread_exit` 用于显式地退出一个线程。通常情况下，pthread_exit() 函数是在线程完成工作后无需继续存在时被调用。
+
+如果 main() 是在它所创建的线程之前结束，并通过 pthread_exit() 退出，那么其他线程将继续执行。否则，它们将在 main() 结束时自动被终止。
+
+```c++
+#include <iostream>
+// 必须的头文件
+#include <pthread.h>
+ 
+using namespace std;
+ 
+#define NUM_THREADS 5
+ 
+// 线程的运行函数
+void* say_hello(void* args)
+{
+    cout << "Hello Runoob！" << endl;
+    return 0;
+}
+ 
+int main()
+{
+    // 定义线程的 id 变量，多个变量使用数组
+    pthread_t tids[NUM_THREADS];
+    for(int i = 0; i < NUM_THREADS; ++i)
+    {
+        //参数依次是：创建的线程id，线程参数，调用的函数，传入的函数参数
+        int ret = pthread_create(&tids[i], NULL, say_hello, NULL);
+        if (ret != 0)
+        {
+           cout << "pthread_create error: error_code=" << ret << endl;
+        }
+    }
+    //等各个线程退出后，进程才结束，否则进程强制结束了，线程可能还没反应过来；
+    pthread_exit(NULL);
+}
+```
+
+```c++
+//文件名：test.cpp
+ 
+#include <iostream>
+#include <cstdlib>
+#include <pthread.h>
+ 
+using namespace std;
+ 
+#define NUM_THREADS     5
+ 
+void *PrintHello(void *threadid)
+{  
+   // 对传入的参数进行强制类型转换，由无类型指针变为整形数指针，然后再读取
+   int tid = *((int*)threadid);
+   cout << "Hello Runoob! 线程 ID, " << tid << endl;
+   pthread_exit(NULL);
+}
+ 
+int main ()
+{
+   pthread_t threads[NUM_THREADS];
+   int indexes[NUM_THREADS];// 用数组来保存i的值
+   int rc;
+   int i;
+   for( i=0; i < NUM_THREADS; i++ ){      
+      cout << "main() : 创建线程, " << i << endl;
+      indexes[i] = i; //先保存i的值
+      // 传入的时候必须强制转换为void* 类型，即无类型指针        
+      rc = pthread_create(&threads[i], NULL, 
+                          PrintHello, (void *)&(indexes[i]));
+      if (rc){
+         cout << "Error:无法创建线程," << rc << endl;
+         exit(-1);
+      }
+   }
+   pthread_exit(NULL);
+}
+```
+
+**向线程传递函数**
+
+```c++
+#include <iostream>
+#include <cstdlib>
+#include <pthread.h>
+ 
+using namespace std;
+ 
+#define NUM_THREADS     5
+ 
+struct thread_data{
+   int  thread_id;
+   char *message;
+};
+ 
+void *PrintHello(void *threadarg)
+{
+   struct thread_data *my_data;
+ 
+   my_data = (struct thread_data *) threadarg;
+ 
+   cout << "Thread ID : " << my_data->thread_id ;
+   cout << " Message : " << my_data->message << endl;
+ 
+   pthread_exit(NULL);
+}
+ 
+int main ()
+{
+   pthread_t threads[NUM_THREADS];
+   struct thread_data td[NUM_THREADS];
+   int rc;
+   int i;
+ 
+   for( i=0; i < NUM_THREADS; i++ ){
+      cout <<"main() : creating thread, " << i << endl;
+      td[i].thread_id = i;
+      td[i].message = (char*)"This is message";
+      rc = pthread_create(&threads[i], NULL,
+                          PrintHello, (void *)&td[i]);
+      if (rc){
+         cout << "Error:unable to create thread," << rc << endl;
+         exit(-1);
+      }
+   }
+   pthread_exit(NULL);
+}
+```
+
+**连接和分离线程**
+
+```c++
+pthread_join (threadid, status) 
+pthread_detach (threadid) 
+```
+
+pthread_join() 子程序阻碍调用程序，直到指定的 threadid 线程终止为止。当创建一个线程时，它的某个属性会定义它是否是可连接的（joinable）或可分离的（detached）。只有创建时定义为可连接的线程才可以被连接。如果线程创建时被定义为可分离的，则它永远也不能被连接。
+
+这个实例演示了如何使用 pthread_join() 函数来等待线程的完成。
+
+```c++
+
+```
+
+**C++ 11 14 17**
+
+[链接](https://github.com/Peefy/VisualCpp2017/tree/master/VisualCpp2017) 
+
 ## C++知识点
 
 * **智能指针**

@@ -9,15 +9,22 @@ static void sharedptrDemo(){
     //auto ptr = std::shared_ptr<int>(1);
     printf("hello shared_ptr\n");
     int a = 10;
-    //std::shared_ptr<int> ptra = std::make_shared<int>(a);
+#if _WIN32
+    std::shared_ptr<int> ptra = std::make_shared<int>(a);
+#else
     std::shared_ptr<int> ptra = std::shared_ptr<int>(&a);
+#endif
     std::shared_ptr<int> ptra2(ptra);
     printf("the use count of ptra is %d\n", ptra.use_count());
     int b = 20;
     int *pb = &a;
     //std::shared_ptr<int> ptrb = pb;  //error
-    std::shared_ptr<int> ptrb = std::shared_ptr<int>(&b);
-    //std::shared_ptr<int> ptrb = std::make_shared<int>(b);
+#if _WIN32
+    std::shared_ptr<int> ptrb = std::make_shared<int>(b);
+#else
+    std::shared_ptr<int> ptrb = std::shared_ptr<int>(&b); 
+#endif
+    
     printf("the use count of ptrb is %d\n", ptrb.use_count());
     ptra = ptrb;
     pb = ptrb.get();
@@ -33,7 +40,12 @@ static void uniqueptrDemo(){
 
 static void weakptrDemo(){
     int a = 10;
+#if _WIN32
+    std::shared_ptr<int> sh_ptr = std::make_shared<int>(a);
+#else
     std::shared_ptr<int> sh_ptr = std::shared_ptr<int>(&a);
+#endif
+    
     printf("the use count of shared ptr is %d\n", sh_ptr.use_count());
 
     std::weak_ptr<int> wp(sh_ptr);

@@ -9,6 +9,7 @@
 #include <limits>  
 #include <ctime>
 #include <exception>
+#include <mutex>
 #include <pthread.h>
 
 using namespace std;  
@@ -68,13 +69,24 @@ static void constDemo(){
     const int * const a7 = &a1;   ///const data,const pointer
 }
 
-double division(int a, int b)
+static double division(int a, int b)
 {
    if( b == 0 )
    {
       throw "Division by zero condition!";
    }
    return (a/b);
+}
+
+mutex lockobj;
+
+static void* say_hello(void* args){
+    if (lockobj.try_lock()){
+        auto arg = *(static_cast<int*>(args));
+        cout << "Hello dugu " << arg << endl;
+        lockobj.unlock();
+    }
+    return 0;
 }
 
 BEGIN_DEMO_NAMESPACE
@@ -348,7 +360,52 @@ void noteDemo(){
     cout << "Value of __DATE__ : " << __DATE__ << endl;
     cout << "Value of __TIME__ : " << __TIME__ << endl;
 
+    const int NUM_THREADS = 5;
+    // 定义线程的 id 变量，多个变量使用数组
+    pthread_t tids[NUM_THREADS];
+    int indexes[NUM_THREADS];// 用数组来保存i的值
+    for(int i = 0; i < NUM_THREADS; ++i)
+    {
+        indexes[i] = i;
+        //参数依次是：创建的线程id，线程参数，调用的函数，传入的函数参数
+        int ret = pthread_create(&tids[i], NULL, say_hello, (void*)&indexes[i]);
+        if (ret != 0)
+        {
+           cout << "pthread_create error: error_code=" << ret << endl;
+        }
+    }
+    //等各个线程退出后，进程才结束，否则进程强制结束了，线程可能还没反应过来；
+    //pthread_exit(NULL);
 
+// 创建一个向量存储 int
+   vector<int> vec; 
+ 
+   // 显示 vec 的原始大小
+   cout << "vector size = " << vec.size() << endl;
+ 
+   // 推入 5 个值到向量中
+   for(i = 0; i < 5; i++){
+      vec.push_back(i);
+   }
+ 
+   // 显示 vec 扩展后的大小
+   cout << "extended vector size = " << vec.size() << endl;
+ 
+   // 访问向量中的 5 个值
+   for(i = 0; i < 5; i++){
+      cout << "value of vec [" << i << "] = " << vec[i] << endl;
+   }
+ 
+   // 使用迭代器 iterator 访问值
+   vector<int>::iterator v = vec.begin();
+   while( v != vec.end()) {
+      cout << "value of v = " << *v << endl;
+      v++;
+   }
+
+    for (auto iter : vec){
+        cout << "value of v = " << iter << endl;
+    }
 
 }
 

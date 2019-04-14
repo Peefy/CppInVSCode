@@ -6444,13 +6444,47 @@ str = 0;
 * **内存池**
 * **cast函数**
 
-C++11智能指针share_ptr<>、auto_ptr<>、make_ptr<>()
+**C++ cast**
+
+1. C风格强制转换
+
+```c++
+int a = 1;
+char b = (char)a;
+```
+
+2. const_cast
+
+用法：const_cast\<type_id\> (expression)。用于修改类型的const或volatile属性，一般用于强制消除对象的常量性，c中不提供消除这const的机制
+
+3. static_cast
+
+用法：static_cast\<type_id\> (expression).该转换和c风格的转换很类似，没有运行时类型检查，所以无法保证转换的安全性。主要有以下几种用法：
+
+（1）用于基本数据类型，或者non_const到const（反过来必须用const_cast)
+
+（2）把空指针转换为目标类型的指针
+
+（3）将任何类型的表达式转换为void类型
+
+（4）可以将子类类型的指针转换为父类类型的指针（这种转换的安全性需要开发人员来保证）
+
+4. dynamic_cast
+
+用法：dynamic_cast\<type*\>(expression).只用于对象和引用，主要用于执行安全的向下转型，他可以将指向子类的父类指针转换为子类指针，但是要求父类有虚函数，如果转换为指针类型失败则返回NULL，如果是引用类型转换失败则跑出bad_cast的异常
+
+只用于对象和引用，主要用于执行安全的向下转型，他可以将指向子类的父类指针转换为子类指针，但是要求父类有虚函数，如果转换为指针类型失败则返回NULL，如果是引用类型转换失败则跑出bad_cast的异常
+
+5. reinpreter_cast
+
+用法：reinpreter_cast\<type_id\> (expression).type_id可以是指针，引用，算术类型，函数指针或者成员指针，这个操作符可以在非相关的类型之间转换，操作只是简单的从一个指针到别的指针的值得二进制拷贝，在类型之间指向的内容不作任何类型的检查和转换
+
+**static_cast 和 dynamic_cast的区别：**
+
+* static在转换时不进行安全性检查，完全需要开发者自己考虑, dynamic 在转换的时候会进行安全性检查，如果是指针类型的转换失败返回NULL，如果是引用类型的转换失败，则跑出bad_cast 异常
+* static主要是用于值类型之间的转换，而dynamic只能用于对象的指针和引用的cast，dynamic是向下的转换，而且要求父类有虚函数，否则会编译出错
 
 STL标准模板库 algorithm库
 
-const、static、static_cast<>
-
 C++内存池、内存管理、内存泄露
-
-继承与多态override
 

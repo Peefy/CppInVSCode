@@ -6440,24 +6440,20 @@ str = 0;
 * **栈**-在执行函数时，函数内局部变量的存储单元都可以在栈上创建，函数执行结束时这些存储单元自动被释放。栈内存分配运算内置于处理器的指令集中，效率很高，但是分配的内存容量有限。
 * **静态存储区**-内存在程序编译的时候就已经分配好，这块内存在程序的整个运行期间都存在。它主要存放静态数据、全局数据和常量
 
-* **STL**
-* **内存池**
-* **cast函数**
-
 **C++ cast**
 
-1. C风格强制转换
+1. **C风格强制转换**
 
 ```c++
 int a = 1;
 char b = (char)a;
 ```
 
-2. const_cast
+2. **const_cast**
 
 用法：const_cast\<type_id\> (expression)。用于修改类型的const或volatile属性，一般用于强制消除对象的常量性，c中不提供消除这const的机制
 
-3. static_cast
+3. **static_cast**
 
 用法：static_cast\<type_id\> (expression).该转换和c风格的转换很类似，没有运行时类型检查，所以无法保证转换的安全性。主要有以下几种用法：
 
@@ -6469,13 +6465,13 @@ char b = (char)a;
 
 （4）可以将子类类型的指针转换为父类类型的指针（这种转换的安全性需要开发人员来保证）
 
-4. dynamic_cast
+4. **dynamic_cast**
 
 用法：dynamic_cast\<type*\>(expression).只用于对象和引用，主要用于执行安全的向下转型，他可以将指向子类的父类指针转换为子类指针，但是要求父类有虚函数，如果转换为指针类型失败则返回NULL，如果是引用类型转换失败则跑出bad_cast的异常
 
 只用于对象和引用，主要用于执行安全的向下转型，他可以将指向子类的父类指针转换为子类指针，但是要求父类有虚函数，如果转换为指针类型失败则返回NULL，如果是引用类型转换失败则跑出bad_cast的异常
 
-5. reinpreter_cast
+5. **reinpreter_cast**
 
 用法：reinpreter_cast\<type_id\> (expression).type_id可以是指针，引用，算术类型，函数指针或者成员指针，这个操作符可以在非相关的类型之间转换，操作只是简单的从一个指针到别的指针的值得二进制拷贝，在类型之间指向的内容不作任何类型的检查和转换
 
@@ -6484,7 +6480,299 @@ char b = (char)a;
 * static在转换时不进行安全性检查，完全需要开发者自己考虑, dynamic 在转换的时候会进行安全性检查，如果是指针类型的转换失败返回NULL，如果是引用类型的转换失败，则跑出bad_cast 异常
 * static主要是用于值类型之间的转换，而dynamic只能用于对象的指针和引用的cast，dynamic是向下的转换，而且要求父类有虚函数，否则会编译出错
 
-STL标准模板库 algorithm库
+**C++ STL标准模板库 详细版**
+
+C++ STL中最基本以及最常用的类或容器：
+
+* **string**
+
+```c++
+string s1;//初始化字符串，空字符串
+string s2 = s1; //拷贝初始化，深拷贝字符串
+string s3 = "I am Yasuo"; //直接初始化，s3存了字符串
+string s4(10, 'a'); //s4存的字符串是aaaaaaaaaa
+string s5(s4); //拷贝初始化，深拷贝字符串
+string s6("I am Ali"); //直接初始化
+string s7 = string(6, 'c'); //拷贝初始化，cccccc
+string s1 = s2 + ", "; //正确
+string s3 = "s " + ", "; //错误
+string s4 = "hello" + ", " + s1; //错误
+string s5 = s1 + "hello " + ", "; //改一下顺序，s1放前头，正确了，注意理解=号右边的运算顺序
+```
+
+*处理string中的每个字符*
+
+```c++
+for (int i = 0; i < s3.size(); i++)
+{
+    cout << s3[i] << endl;
+    s3[i] = 's';
+}
+
+string str("hi sysu");
+for (string::iterator it = str.begin(); it != str.end(); it++)
+{
+    cout << *it << endl;
+}
+```
+
+*string find子串*
+
+```c++
+string sq("heoolo sdaa ss");
+cout << s.find("aa", 0) << endl; //返回的是子串位置。第二个参数是查找的起始位置，如果找不到，就返回string::npos
+if (s.find("aa1", 0) == string::npos)
+{
+    cout << "找不到该子串！" << endl;
+}
+```
+
+*c++分割字符串*
+
+```c++
+#include<iostream>
+#include<cstring>
+using namespace std;
+int main()
+{
+    char sentence[]="This is a sentence with 7 tokens";
+    cout << "The string to be tokenized is:\n" << sentence << "\n\nThe tokens are:\n\n";
+    char *tokenPtr=strtok(sentence," ");//sentence必须是一个char数组，不能是定义成指针形式
+    while(tokenPtr!=NULL)　{
+        cout<<tokenPtr<<'\n';
+        tokenPtr=strtok(NULL," ");
+    }
+    //cout << "After strtok,sentence=" << tokenPtr<<endl;
+    return 0;
+}
+```
+
+* **vector**
+
+*vector初始化*
+
+```c++
+vector<int> v1;
+vector<father> v2;
+vector<string> v3;
+vector<vector<int> >;  //注意空格。这里相当于二维数组int a[n][n];
+vector<int> v5 = { 1,2,3,4,5 }; //列表初始化,注意使用的是花括号
+vector<string> v6 = { "hi","my","name","is","lee" };
+vector<int> v7(5, -1); //初始化为-1,-1,-1,-1,-1。第一个参数是数目，第二个参数是要初始化的值
+vector<string> v8(3, "hi");
+vector<int> v9(10); //默认初始化为0
+vector<int> v10(4); //默认初始化为空字符串
+```
+
+*vector的基本操作*
+
+```c++
+#include <iostream>
+#include <vector>
+#include <string>
+
+using namespace std;
+
+template <typename T>
+void showvector(vector<T> v){
+    for (vector<T>::iterator it = v.begin(); it != v.end(); it++)
+    {
+        cout << *it;
+    }
+    cout << endl;
+}
+
+int main(){
+   vector<int> v;
+   v.push_back(1);
+   v.push_back(2);
+   v.push_back(4);
+   v.push_back(5);
+   v.push_back(6);
+   for (int i = 0; i < v1.size(); i++){
+      cout << v1[i] << endl;
+      v1[i] = 100;
+      cout << v1[i] << endl;
+   }
+   vector<string> v6 = { "hi","my","name","is","lee" };
+   for (vector<string>::iterator iter = v6.begin(); iter != v6.end(); iter++){
+      cout << *iter << endl;
+      //下面两种方法都行
+      cout << (*iter).empty() << endl;
+      cout << iter->empty() << endl; 
+   }
+   vector<int> v5 = { 1,2,3,4,5 }; //列表初始化,注意使用的是花括号
+   cout << v5.front() << endl; //访问第一个元素
+   cout << v5.back() << endl; //访问最后一个元素
+
+   showvector(v5);
+   v5.pop_back(); //删除最后一个元素
+   showvector(v5);
+   v5.push_back(6); //加入一个元素并把它放在最后
+   showvector(v5);
+   v5.insert(v5.begin()+1,9); //在第二个位置插入新元素
+   showvector(v5);
+   v5.erase(v5.begin() + 3);  //删除第四个元素
+   showvector(v5);
+   v5.insert(v5.begin() + 1, 7,8); //连续插入7个8
+   showvector(v5);
+   v5.clear(); //清除所有内容
+   showvector(v5);
+   return 0;
+}
+
+```
+
+* **set**
+
+set跟vector差不多，它跟vector的唯一区别就是，set里面的元素是有序的且唯一的，只要你往set里添加元素，它就会自动排序，而且，如果你添加的元素set里面本来就存在，那么这次添加操作就不执行。要想用set先加个头文件set。
+
+```c++
+#include <iostream>
+#include <set>
+#include <string>
+
+using namespace std;
+
+template <typename T>
+void showset(set<T> v)
+{
+    for (set<T>::iterator it = v.begin(); it != v.end(); it++)
+    {
+        cout << *it;
+    }
+    cout << endl;
+}
+
+int main()
+{
+    set<int> s1{9,8,1,2,3,4,5,5,5,6,7,7 }; //自动排序，从小到大,剔除相同项
+    showset(s1);
+    set<string> s2{ "hello","sysy","school","hello" }; //字典序排序
+    showset(s2);
+    s1.insert(9); //有这个值了，do nothing
+    showset(s1);
+    s2.insert("aaa"); //没有这个字符串，添加并且排序
+    showset(s2);
+    
+    system("pause");
+    return 0;
+}
+```
+
+* **list**
+
+list就是链表，在C语言中我们想使用链表都是自己去实现的，实现起来倒不难，但是如果有现成的高效的链表可以使用的话，我们就不需要重复造轮子了。STL就提供了list容器给我们。
+
+list是一个双向链表，而单链表对应的容器则是foward_list。
+
+list即双向链表的优点是插入和删除元素都比较快捷，缺点是不能随机访问元素。
+
+初始化方式就大同小异了，跟vector基本一样。要想用list先加个头文件list。
+
+```c++
+#include <iostream>
+#include <list>
+#include <string>
+
+using namespace std;
+
+template <typename T>
+void showlist(list<T> v)
+{
+    for (list<T>::iterator it = v.begin(); it != v.end(); it++)
+    {
+        cout << *it;
+    }
+    cout << endl;
+}
+
+int main()
+{
+    list<int> l1{ 1,2,3,4,5,5,6,7,7 };
+    showlist(l1);
+    list<double> l2;
+    list<char> l3(10);
+    list<int> l4(5, 10); //将元素都初始化为10
+    showlist(l4);
+
+    
+    system("pause");
+    return 0;
+} 
+```
+
+* **map**
+
+map运用了哈希表地址映射的思想，也就是key-value的思想，来实现的。
+
+首先给出map最好用也最最常用的用法例子，就是用字符串作为key去查询操作对应的value。
+
+要使用map得先加个头文件map
+
+```c++
+#include <iostream>
+#include <map>
+#include <string>
+
+using namespace std;
+
+void showmap(map<string, int> v)
+{
+    for (map<string, int>::iterator it = v.begin(); it != v.end(); it++)
+    {
+        cout << it->first << "  " << it->second << endl;  //注意用法，不是用*it来访问了。first表示的是key，second存的是value
+    }
+    cout << endl;
+}
+
+int main()
+{
+    map<string, int> m1; //<>里的第一个参数表示key的类型,第二个参数表示value的类型
+    m1["Kobe"] = 100;
+    m1["James"] = 99;
+    m1["Curry"] = 98;
+
+    string s("Jordan");
+    m1[s] = 90;
+
+    cout << m1["Kobe"] << endl;
+    cout << m1["Jordan"] << endl;
+    cout << m1["Durant"] << endl; //不存在这个key，就显示0
+
+    m1.erase("Curry");//通过关键字来删除
+    showmap(m1);
+    m1.insert(pair<string, int>("Harris", 89)); //也可以通过insert函数来实现增加元素
+    showmap(m1);
+    m1.clear(); //清空全部
+
+
+    system("pause");
+    return 0;
+}
+```
+
+*map判断某元素是否存在*
+
+```c++
+if (m1.count("Lee"))
+{
+    cout << "Lee is in m1!" << endl;
+}
+else
+{
+    cout << "Lee do not exist!" << endl;
+}
+```
+
+*map用迭代器访问元素*
+
+```c++
+for (map<string, int>::iterator it = m1.begin(); it != m1.end(); it++)
+{
+    cout << it->first<<"  "<<it->second << endl;  //注意用法，不是用*it来访问了。first表示的是key，second存的是value
+}
+```
 
 C++内存池、内存管理、内存泄露
 

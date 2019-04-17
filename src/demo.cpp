@@ -10,6 +10,12 @@
 #include <ctime>
 #include <exception>
 #include <mutex>
+#include <list>
+#include <deque>
+#include <map>
+#include <unordered_set>
+#include <queue>
+#include <bitset>
 #include <pthread.h>
 
 using namespace std;  
@@ -406,6 +412,52 @@ void noteDemo(){
     for (auto iter : vec){
         cout << "value of v = " << iter << endl;
     }
+
+    list<int> l;
+    l.push_back(1);
+    l.push_back(2);
+    l.push_back(3);
+    printf("list value\n");
+    for (auto it = l.begin(); it != l.end(); it++){
+        printf("%d ", *it);
+    }
+    printf("\n");
+
+    deque<int> q;
+    q.push_back(1);
+    q.push_front(2);
+    q.push_back(3);
+    q.push_back(4);
+    printf("queue value\n");
+    for (auto it = q.begin(); it != q.end(); it++){
+        printf("%d ", *it);
+    }
+    printf("\n");
+
+    map<int, int> h;
+    h[0] = 1;
+    h[2] = 3;
+    
+    unordered_set<int> s;
+    s.insert(1);
+    s.insert(1);
+    s.insert(2);
+    s.insert(2);
+    s.insert(3);
+    s.insert(3);
+
+    printf("set value\n");
+    for (auto it = s.begin(); it != s.end(); it++){
+        printf("%d ", *it);
+    }
+    printf("\n");
+
+    priority_queue<int> pq;
+    pq.push(3);
+    pq.push(4);
+    pq.push(2);
+    pq.push(5);
+    printf("the pq ele is %d\n", pq.top());
 
 }
 

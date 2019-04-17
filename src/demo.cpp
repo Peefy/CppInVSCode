@@ -16,6 +16,8 @@
 #include <unordered_set>
 #include <queue>
 #include <bitset>
+#include <algorithm>
+#include <numeric>
 #include <pthread.h>
 
 using namespace std;  

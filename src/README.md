@@ -7094,4 +7094,8 @@ reverse(beg, end);
 
 reverse_copy(beg, end, dest);
 
+**C++模板和泛型**
+
+
+
 **C++内存池、内存管理、内存泄露**

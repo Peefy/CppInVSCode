@@ -262,21 +262,218 @@ move构造函数允许拥有者的指针在对象之间传递，允许unique_ptr
 
 8. 为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数
 
+采用虚函数为了实现动态多态，用于基类指针指向派生类对象时，通过基类指针直接调用派生类的对象函数，析构函数也不例外。如果构函数不是虚函数，那么在调用该函数时（对象被删除时）则只会调用当前对象对应的类的析构函数，这对于直接定义的对象是没有什么影响的，但是对于使用基类指向派生类的指针而言，因为基类指针实际上是基类类型，所以析构时自然只会调用基类的析构函数，这就可能产生内存泄漏（因为派生类的析构函数不被调用）。所以如果确定程序中有基类指针指向派生类的问题，则必须将基类的析构函数指定为虚函数，如此才能确保NEW出来的对象被正确的DELETE。
+
+```c++
+class ClxBase{
+public:
+ClxBase() {};
+virtual ~ClxBase() {cout << "Output from the destructor of class ClxBase!" << endl;};
+virtual void DoSomething() { cout << "Do something in class ClxBase!" << endl; };
+};
+
+class ClxDerived : public ClxBase{
+public:
+ClxDerived() {};
+~ClxDerived() { cout << "Output from the destructor of class ClxDerived!" << endl; };
+void DoSomething() { cout << "Do something in class ClxDerived!" << endl; };
+};
+
+int main(){ 
+ClxBase *p = new ClxDerived;
+p->DoSomething();
+delete p;
+return 0;
+}
+```
+
 9. c++ fork函数
+
+Linux下一个进程在内存里有三部分的数据，就是”代码段”、”堆栈段”和”数据段”。接触过汇编语言的人了解，一般的CPU都有上述三种段寄存器，以方便操作系统的运行。这三个部分也是构成一个完整的执行序列的必要的部分。
+
+有两个基本的操作用于创建和修改进程：函数fork()用来创建一个新的进程，该进程几乎是当前进程的一个完全拷贝，利用了父进程的代码段、堆栈段、数据段，当父子进程中对共有的数据段进行重新设值或调用不同方法时，才会导致数据段及堆栈段的不同；函数族exec()用来启动另外的进程以取代当前运行的进程，除了PID仍是原来的值外，代码段、堆栈段、数据段已经完全被改写了。 　　
+
+fork()子进程只进行fork后面的语句,复制前面的父进程的数据，但不执行语句
+
+```c++
+#include <unistd.h>
+#include <sys/types.h>
+#include <stdio.h>
+#include <stdlib.h>
+ 
+int main(int argc, const char* argv[])
+{
+	
+	for(int i=0;i<2;++i)
+	{
+ 
+		fork();
+		printf("hello,pid%d,ppid%d\n",getpid(),getppid());
+ 
+	}
+	sleep(1);
+	return 0;
+}
+
+hello,pid13610,ppid2978
+hello,pid13610,ppid2978
+hello,pid13612,ppid13610
+hello,pid13611,ppid13610
+hello,pid13611,ppid13610
+hello,pid13613,ppid13611
+```
 
 10. 析构函数的作用
 
+定义的对象消亡时，自动被调用，用来释放对象占用的空间
+
 11. 静态函数和虚函数的区别
 
-12. 重载和覆盖
+C++中，静态成员函数不能被声明为virtual函数。static成员不属于任何类对象或类实例，所以即使给此函数加上virutal也是没有任何意义的。
+静态与非静态成员函数之间有一个主要的区别。那就是静态成员函数没有this指针。
+
+12. 重载、覆盖和隐藏的区别
+
+**重载**-是指同一可访问区内被声明的几个具有不同参数列（参数的类型，个数，顺序不同）的同名函数，根据参数列表确定调用哪个函数，重载不关心函数返回类型。
+
+```c++
+class A{
+public:
+  void test(int i);
+  void test(double i);//overload
+  void test(int i, double j);//overload
+  void test(double i, int j);//overload
+  int test(int i);         //错误，非重载。注意重载不关心函数返回类型。
+};
+```
+
+**隐藏**-是指派生类的函数屏蔽了与其同名的基类函数，注意只要同名函数，不管参数列表是否相同，基类函数都会被隐藏。
+
+```c++
+#include "stdafx.h"
+#include "iostream"
+
+using namespace std;
+
+class Base
+{
+public:
+    void fun(double ,int ){ cout << "Base::fun(double ,int )" << endl; }
+};
+
+class Derive : public Base
+{
+public:
+    void fun(int ){ cout << "Derive::fun(int )" << endl; }
+};
+
+int main()
+{
+    Derive pd;
+    pd.fun(1);//Derive::fun(int )
+    pb.fun(0.01, 1);//error C2660: “Derive::fun”: 函数不接受 2 个参数
+
+    Base *fd = &pd;
+    fd->fun(1.0,1);//Base::fun(double ,int);
+    fd->fun(1);//error 
+    system("pause");
+    return 0;
+}
+```
+
+**重载和重写的区别**：
+* 范围区别：重写和被重写的函数在不同的类中，重载和被重载的函数在同一类中。
+* 参数区别：重写与被重写的函数参数列表一定相同，重载和被重载的函数参数列表一定不同。
+* virtual的区别：重写的基类必须要有virtual修饰，重载函数和被重载函数可以被virtual修饰，也可以没有。
+**隐藏和重写，重载的区别**:
+* 与重载范围不同：隐藏函数和被隐藏函数在不同类中。
+* 参数的区别：隐藏函数和被隐藏函数参数列表可以相同，也可以不同，但函数名一定同；当参数不同时，无论基类中的函数是否被virtual修饰，基类函数都是被隐藏，而不是被重写。 
+
+如下例子：函数Derived::f(float)覆盖了Base::f(float)。函数Derived::g(int)隐藏了Base::g(float)，而不是重载。函数Derived::h(float)隐藏了Base::h(float)，而不是覆盖。
+
+```c++
+#include "stdafx.h"
+#include <iostream>
+
+using namespace std;
+
+class Base
+{
+public:
+    virtual void f(float x){ cout << "Base::f(float) " << x << endl; }
+    void g(float x){ cout << "Base::g(float) " << x << endl; }
+    void h(float x){ cout << "Base::h(float) " << x << endl; }
+};
+
+class Derived : public Base
+{
+public:
+    virtual void f(float x){ cout << "Derived::f(float) " << x << endl; }
+    void g(int x){ cout << "Derived::g(int) " << x << endl; }
+    void h(float x){ cout << "Derived::h(float) " << x << endl; }
+};
+
+int main(void)
+{
+    Derived d;
+    Base *pb = &d;
+    Derived *fd = &d;
+    // Good : behavior depends solely on type of the object
+    pb->f(3.14f); //Derived::f(float) 3.14
+    fd->f(3.14f); //Derived::f(float) 3.14
+
+    // Bad : behavior depends on type of the pointer
+    pb->g(3.14f); //Base::g(float) 3.14
+    fd->g(3.14f); //Derived::g(int) 3
+
+    // Bad : behavior depends on type of the pointer
+    pb->h(3.14f); //Base::h(float) 3.14
+    fd->h(3.14f); //Derived::h(float) 3.14
+
+    system("pause");
+    return 0;
+}
+```
 
 13. strcpy和strlen
 
-14. 虚函数和多态
+* **strlen(s)** : 返回S的长度，不包括字符串结束符NULL；
+* **strcmp(s1,s2)** : 比较两个字符串是否相同，若s1==s2，返回0，若s1>s2则返回正数，若s1\<s2则返回负数；
+* **strcat(s1,s2)** : 将字符串s2连接到s1上，返回 s1；
+* **strcpy(s1,s2)** : 将s2，复制到s1，返回 s1.
+
+14. c++ 面向对象
+
+封装、继承、多态
 
 15. ++i和i++的区别
 
-16. c++ 定义常量。常量存放在内存的哪个位置
+* i++ 返回原来的值，++i 返回加1后的值。
+* i++ 不能作为左值，而++i 可以。
+
+++运算符重载
+```c++
+int& int::operator++() //这里返回的是一个引用形式，就是说函数返回值也可以作为一个左值使用。
+{//函数本身无参，意味着是在自身空间内增加1的
+  *this += 1;  // 增加
+  return *this;  // 取回值
+}
+
+const int int::operator++(int) //函数返回值是一个非左值型的，与前缀形式的差别所在。
+{//函数带参，说明有另外的空间开辟
+  int oldValue = *this;  // 取回值
+  ++(*this);  // 增加
+  return oldValue;  // 返回被取回的值
+}
+//如上所示，i++ 最后返回的是一个临时变量，而临时变量是右值。
+```
+
+16. c++ 定义常量的方式。常量存放在内存的哪个位置
+
+\#define 、const 
+其中#define是定义宏变量，它其实是在编译之前，由预处理指令把代码里面的宏变量用指定的字符串替换，它不做语法检查
+
+const常量存放在常量存储区
 
 17. const修饰成员函数的目的
 

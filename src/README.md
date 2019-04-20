@@ -2009,7 +2009,7 @@ using namespace std;
 // 要生成和返回随机数的函数
 int * getRandom( )
 {
-  static int  r[10];
+  static int r[10];
  
   // 设置种子
   srand( (unsigned)time( NULL ) );
@@ -6186,7 +6186,7 @@ C++程序设计中使用堆内存是非常频繁的操作，堆内存的申请�
 * 3.智能指针的作用还有一个作用是把值语义转变为引用语义
 
 *C++11*版本后提供，包含在头文件\<memory\>的*std*命名空间中,
-*shared_ptr*,*unique_ptr*,*weak_ptr*
+*shared_ptr*,*unique_ptr*,*weak_ptr*,*auto_ptr*
 
 * **shared_ptr**
 
@@ -6240,6 +6240,11 @@ static void uniqueptrDemo(){
 * **weak_ptr**
 
 weak_ptr是为了配合shared_ptr而引入的一种智能指针，因为它不具有普通指针的行为，没有重载operator*和->,它的最大作用在于协助shared_ptr工作,像旁观者那样观测资源的使用情况。weak_ptr可以一个shared_ptr或者另一个weak_ptr对象构造，获得资源的观测权。但weak_ptr没有共享资源,它的构造不会引起指针引起引用计数的增加。使用weak_ptr的成员函数use_count()可以观测观测资源的引用计数,另一个成员函数expired()的功能等价于use_count()==0,但更快，表示被观测的资源(也就是shared_ptr的管理的资源)已经不复存在。weak_ptr可以使用一个非常重要的成员函数lock()从被观测的shared_ptr获得一个可用的shared_ptr对象,从而操作资源。但当expired()==true的时候,lock()函数将返回一个存储空指针的shared_ptr
+
+* **auto_ptr**
+
+auto_ptr的出现，主要是为了解决“有异常抛出时发生内存泄漏”的问题。auto_ptr的构造函数为explicit，阻止了一般指针隐式类型转换为auto_ptr的构造，所以如下的创建方式是编译不过的。auto_ptr对象被拷贝或者被赋值后，已经失去了对原指针的所有权，此时，对这个auto_ptr的读取操作是不安全的。auto_ptr支持所拥有的指针类型之间的隐式类型转换。
+auto_ptr对象的提领操作：以像使用一般指针一样，通过*和->运算符对auto_ptr所有用的指针进行提领操作。首先必须确保这个auto_ptr对象确实拥有某个指针。auto_ptr的辅助函数：T\* get(),获得auto_ptr所拥有的指针。T\* release(), 释放auto_ptr的所有权，并将所有用指针返回。void reset(T\* ptr=0), 接收所有权，接收之前拥有其它指针的话，必须先释放其空间。
 
 ```c++
 
@@ -7103,7 +7108,7 @@ reverse_copy(beg, end, dest);
 
 泛型编程是指独立与任何类型的方式编写代码。泛型编程和面向对象编程，都依赖与某种形式的多态。面向对象编程的多态性在运行时应用于存在继承关系的类，一段代码可以可以忽略基类和派生类之间的差异。在泛型编程中，编写的代码可以用作多种类型的对象。面向对象编程所依赖的多态性称为运行时多态性，泛型编程所依赖的多态性称为编译时多态性或参数式多态性。
 
-*函数模板*
+**函数模板**
 
 模板定义以关键字 template 开始，后接模板形参表，模板形参表是用尖括号括住的一个或多个模板形参的列表，形参之间以逗号分隔。模板形参表不能为空。模板函数的类型形参跟在关键字 class 或 typename 之后定义.在函数模板形参表中，关键字 typename 和 class 具有相同含义，可以互换使用，两个关键字都可以在同一模板形参表中使用。函数模板可以用与非模板函数一样的方式声明为 inline。说明符放在模板形参表之后、返回类型之前，不能放在关键字 template 之前。函数模板调用方式。在发生函数模板的调用时，不显示给出模板参数而经过参数推演，称之为函数模板的隐式模板实参调用（隐式调用）在发生函数模板的调用时，显示给出模板参数而不需要经过参数推演，称之为函数模板的显示模板实参调用（显示调用）。显示模板实参调用在参数推演不成功的情况下是有必要的。函数模板与函数重载。函数模板实际上是建立一个通用函数，其函数类型和形参类型不具体指定，用一个虚拟的类型来代表，凡是函数体相同的函数都可以用这个模板来代替，不必定以多个函数。重载函数的参数个数、参数类型或参数顺序3者中必须至少有一种不同，函数返回值类型可以相同也可以不同，函数体可以相同。
 
@@ -7114,14 +7119,411 @@ inline bool isEqual(const T& t1, const T& t2) {
 }
 ```
 
-*类模板*
+**类模板**
 
 * 类模板也是模板，因此必须以关键字 template 开头，后接模板形参表
 * 除了模板形参表外，类模板的定义看起来与任意其他类问相似。类模板可以定义数据成员、函数成员和类型成员，也可以使用访问标号控制对成员的访问，还可以定义构造函数和析构函数等等。
 * 与调用函数模板形成对比，使用类模板时，必须为模板形参显式指定实参，类模板的形参不存在实参推演的。
 
 ```c++
-
+const size_t MAXSIZE = 100;
+template<class T>
+class Stack{
+private:
+    T elements[MAXSIZE];
+public:
+    //others
+};
 ```
+
+**模板参数**
+
+* 类型模板形参：类型形参由关见字class或typename后接说明符构成，如template\<class T\> void getMaxVal(const T& a，const T& b){};其中T就是一个类型形参，类型形参的名字由用户自已确定。
+* 非类型模板形参：模板的非类型形参也就是内置类型形参，如template\<class T, int X\> greaterThanX(const T& a);其中int X就是非类型的模板形参。非类型形参在模板定义的内部是常量值，也就是说非类型形参在模板的内部是常量。非类型的模板参数是有限制的,一般是一个整型，它们可以是常整数（包括枚举类型）或者指向外部链接对象的指针。浮点数和类对象是不允许作为非类型模板参数的。
+* 模板的默认参数。*可以为类模板的类型形参提供默认值，但不能为函数模板的类型形参提供默认值*。函数模板和类模板都可以为模板的非类型形参提供默认参数。类模板类型形参默认值和函数的默认参数一样，如果有多个类型形参则从第一个形参设定了默认值之后的所有模板形参都要设定默认值。类模板的类型形参默认值形式为：template\<class T1, class T2=int\> class A{};为第二个模板类型形参T2提供int型的默认值，在类模板的外部定义类中的成员时template 后的形参表应省略默认的形参类型。比如template\<class  T1, class T2=int\> class A{public: void h();}; 定义方法为template\<class T1,class T2\> void A<T1,T2>::h(){}
+
+```c++
+template<typename T,int X = 5>
+inline bool isEqualToX(const T& a) {
+    return a == X;
+}
+
+template<class T,int MAXSIZE=100>
+class Stack {
+private:
+    T elements[MAXSIZE];
+public:
+    //others
+};
+```
+
+**模板特化与偏特化**
+
+有时为了需要,针对特定的类型,需要对模板进行特化,也就是特殊处理。 例如，stack类模板针对bool类型，因为实际上bool类型只需要一个二进制位，就可以对其进行存储，使用一个字或者一个字节都是浪费存储空间的.。特化必须在同一命名空间下进行，可以特化类模板也可以特化函数模板，但类模板可以偏特化和全特化，而函数模板只能全特化。模板的偏特化是指需要根据模板的某些但不是全部的参数进行特化。严格的来说，函数模板并不支持偏特化，但由于可以对函数进行重载，所以可以达到类似于类模板偏特化的效果。模板实例化时会优先匹配”模板参数”最相符的那个特化版本。template \< \>告诉编译器这是一个特化的模板。
+
+```c++
+template<class T,int MAXSIZE=100>
+class Stack {
+private:
+    T elements[MAXSIZE];
+public:
+    //others
+};
+
+//template specializations aim at bool
+template<>
+class Stack<bool>{
+
+};
+```
+
+```c++
+template<typename T>
+inline bool isEqual(const T t1, const T t2) {
+    return t1 == t2;
+}
+
+//针对int型的指针做特化
+template<>
+inline bool isEqual(const int* p1,const int* p2){
+    return *p1 == *p2;
+}
+```
+
+```c++
+template <class T, class Allocator>
+class vector { // … // };
+template <class Allocator>
+class vector<bool, Allocator> { //…//};
+```
+
+**模板实例化与匹配规则**
+
+* **隐式实例化**在使用模板函数和模板类时，不存在指定类型的模板函数和模板类的实体时，由编译器根据指定类型参数隐式生成模板函数或者模板类的实体称之为模板的隐式实例化。函数模板隐式实例化指的是在发生函数调用的时候，如果没有发现相匹配的函数存在，编译器就会寻找同名函数模板，如果可以成功进行参数类型推演，就对函数模板进行实例化。类模板隐式实例化指的是在使用模板类时才将模板实例化。
+* **显示实例化**显示实例化也称为外部实例化。在不发生函数调用的时候将函数模板实例化，或者在不适用类模板的时候将类模板实例化称之为模板显示实例化。对于函数模板而言，不管是否发生函数调用，都可以通过显示实例化声明将函数模板实例化，定义函数模板为：template函数返回类型 函数模板名<实际类型列表>（函数参数列表），显示实例化为template void func<int>(const int&);类模板的显示实例化，对于类模板而言，不管是否生成一个模板类的对象，都可以直接通过显示实例化声明将类模板实例化，定义类模板格式为：template class 类模板名<实际类型列表>，显示实例化为template class theclass<int>;
+* **匹配规则**类模板的匹配规则。最优化的优于次特化的，即模板参数最精确匹配的具有最高的优先权，每个类型都可以用作普通型（a）的参数，但只有指针类型才能用作（b）的参数，而只有void*才能作为(c)的参数。
+
+```c++
+template <class T> class vector{//…//}; // (a) 普通型
+template <class T> class vector<T*>{//…//}; // (b) 对指针类型特化
+template <> class vector <void*>{//…//}; // (c) 对void*进行特化
+```
+
+```c++
+template <class T> void f(T); // (d)
+template <class T> void f(int, T, double); // (e)
+template <class T> void f(T*); // (f)
+template <> void f<int> (int) ; // (g)
+void f(double); // (h)
+bool b;
+int i;
+double d;
+f(b); // 以 T = bool 调用 （d）
+f(i,42,d) // 以 T = int 调用（e）
+f(&i) ; // 以 T = int* 调用（f）
+f(d); // 调用（g）
+```
+
+**可变参数模板**
+
+可变参数模板是C++11新增的特性之一，它对参数高度泛化，他能表示0到任意个数、任意类型的参数。可变模板参数之前会带有省略号，把带省略号的参数称为“参数包”，它里面包含了0到N（N>=0）个模版参数。我们无法直接获取参数包args中的每个参数的，只能通过展开参数包的方式来获取参数包中的每个参数，这是使用可变模版参数的一个主要特点。可变模版参数和普通的模版参数语义是一致的，所以可以应用于函数和类，即可变模版参数函数和可变模版参数类，然而，模版函数不支持偏特化，所以可变模版参数函数和可变模版参数类展开可变模版参数的方法还不尽相同。
+
+递归函数方式展开参数包。通过递归函数展开参数包，需要提供一个参数包展开的函数和一个递归终止函数，递归终止函数正是用来终止递归的。
+逗号方式展开参数包
+
+```c++
+#include <iostream>
+using namespace std;
+//递归终止函数
+void print()
+{
+   cout << "empty" << endl;
+}
+//展开函数
+template <class T, class ...Args>
+void print(T head, Args... rest)
+{
+   cout << "parameter " << head << endl;
+   print(rest...);
+}
+
+
+int main(void)
+{
+   print(1,2,3,4);
+   return 0;
+}
+```
+
+```c++
+template <class T>
+void printarg(T t)
+{
+   cout << t << endl;
+}
+
+template <class ...Args>
+void expand(Args... args)
+{
+   int arr[] = {(printarg(args), 0)...};
+}
+
+expand(1,2,3,4);
+```
+
+可变参数模板类的参数包展开的方式和可变参数模板函数的展开方式不同，可变参数模板类的参数包展开需要通过模板特化和继承方式去展开，展开方式比可变参数模板函数要复杂。可变参数模板类是一个带可变模板参数的模板类，比如C++11中的元祖std::tuple就是一个可变模板类，它的定义如下，这个可变参数模板类可以携带任意类型任意个数的模板参数。
+
+```c++
+template< class... Types >
+class tuple; 
+std::tuple<int> tp1 = std::make_tuple(1);
+std::tuple<int, double> tp2 = std::make_tuple(1, 2.5);
+std::tuple<int, double, string> tp3 = std::make_tuple(1, 2.5, “”);
+std::tuple<> tp;//可变参数模板的模板参数个数可以为0个，所以下面的定义也是也是合法的：
+```
+
+****
+
+**C++函数指针**
+
+函数指针指向某种特定类型，函数的类型由其参数及返回类型共同决定，与函数名无关。举例如下：
+
+```c++
+int add(int nLeft,int nRight);//函数定义  
+```
+
+该函数类型为int(int,int),要想声明一个指向该类函数的指针，只需用指针替换函数名即可：
+
+```c++
+int (*pf)(int,int);//未初始化  
+```
+
+则pf可指向int(int,int)类型的函数。pf前面有*，说明pf是指针，右侧是形参列表，表示pf指向的是函数，左侧为int，说明pf指向的函数返回值为int。则pf可指向int(int,int)类型的函数。而add类型为int(int,int),则pf可指向add函数。
+
+```c++
+pf = add;//通过赋值使得函数指针指向某具体函数  
+```
+
+```c++
+int *pf(int,int);//此时pf是一个返回值为int*的函数，而非函数指针  
+```
+
+普通函数指针定义
+
+```c++
+int (*pf)(int,int);  
+```
+
+使用typedef定义函数指针类型
+
+```c++
+typedef int (*PF)(int,int);  
+PF pf;//此时，为指向某种类型函数的函数指针类型，而不是具体指针，用它可定义具体指针
+```
+
+函数指针的普通使用
+
+```c++
+pf = add;  
+pf(100, 100);//与其指向的函数用法无异  
+(*pf)(100, 100);//此处*pf两端括号必不可少  
+```
+
+函数指针作为形参
+```c++
+//第二个形参为函数类型，会自动转换为指向此类函数的指针  
+Void fuc(int nValue, int pf(int, int));  
+  
+//等价的声明，显示的将形参定义为指向函数的指针  
+Void fuc(int nValue, int (*pf)(int, int));  
+Void fuc(int nValue, PF);  
+```
+
+形参中有函数指针的函数调用，以fuc为例：
+```c++
+pf = add;//pf是函数指针  
+fuc(1, add);//add自动转换为函数指针  
+fuc(1, pf);  
+```
+
+使用typedef定义的函数指针类型作为返回参数
+```c++
+PF fuc2(int);//PF为函数指针类型  
+```
+
+```c++
+int (*fuc2(int))(int, int);//显示定义  
+```
+
+由于C++完全兼容C，则C中可用的函数指针用法皆可用于C++
+
+typedef与decltype组合定义函数类型
+
+```c++
+typedef decltype(add) add2; 
+```
+
+typedef与decltype组合定义函数指针类型
+
+```c++
+typedef decltype(add)* PF2;//PF2与1.1PF意义相同
+PF2 pf;// pf指向int(int,int)类型的函数指针，未初始化 
+```
+
+使用推断类型关键字auto定义函数类型和函数指针
+
+```c++
+auto pf = add;//pf可认为是add的别名(个人理解)   
+auto *pf = add;//pf为指向add的指针 
+```
+
+函数指针形参
+
+```c++
+typedef decltype(add) add2;  
+typedef decltype(add)* PF2;  
+void fuc2 (add2 add);//函数类型形参，调用自动转换为函数指针  
+void fuc2 (PF2 add);//函数指针类型形参，传入对应函数(指针)即可  
+```
+
+使用auto关键字
+
+```c++
+auto fuc2(int)-> int(*)(int,int) //fuc2返回函数指针为int(*)(int,int)
+```
+
+使用decltype关键字
+
+```c++
+decltype(add)* fuc2(int)//明确知道返回哪个函数，可用decltype关键字推断其函数类型
+```
+
+```c++
+class A//定义类A  
+{  
+private:  
+  
+       int add(int nLeft, int nRight)  
+  
+       {  
+              return (nLeft + nRight);  
+       }  
+  
+public:  
+  
+       void fuc()  
+  
+       {  
+              printf("Hello  world\n");  
+             
+       }  
+};  
+  
+   
+typedef void(A::*PF1)();//指针名前需加上类名限定  
+  
+PF1 pf1 = &A::fuc; //必须有&  
+  
+A a;//成员函数地址解引用必须附驻与某个对象地址，所以必须创建一个队形  
+  
+(a.*pf1)();//使用成员函数指针调用函数  
+```
+
+普通成员函数指针使用举例 
+
+```c++
+class A//定义类A  
+{  
+private:  
+  
+       int add(int nLeft, int nRight)  
+  
+       {  
+              return (nLeft + nRight);  
+       }  
+  
+public:  
+  
+       void fuc()  
+  
+       {  
+              printf("Hello  world\n");  
+             
+       }  
+};  
+  
+   
+typedef void(A::*PF1)();//指针名前需加上类名限定  
+  
+PF1 pf1 = &A::fuc; //必须有&  
+  
+A a;//成员函数地址解引用必须附驻与某个对象地址，所以必须创建一个队形  
+  
+(a.*pf1)();//使用成员函数指针调用函数  
+```
+
+继承中的函数指针使用举例
+
+```c++
+class A  
+{  
+public:  
+       void fuc()  
+       {  
+              printf("Hello fuc()\n");  
+       }  
+  
+       void fuc2()  
+       {  
+              printf("Hello A::fuc2()\n");  
+       }  
+};  
+  
+class B:public A  
+{  
+public:  
+       virtual void fuc2()  
+       {  
+              printf("Hello B::fuc2()\n");  
+       }  
+  
+};  
+  
+typedef void(A::*PF1)();  
+typedef void(B::*PF2)();  
+  
+PF1 pf1 = &A::fuc;  
+  
+int main()         
+{  
+       A a;  
+       B b;  
+       (a.*pf1)();  //调用A::fuc  
+       (b.*pf1)();   //调用A::fuc  
+  
+       pf1 = &A::fuc2;  
+       (a.*pf1)();  //调用A::fuc2  
+       (b.*pf1)();  //调用A::fuc2  
+  
+       PF2 pf2 = &A::fuc2;   
+       (b.*pf2)(); //调用A::fuc2  
+}  
+```
+
+重载函数fuc
+
+```c++
+Void fuc();  
+Void fuc(int);  
+```
+
+重载函数的函数指针
+
+```c++
+void (*PF)(int) = fuc;//PF指向fuc(int)  
+int(*pf2)(int) = fuc;//错误没有匹配的类型
+```
+
+
 
 **C++内存池、内存管理、内存泄露**

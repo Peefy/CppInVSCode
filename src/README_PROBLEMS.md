@@ -576,6 +576,70 @@ P.S.
 
 22. RTTI
 
+多态（Polymorphism）按字面的意思就是“多种状态”。在面向对象的语言中，接口的多种不同的实现方式即为多态。引用Charlie Calverts对多态的描述——多态性是允许你将基类设置成为和一个或更多的他的子类相等的技术，赋值之后，父对象就可以根据当前赋值给它的子对象的特性以不同的方式运作。
+
+RTTI 是“Runtime Type Information”的缩写，意思是：运行时类型信息。它提供了运行时确定对象类型的方法。本文将简略介绍 RTTI 的一些背景知识、描述 RTTI 的概念，并通过具体例子和代码介绍什么时候使用以及如何使用 RTTI；
+
+本文还将详细描述两个重要的 RTTI 运算符的使用方法，它们是 typeid 和 dynamic_cast。 
+
+```c++
+class Human
+{
+
+};
+
+class Chinese : public Human
+{
+
+};
+
+class Japanese : public Human
+{
+
+};
+```
+
+```c++
+void Kill(Human *pHuman)
+{
+　　if(typeid(*pHuman) == typeid(Japanese))
+　　{
+　　　　//kill
+　　}
+　　else if(typeid(*pHuman) == typeid(Chinese))
+　　{
+　　　　// not kill
+　　}
+}
+```
+
+dynamic_cast，这个运算符用于多态编程中保证在运行时发生正确的转换（即编译器无法验证是否发生正确的转换）。dynamic_cast 常用于从多态编程基类指针向派生类指针的向下类型转换。它有两个参数：一个是类型名；另一个是多态对象的指针或引用。其功能是在运行时将对象强制转换为目标类型并返回布尔型结果。
+
+```c++
+void Kill(Human *pHuman)
+{
+　　if(dynamic_cast<Japanese*>(pHuman))
+　　{
+　　　　//kill
+　　}
+　　else
+　　{
+　　　　// not kill
+　　}
+}
+```
+
+```c++
+void menu::build(const File * pfile) { 
+    if (typeid(*pfile)==typeid(TextFile)) { 
+        add_option("edit"); 
+    } 
+    else if (typeid(*pfile)==typeid(MediaFile)) { 
+        add_option("play"); 
+    } 
+}
+```
+
 23. 虚函数在运行时如何实现多态
 
 24. c语言怎么实现函数调用

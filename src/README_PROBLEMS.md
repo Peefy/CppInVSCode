@@ -642,11 +642,88 @@ void menu::build(const File * pfile) {
 
 23. 虚函数在运行时如何实现多态
 
+```c++
+class Base
+{
+public:
+    Base(string data) :m_data(data){}
+    void show(){ cout << "Base:: " << m_data << endl; }
+    string GetData(){ return m_data; }
+private:
+    string m_data;
+};
+
+class Derived :public Base
+{
+public:
+    Derived(int id, string data) : m_id(id), Base(data){ }
+    void show(){ cout << "Derived:: " << m_id<<"  " << GetData() << endl; }
+private:
+    const int m_id;
+};
+
+int main()
+{
+    Base *A = new Base("hello");        //指向基类对象的指针
+    A->show();
+    Base *B = new Derived(1, "hello");  //指向派生类对象的指针
+    B->show();;
+//对于这两个指针，我们希望它们分别对应基类和派生类的 show()函数
+    system("pause");
+    return 0;
+}
+```
+
+此时可以发现：并没有如我们预想的那样，基类的show()函数遮蔽了派生类的show()函数，原因在于我们没有使用虚函数，虚函数是实现运行是多态。 
+所以想要实现运行时多态，很简单，只需要将基类的show()前加上virtual 关键字即可。
+
+```c++
+class Base
+{
+public:
+    Base(string data) :m_data(data){}
+    virtual void show(){ cout << "Base:: " << m_data << endl; }
+    string GetData(){ return m_data; }
+private:
+    string m_data;
+};
+```
+
 24. c语言怎么实现函数调用
+
+使用调用语句，先声明，再调用
 
 25. c语言参数压栈顺序
 
+由于汇编语言是底层的编程语言，各种函数参数都要直接控制栈进行存取，在混合编程中，要用汇编来调用C函数，当然就要知道参数的压栈情况了。
+
+C函数的参数压栈顺序是从右到左时
+
+对于不定参数printf，从右往左压栈可以知道参数的个数
+
 26. 请你说说C++如何处理返回值？
+
+* 不要返回局部对象的引用或者指针
+* 引用返回左值，其他返回类型得到右值
+* main函数返回值中，0表示成功，其他表示识别。
+
+* **函数返回值**-c++ 11新标准规定， 函数可以返回花括号包围的值列表。其实，就是使用列表初始化的方式对表示函数返回的临时变量进行初始化。
+```c++
+vector<string> process()
+{
+    return {"funca", "funcb"};
+}
+```
+* **返回数组指针**-因为数组不能被拷贝， 所以不能返回数组。 不过函数可以返回数组的指针或引用， 只是返回类型的定义比较繁琐。
+```c++
+int  (*func(int i))[10] {} // 表示返回一个大小为10，类型为int型的数组。
+```
+或者
+```c++
+typedef int Array[10]; // Array是一个类型别名
+
+Array* func(int i){}
+```
 
 27. 请你回答一下C++中拷贝赋值函数的形参能否进行值传递？
 

@@ -52,7 +52,9 @@
         "sstream": "cpp",
         "string_view": "cpp",
         "unordered_set": "cpp",
-        "numeric": "cpp"
+        "numeric": "cpp",
+        "ctime": "cpp",
+        "mutex": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.errorSquiggles": "Disabled"

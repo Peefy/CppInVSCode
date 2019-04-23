@@ -1,6 +1,7 @@
 
 #include <iostream>
 #include <vector>
+#include <list>
 #include <map>
 #include <memory>
 
@@ -18,6 +19,11 @@ int main()
     {
         printf("%d\n", i);
     }
+
+    thread_local std::vector<int> v;
+
+    demo::typeOfDataDemo();
+    demo::noteDemo();
 
     DuGu::smartPointerDemo();
 

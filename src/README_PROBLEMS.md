@@ -295,6 +295,14 @@ Linux下一个进程在内存里有三部分的数据，就是”代码段”、
 
 fork()子进程只进行fork后面的语句,复制前面的父进程的数据，但不执行语句
 
+//头文件
+
+\#include \<unistd.h\>
+
+//函数定义
+
+pid_t fork( void );
+
 ```c++
 #include <unistd.h>
 #include <sys/types.h>
@@ -737,57 +745,245 @@ select函数用于决定一个或者多个套接字的状态。对于每一个�
 
 29. 请你说说fork,wait,exec函数
 
+//头文件
+
+\#include \<unistd.h\>
+
+//函数定义
+
+pid_t fork( void );
+
+返回值：子进程中返回0，父进程中返回子进程ID，出错返回-1函数说明：一个现有进程可以调用fork函数创建一个新进程。由fork创建的新进程被称为子进程（child process）。fork函数被调用一次但返回两次。两次返回的唯一区别是子进程中返回0值而父进程中返回子进程ID。子进程是父进程的副本，它将获得父进程数据空间、堆、栈等资源的副本。
+
+注意，在fork()的调用处，整个父进程空间会原模原样地复制到子进程中，包括指令，变量值，程序调用栈，环境变量，缓冲区，等等。 子进程持有的是上述存储空间的“副本”，这意味着父子进程间不共享这些存储空间，它们之间共享的存储空间只有代码段。
+
+```c++
+#include <stdio.h>
+#include <unistd.h>
+ 
+void main()
+{
+    int i;
+    printf("hello, %d\n",getpid());
+    i=2;
+    fork();
+    printf("var %d in %d\n", i, getpid());
+}
+```
+
+输出结果
+```c++
+hello, 2808 
+var 2 in 2808 
+var 2 in 2809
+```
+
+fork英文是叉的意思.在这里的意思是进程从这里开始分叉,分成了两个进程,一个是父进程,一个子进程.子进程拷贝
+
 30. 请你回答一下静态函数和虚函数的区别
 
-31. 
+```c++
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+void main()
+{
+    int i=0;
+    pid_t fork_result;
+    printf("pid:%d->main begin()\n",getpid());
+    fork_result=fork();
+    if(fork_result<0)
+    {   
+        printf("fork fail\n");
+        exit(1);
+    }   
+    for(i=0; i<3; i++)
+    {   
+        if(fork_result==0)
+            printf("in ID %d child process: %d\n", getpid(), i);
+        else
+            printf("in ID %d parent process: %d\n", getpid(), i);
+    }   
+} 
+```
 
-32. 
+```c++
+pid:3881->main begin()
+in ID 3881 parent process: 0
+in ID 3881 parent process: 1
+in ID 3881 parent process: 2
+in ID 3882 child process: 0
+in ID 3882 child process: 1
+in ID 3882 child process: 2
+```
 
-33. 
+```c++
+#include <stdio.h>
+#include <unistd.h>
+#include <stdlib.h>
+ 
+void main()
+{
+    printf("hello world %d",getpid());
+    //fflush(0);
+    fork();
+}
+```
 
-34. 
+```c++
+#include <unistd.h>
+#include <stdio.h>
+int main(void)
+{
+    pid_t pid;
+    int count=0;
+    pid=vfork();
+    count++;
+    printf("count= %d\n",count);
+    return 0;
+}
+```
 
-35. 
+pid_t wait(int *status) 　
+参数status用来保存被收集进程退出时的一些状态，它是一个指向int类型的指针。进程一旦调用了wait，就立即阻塞自己，由wait自动分
 
-36. 
+析是否当前进程的某个子进程已经退出，如果让它找到了这样一个已经变成僵尸的子进程， wait就会收集这个子进程的信息，并把它彻底
 
-37. 
+UNIX的信号往往是不会排队的
 
-38. 
+```c++
+int execl(const char *path, const char *arg, ......);
 
-39. 
+int execle(const char *path, const char *arg, ...... , char * const envp[]);
 
-40. 
+int execv(const char *path, char *const argv[]);
 
-41. 
+int execve(const char *path, char *const argv[], char *const envp[]);
 
-42. 
+int execvp(const char *file, char * const argv[]);
 
-43. 
+int execlp(const char *file, const char *arg, ......);
+```
 
-44. 
+```c++
+#include <pthread.h>
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
+#include <sys/time.h>
+#include <sys/resource.h>
+#include <signal.h>
+#include <sys/wait.h>
+ 
+int main()
+{
+   int status;
+   struct rlimit memlim,timlim;
+    getrlimit(RLIMIT_CPU,&timlim);
+    getrlimit(RLIMIT_AS ,&memlim);
+    memlim.rlim_cur=3*1024*1024; // MB
+    timlim.rlim_cur=1;// s
+ 
+    int pid = vfork();//用vfork可以保证子进程比父进程先运行
+    if(pid==0)
+    {
+        setrlimit( RLIMIT_CPU,&timlim);
+        setrlimit( RLIMIT_AS,&memlim);
+        int *p = (int *)calloc(8*1024*1024, sizeof(int));
+        if(-1==execl("/home/daniel/my_linux/apue/my_programming/my",\
+						"my", (char *)0))
+        {
+            perror( "execl error\n ");
+            exit(1);
+        }
+        exit(0);
+    }
+  wait(&status);
+  printf("%d\n",status);
+  if(!WIFEXITED(status))
+  {
+    int sig=0;
+       //处理程序非正常结束状态
+    if(WIFSIGNALED(status))
+      sig=WTERMSIG(status);
+    else
+     return 1;
+   // printf("%d\n",sig);
+    if(sig == SIGXCPU)//24
+        {
+                printf("tle\n");
+            }
+            if(sig == SIGXFSZ)
+        {
+                printf("ole\n");
+            }
+            if(sig == SIGSEGV)
+       {
+                printf("re\n");
+            }
+            if(sig==SIGKILL) // 6
+       {
+                printf("mle\n");         
+            }
+           //if (WCOREDUMP(status))
+        //printf("mle\n");
+ 
+    }
+  return 0;
+ 
+}
+```
 
-45. 
+31. map和set的区别和实现
 
-46. 
+32. c++ STL的allocaotr
 
-47. 
+33. STL迭代器删除元素
 
-48. 
+34. STL中MAP数据存放形式
 
-49. 
+35. STL有什么基本组成
 
-50. 
+36. STL中map与unordered_map
 
-51. 
+37. vector和list的区别，应用，
 
-52. 
+38. STL中迭代器的作用，有指针为何还要迭代器**
 
-53. 
+39. epoll原理
 
-54. 
+40. STL迭代器是怎么删除元素的呢
 
-55. 
+41. STL里resize和reserve的区别
+
+42. C++**中类成员的访问权限
+
+43. C++中struct和class的区别
+
+44. C++类内可以定义引用数据成员吗？
+
+45. C++源文件从文本到可执行文件经历的过程？
+
+46. include头文件的顺序以及双引号””和尖括号的区别？
+
+47. malloc的原理，另外brk系统调用和mmap系统调用的作用分别是什么？
+
+48. C++的内存管理是怎样的？
+
+49. C++/C的内存分配
+
+50. 什么是内存泄露、如何判断内存泄漏？
+
+51. 共享内存相关api 
+
+52. reactor模型组成
+
+53. 设计一下如何采用单线程的方式处理高并发
+
+54. select，epoll的区别，原理，性能，限制都说一说
+
+55. C++ STL 的内存优化
 
 56. 
 

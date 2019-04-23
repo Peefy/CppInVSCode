@@ -20,7 +20,7 @@ int main()
         printf("%d\n", i);
     }
 
-    thread_local std::vector<int> v;
+    //thread_local std::vector<int> v;
 
     demo::typeOfDataDemo();
     demo::noteDemo();

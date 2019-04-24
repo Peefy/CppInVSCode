@@ -20,12 +20,14 @@ int main()
         printf("%d\n", i);
     }
 
-    thread_local std::vector<int> v;
+    //thread_local std::vector<int> v;
 
     demo::typeOfDataDemo();
     demo::noteDemo();
 
     DuGu::smartPointerDemo();
+
+    auto plane = PlaneType::Bo737;
 
     return 0;
 }

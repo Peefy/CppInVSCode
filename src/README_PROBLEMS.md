@@ -937,15 +937,114 @@ int main()
 
 31. map和set的区别和实现
 
-32. c++ STL的allocaotr
+map和set都是关联式容器，底层容器都是红黑树RBTree,区别是map区分键和值，set属于集合，不区分键值，如在Java里面HashSet就是用HashMap实现的，不允许键重复，所有元素是通过键进行自动排序的
+
+32. c++ STL的allocate
+
+简单来说，是为了各种泛型容器如vector，map等分配内存，使程序员不比为内存而担心，只需添加数据即可。空间配置器，由两级分配器构成，大于128字节，调用一级配置器，malloc/free，realloc；小于128字节，默认二级配置器，分配内存池。为了便于内存管理，减少内存碎片产生
 
 33. STL迭代器删除元素
 
+使用容器的erase方法删除
+
+* 对于`关联容器`（如map， set，multimap，multiset），删除当前的iterator，仅仅会使当前的iterator失效，只要在erase时，递增当前iterator即可。这是因为map之类的容器，使用了红黑树来实现，插入、删除一个结点不会对其他结点造成影响。
+* 对于`序列式容器`（如vector，deque），删除当前的iterator会使后面所有元素的iterator都失效。这是因为vetor，deque使用了连续分配的内存，删除一个元素导致后面所有的元素会向前移动一个位置。还好erase方法可以返回下一个有效的iterator。
+* 对于list来说，它使用了不连续分配的内存，并且它的erase方法也会返回下一个有效的iterator，因此上面两种正确的方法都可以使用。
+
+```c++
+for(auto iter = v.begin(), iter!=v.end(); /*iter++*/)
+{
+    if(iter == 3)
+        iter = v.erase(iter);
+    else
+        iter++;
+}
+```
+
+```c++
+for(auto iter1 = theMap.begin(); iter1 != theMap.end(); )  
+{  
+    if(iter1->second == xxx)  
+    {  
+        theMap.erase(iter1++);  
+    }  
+    else  
+    {  
+        ++iter1;  
+    }  
+}
+```
+
 34. STL中MAP数据存放形式
+
+map作为关联式容器，底层由RBTree红黑树实现，map\<key_type,value_type\>，以键值对的形式存储，与python的dict和Java的HashMap类似
 
 35. STL有什么基本组成
 
+STL有三大核心部分：容器（Container）、算法（Algorithms）、迭代器（Iterator），容器适配器（container adaptor），函数对象(functor)，除此之外还有STL其他标准组件。通俗的讲：
+
+* **容器(container)**器是数据在内存中组织的方法，例如，数组、堆栈、队列、链表或二叉树（不过这些都不是STL标准容器）。STL中的容器是一种存储T（Template）类型值的有限集合的数据结构,容器的内部实现一般是类。这些值可以是对象本身，如果数据类型T代表的是Class的话。
+* **算法(algorithms)**算法是应用在容器上以各种方法处理其内容的行为或功能。例如，有对容器内容排序、复制、检索和合并的算法。在STL中，算法是由模板函数表现的。这些函数不是容器类的成员函数。相反，它们是独立的函数。令人吃惊的特点之一就是其算法如此通用。不仅可以将其用于STL容器，而且可以用于普通的C＋＋数组或任何其他应用程序指定的容器。
+* **迭代器(iterator)**一旦选定一种容器类型和数据行为(算法)，那么剩下唯一要他做的就是用迭代器使其相互作用。可以把达代器看作一个指向容器中元素的普通指针。可以如递增一个指针那样递增迭代器，使其依次指向容器中每一个后继的元素。迭代器是STL的一个关键部分，因为它将算法和容器连在一起。
+* **容器适配器(container adaptpr)**包括栈（stack）、队列(queue)、优先(priority_queue)。使用容器适配器，stack就可以被实现为基本容器类型（vector,dequeue,list）的适配。可以把stack看作是某种特殊的vctor、deque或者list容器，只是其操作仍然受到stack本身属性的限制。queue和priority_queue与之类似。容器适配器的接口更为简单，只是受限比一般容器要多；
+* **函数对象(functor)**
+
 36. STL中map与unordered_map
+
+unordered_map和map类似，都是存储的key-value的值，可以通过key快速索引到value。不同的是unordered_map不会根据key的大小进行排序，
+
+存储时是根据key的hash值判断元素是否相同，即unordered_map内部元素是无序的，而map中的元素是按照二叉搜索树存储，进行中序遍历会得到有序遍历。
+
+所以使用时map的key需要定义operator<。而unordered_map需要定义hash_value函数并且重载operator==。但是很多系统内置的数据类型都自带这些，
+
+那么如果是自定义类型，那么就需要自己重载operator<或者hash_value()了。
+
+```c++
+#include<string>  
+#include<iostream>  
+#include<map>  
+  
+using namespace std;  
+  
+struct person  
+{  
+    string name;  
+    int age;  
+  
+    person(string name, int age)  
+    {  
+        this->name =  name;  
+        this->age = age;  
+    }  
+  
+    bool operator < (const person& p) const  
+    {  
+        return this->age < p.age;   
+    }  
+};  
+  
+map<person,int> m;  
+int main()  
+{  
+    person p1("Tom1",20);  
+    person p2("Tom2",22);  
+    person p3("Tom3",22);  
+    person p4("Tom4",23);  
+    person p5("Tom5",24);  
+    m.insert(make_pair(p3, 100));  
+    m.insert(make_pair(p4, 100));  
+    m.insert(make_pair(p5, 100));  
+    m.insert(make_pair(p1, 100));  
+    m.insert(make_pair(p2, 100));  
+      
+    for(map<person, int>::iterator iter = m.begin(); iter != m.end(); iter++)  
+    {  
+        cout<<iter->first.name<<"\t"<<iter->first.age<<endl;  
+    }  
+      
+    return 0;  
+}
+```
 
 37. vector和list的区别，应用，
 

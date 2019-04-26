@@ -1109,9 +1109,50 @@ int main()
 
 39. epoll原理
 
+epoll是Linux内核为处理大批量文件描述符而作了改进的poll，是Linux下多路复用IO接口select/poll的增强版本，它能显著提高程序在大量并发连接中只有少量活跃的情况下的系统CPU利用率。另一点原因就是获取事件的时候，它无须遍历整个被侦听的描述符集，只要遍历那些被内核IO事件异步唤醒而加入Ready队列的描述符集合就行了。epoll除了提供select/poll那种IO事件的水平触发（Level Triggered）外，还提供了边缘触发（Edge Triggered），这就使得用户空间程序有可能缓存IO状态，减少epoll_wait/epoll_pwait的调用，提高应用程序效率。
+
 40. STL迭代器是怎么删除元素的呢
 
+使用容器的erase方法删除
+
+* 对于`关联容器`（如map， set，multimap，multiset），删除当前的iterator，仅仅会使当前的iterator失效，只要在erase时，递增当前iterator即可。这是因为map之类的容器，使用了红黑树来实现，插入、删除一个结点不会对其他结点造成影响。
+* 对于`序列式容器`（如vector，deque），删除当前的iterator会使后面所有元素的iterator都失效。这是因为vetor，deque使用了连续分配的内存，删除一个元素导致后面所有的元素会向前移动一个位置。还好erase方法可以返回下一个有效的iterator。
+* 对于list来说，它使用了不连续分配的内存，并且它的erase方法也会返回下一个有效的iterator，因此上面两种正确的方法都可以使用。
+
+```c++
+for(auto iter = v.begin(), iter!=v.end(); /*iter++*/)
+{
+    if(iter == 3)
+        iter = v.erase(iter);
+    else
+        iter++;
+}
+```
+
+```c++
+for(auto iter1 = theMap.begin(); iter1 != theMap.end(); )  
+{  
+    if(iter1->second == xxx)  
+    {  
+        theMap.erase(iter1++);  
+    }  
+    else  
+    {  
+        ++iter1;  
+    }  
+}
+```
+
 41. STL里resize和reserve的区别
+
+reserve是容器预留空间，但并不真正创建元素对象，在创建对象之前，不能引用容器内的元素，因此当加入新的元素时，需要用push_back()/insert()函数。
+
+resize是改变容器的大小，并且创建对象，因此，调用这个函数之后，就可以引用容器内的对象了，因此当加入新的元素时，用operator[]操作符，或者用迭代器来引用元素对象。
+其次，两个函数的形式是有区别的：
+reserve函数之后一个参数，即需要预留的容器的空间；
+resize函数可以有两个参数，第一个参数是容器新的大小，第二个参数是要加入容器中的新元素，如果这个参数被省略，那么就调用元素对象的默认构造函数。
+
+初次接触这两个接口也许会混淆，其实接口的命名就是对功能的绝佳描述，resize就是重新分配大小，reserve就是预留一定的空间。这两个接口即存在差别，也有共同点。
 
 42. C++**中类成员的访问权限
 

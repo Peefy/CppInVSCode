@@ -1399,3 +1399,70 @@ a.deallocate(p,n);//释放内存n*sizeof(T)，p为指向内存对象,并不运�
 a.construct(p,t);//在指针p处构造对象，运行T类型的复制构造函数，用t初始化
 a.destroy(p);//运行p指针处对象的析构函数
 ```
+
+**56. C++的锁**
+
+C++11提供了4个互斥对象(C++14提供了1个)用于同步多个线程对共享资源的访问。
+
+类名|描述
+-|-
+std::mutex|最简单的互斥对象。
+std::timed_mutex|带有超时机制的互斥对象，允许等待一段时间或直到某个时间点仍未能获得互斥对象的所有权时放弃等待。
+std::recursive_mutex|允许被同一个线程递归的Lock和Unlock。
+std::recursive_timed_mutex|顾名思义(bù jiě shì)。
+std::shared_timed_mutex(C++14)|允许多个线程共享所有权的互斥对象，如读写锁，本文不讨论这种互斥。
+
+锁是动词而非名词，互斥对象的主要操作有两个加锁(lock)和释放锁(unlock)。当一个线程对互斥对象进行lock操作并成功获得这个互斥对象的所有权，在此线程对此对象unlock前，其他线程对这个互斥对象的lock操作都会被阻塞。
+
+*使用RAII管理互斥对象*
+
+在使用锁时应避免发生死锁(Deadlock)。如果程序有多个分支，不得不在每个要提前返回的分支在返回前对这个互斥对象执行unlock操作。一但有某个分支在返回前忘了对这个互斥对象执行unlock，就可能会导致程序死锁。为避免这类死锁的发生，其他高级语言如C#提供了lock关键字、Java提供了synchronized关键字，它们都是通过finally关键字来实现的。
+
+C++通常使用RAII(Resource Acquisition Is Initialization)来自动管理资源。如果可能应总是使用标准库提供的互斥对象管理类模板。
+
+类模板|描述
+-|-
+std::lock_guard|	严格基于作用域(scope-based)的锁管理类模板，构造时是否加锁是可选的(不加锁时假定当前线程已经获得锁的所有权)，析构时自动释放锁，所有权不可转移，对象生存期内不允许手动加锁和释放锁。
+std::unique_lock|	更加灵活的锁管理类模板，构造时是否加锁是可选的，在对象析构时如果持有锁会自动释放锁，所有权可以转移。对象生命期内允许手动加锁和释放锁。
+std::shared_lock(C++14)|	用于管理可转移和共享所有权的互斥对象。
+
+使用std::lock_guard类模板修改前面的代码，在lck对象构造时加锁，析构时自动释放锁，即使执行的函数抛出了异常也会被正确的析构，所以也就不会发生互斥对象没有释放锁而导致死锁的问题。
+
+```c++
+std::set<int> int_set;
+std::mutex mt;
+auto f = [&int_set, &mt]() {
+    try {
+        std::random_device rd;
+        std::mt19937 gen(rd());
+        std::uniform_int_distribution<> dis(1, 1000);
+        for(std::size_t i = 0; i != 100000; ++i) {
+            std::lock_guard<std::mutex> lck(mt);
+            int_set.insert(dis(gen));
+        }
+    } catch(...) {}
+};
+std::thread td1(f), td2(f);
+td1.join();
+td2.join();
+```
+
+*互斥对象管理类模板的加锁策略*
+
+C++11提供了3种加锁策略
+
+策略|tag type|描述
+-|-|-
+(默认)|无|请求锁，阻塞当前线程直到成功获得锁。
+std::defer_lock|std::defer_lock_t|不请求锁。
+std::try_to_lock|std::try_to_lock_t|尝试请求锁，但不阻塞线程，锁不可用时也会立即返回。
+std::adopt_lock|std::adopt_lock_t|假定当前线程已经获得互斥对象的所有权，所以不再请求锁。
+
+下表列出了互斥对象管理类模板对各策略的支持情况。
+
+策略|std::lock_guard|std::unique_lock|std::shared_lock
+-|-|-|-
+(默认)|√|√|√(共享)
+std::defer_lock|×|√|√
+std::try_to_lock|×|√|√
+std::adopt_lock|√|√|√

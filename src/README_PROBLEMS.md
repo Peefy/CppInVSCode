@@ -262,7 +262,7 @@ move构造函数允许拥有者的指针在对象之间传递，允许unique_ptr
 
 **8. 为什么析构函数必须是虚函数？为什么C++默认的析构函数不是虚函数**
 
-采用虚函数为了实现动态多态，用于基类指针指向派生类对象时，通过基类指针直接调用派生类的对象函数，析构函数也不例外。如果构函数不是虚函数，那么在调用该函数时（对象被删除时）则只会调用当前对象对应的类的析构函数，这对于直接定义的对象是没有什么影响的，但是对于使用基类指向派生类的指针而言，因为基类指针实际上是基类类型，所以析构时自然只会调用基类的析构函数，这就可能产生内存泄漏（因为派生类的析构函数不被调用）。所以如果确定程序中有基类指针指向派生类的问题，则必须将基类的析构函数指定为虚函数，如此才能确保NEW出来的对象被正确的DELETE。
+采用虚函数为了实现动态多态，用于基类指针指向派生类对象时，通过基类指针直接调用派生类的对象函数，析构函数也不例外。如果构函数不是虚函数，那么在调用该函数时（对象被删除时）则只会调用当前对象对应的类的析构函数，这*对于直接定义的对象是没有什么影响的*，但是对于使用基类指向派生类的**指针**而言，因为基类指针实际上是基类类型，所以析构时自然只会调用基类的析构函数，这就可能产生内存泄漏（因为派生类的析构函数不被调用）。所以如果确定程序中有基类指针指向派生类的问题，则必须将基类的析构函数指定为虚函数，如此才能确保NEW出来的对象被正确的DELETE。
 
 ```c++
 class ClxBase{
@@ -1466,3 +1466,352 @@ std::adopt_lock|std::adopt_lock_t|假定当前线程已经获得互斥对象的�
 std::defer_lock|×|√|√
 std::try_to_lock|×|√|√
 std::adopt_lock|√|√|√
+
+**57. C++线程同步**
+
+* **事件Event**-用事件（Event）来同步线程是最具弹性的了。一个事件有两种状态：激发状态和未激发状态。也称有信号状态和无信号状态。事件又分两种类型：手动重置事件和自动重置事件。手动重置事件被设置为激发状态后，会唤醒所有等待的线程，而且一直保持为激发状态，直到程序重新把它设置为未激发状态。自动重置事件被设置为激发状态后，会唤醒“一个”等待中的线程，然后自动恢复为未激发状态。所以用自动重置事件来同步两个线程比较理想。MFC中对应的类为CEvent。CEvent的构造函数默认创建一个自动重置的事件，而且处于未激发状态。共有三个函数来改变事件的状态:SetEvent,ResetEvent和PulseEvent。用事件来同步线程是一种比较理想的做法，但在实际的使用过程中要注意的是，对自动重置事件调用SetEvent和PulseEvent有可能会引起死锁，必须小心。
+* **临界区Critical Section**-使用临界区域的第一个忠告就是不要长时间锁住一份资源。这里的长时间是相对的，视不同程序而定。对一些控制软件来说，可能是数毫秒，但是对另外一些程序来说，可以长达数分钟。但进入临界区后必须尽快地离开，释放资源。如果不释放的话，会如何？答案是不会怎样。如果是主线程（GUI线程）要进入一个没有被释放的临界区，呵呵，程序就会挂了！临界区域的一个缺点就是：Critical Section不是一个核心对象，无法获知进入临界区的线程是生是死，如果进入临界区的线程挂了，没有释放临界资源，系统无法获知，而且没有办法释放该临界资源。这个缺点在互斥器(Mutex)中得到了弥补。Critical Section在MFC中的相应实现类是CcriticalSection。CcriticalSection：：Lock()进入临界区，CcriticalSection：：UnLock()离开临界区。
+* **互斥器Mutex**-互斥器的功能和临界区域很相似。区别是：Mutex所花费的时间比Critical Section多的多，但是Mutex是核心对象(Event、Semaphore也是)，可以跨进程使用，而且等待一个被锁住的Mutex可以设定TIMEOUT，不会像Critical Section那样无法得知临界区域的情况，而一直死等。MFC中的对应类为CMutex。Win32函数有：创建互斥体CreateMutex() ，打开互斥体OpenMutex()，释放互斥体ReleaseMutex()。Mutex的拥有权并非属于那个产生它的线程，而是最后那个对此Mutex进行等待操作（WaitForSingleObject等等）并且尚未进行ReleaseMutex()操作的线程。线程拥有Mutex就好像进入Critical Section一样，一次只能有一个线程拥有该Mutex。如果一个拥有Mutex的线程在返回之前没有调用ReleaseMutex()，那么这个Mutex就被舍弃了，但是当其他线程等待(WaitForSingleObject等)这个Mutex时，仍能返回，并得到一个WAIT_ABANDONED_0返回值。能够知道一个Mutex被舍弃是Mutex特有的。
+* **信号量Semaphore**-信号量是最具历史的同步机制。信号量是解决producer/consumer问题的关键要素。对应的MFC类是Csemaphore。Win32函数CreateSemaphore（）用来产生信号量。ReleaseSemaphore（）用来解除锁定。Semaphore的现值代表的意义是可用的资源数，如果Semaphore的现值为1，表示还有一个锁定动作可以成功。如果现值为5，就表示还有五个锁定动作可以成功。当调用Wait…等函数要求锁定，如果Semaphore现值不为0，Wait…马上返回，资源数减1。当调用ReleaseSemaphore（）资源数加1，当然不会超过初始设定的资源总数。
+
+**58. 怎么实现C++线程池**
+
+*为什么使用线程池*-简单来说就是线程本身存在开销，我们利用多线程来进行任务处理，单线程也不能滥用，无止禁的开新线程会给系统产生大量消耗，而线程本来就是可重用的资源，不需要每次使用时都进行初始化，因此可以采用有限的线程个数处理无限的任务。
+
+condition.h
+```c++
+#ifndef _CONDITION_H_
+#define _CONDITION_H_
+
+#include <pthread.h>
+
+//封装一个互斥量和条件变量作为状态
+typedef struct condition
+{
+    pthread_mutex_t pmutex;
+    pthread_cond_t pcond;
+}condition_t;
+
+//对状态的操作函数
+int condition_init(condition_t *cond);
+int condition_lock(condition_t *cond);
+int condition_unlock(condition_t *cond);
+int condition_wait(condition_t *cond);
+int condition_timedwait(condition_t *cond, const struct timespec *abstime);
+int condition_signal(condition_t* cond);
+int condition_broadcast(condition_t *cond);
+int condition_destroy(condition_t *cond);
+
+#endif
+```
+
+condition.c
+```c++
+#include "condition.h"
+
+//初始化
+int condition_init(condition_t *cond)
+{
+    int status;
+    if((status = pthread_mutex_init(&cond->pmutex, NULL)))
+        return status;
+    
+    if((status = pthread_cond_init(&cond->pcond, NULL)))
+        return status;
+    
+    return 0;
+}
+
+//加锁
+int condition_lock(condition_t *cond)
+{
+    return pthread_mutex_lock(&cond->pmutex);
+}
+
+//解锁
+int condition_unlock(condition_t *cond)
+{
+    return pthread_mutex_unlock(&cond->pmutex);
+}
+
+//等待
+int condition_wait(condition_t *cond)
+{
+    return pthread_cond_wait(&cond->pcond, &cond->pmutex);
+}
+
+//固定时间等待
+int condition_timedwait(condition_t *cond, const struct timespec *abstime)
+{
+    return pthread_cond_timedwait(&cond->pcond, &cond->pmutex, abstime);
+}
+
+//唤醒一个睡眠线程
+int condition_signal(condition_t* cond)
+{
+    return pthread_cond_signal(&cond->pcond);
+}
+
+//唤醒所有睡眠线程
+int condition_broadcast(condition_t *cond)
+{
+    return pthread_cond_broadcast(&cond->pcond);
+}
+
+//释放
+int condition_destroy(condition_t *cond)
+{
+    int status;
+    if((status = pthread_mutex_destroy(&cond->pmutex)))
+        return status;
+    
+    if((status = pthread_cond_destroy(&cond->pcond)))
+        return status;
+        
+    return 0;
+}
+```
+然后是线程池对应的threadpool.h和threadpool.c
+```c++
+#ifndef _THREAD_POOL_H_
+#define _THREAD_POOL_H_
+
+//线程池头文件
+
+#include "condition.h"
+
+//封装线程池中的对象需要执行的任务对象
+typedef struct task
+{
+    void *(*run)(void *args);  //函数指针，需要执行的任务
+    void *arg;              //参数
+    struct task *next;      //任务队列中下一个任务
+}task_t;
+
+
+//下面是线程池结构体
+typedef struct threadpool
+{
+    condition_t ready;    //状态量
+    task_t *first;       //任务队列中第一个任务
+    task_t *last;        //任务队列中最后一个任务
+    int counter;         //线程池中已有线程数
+    int idle;            //线程池中kongxi线程数
+    int max_threads;     //线程池最大线程数
+    int quit;            //是否退出标志
+}threadpool_t;
+
+
+//线程池初始化
+void threadpool_init(threadpool_t *pool, int threads);
+
+//往线程池中加入任务
+void threadpool_add_task(threadpool_t *pool, void *(*run)(void *arg), void *arg);
+
+//摧毁线程池
+void threadpool_destroy(threadpool_t *pool);
+
+#endif
+```
+```c++
+#include "threadpool.h"
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
+#include <errno.h>
+#include <time.h>
+
+//创建的线程执行
+void *thread_routine(void *arg)
+{
+    struct timespec abstime;
+    int timeout;
+    printf("thread %d is starting\n", (int)pthread_self());
+    threadpool_t *pool = (threadpool_t *)arg;
+    while(1)
+    {
+        timeout = 0;
+        //访问线程池之前需要加锁
+        condition_lock(&pool->ready);
+        //空闲
+        pool->idle++;
+        //等待队列有任务到来 或者 收到线程池销毁通知
+        while(pool->first == NULL && !pool->quit)
+        {
+            //否则线程阻塞等待
+            printf("thread %d is waiting\n", (int)pthread_self());
+            //获取从当前时间，并加上等待时间， 设置进程的超时睡眠时间
+            clock_gettime(CLOCK_REALTIME, &abstime);  
+            abstime.tv_sec += 2;
+            int status;
+            status = condition_timedwait(&pool->ready, &abstime);  //该函数会解锁，允许其他线程访问，当被唤醒时，加锁
+            if(status == ETIMEDOUT)
+            {
+                printf("thread %d wait timed out\n", (int)pthread_self());
+                timeout = 1;
+                break;
+            }
+        }
+        
+        pool->idle--;
+        if(pool->first != NULL)
+        {
+            //取出等待队列最前的任务，移除任务，并执行任务
+            task_t *t = pool->first;
+            pool->first = t->next;
+            //由于任务执行需要消耗时间，先解锁让其他线程访问线程池
+            condition_unlock(&pool->ready);
+            //执行任务
+            t->run(t->arg);
+            //执行完任务释放内存
+            free(t);
+            //重新加锁
+            condition_lock(&pool->ready);
+        }
+        
+        //退出线程池
+        if(pool->quit && pool->first == NULL)
+        {
+            pool->counter--;//当前工作的线程数-1
+            //若线程池中没有线程，通知等待线程（主线程）全部任务已经完成
+            if(pool->counter == 0)
+            {
+                condition_signal(&pool->ready);
+            }
+            condition_unlock(&pool->ready);
+            break;
+        }
+        //超时，跳出销毁线程
+        if(timeout == 1)
+        {
+            pool->counter--;//当前工作的线程数-1
+            condition_unlock(&pool->ready);
+            break;
+        }
+        
+        condition_unlock(&pool->ready);
+    }
+    
+    printf("thread %d is exiting\n", (int)pthread_self());
+    return NULL;
+    
+}
+
+
+//线程池初始化
+void threadpool_init(threadpool_t *pool, int threads)
+{
+    
+    condition_init(&pool->ready);
+    pool->first = NULL;
+    pool->last =NULL;
+    pool->counter =0;
+    pool->idle =0;
+    pool->max_threads = threads;
+    pool->quit =0;
+    
+}
+
+
+//增加一个任务到线程池
+void threadpool_add_task(threadpool_t *pool, void *(*run)(void *arg), void *arg)
+{
+    //产生一个新的任务
+    task_t *newtask = (task_t *)malloc(sizeof(task_t));
+    newtask->run = run;
+    newtask->arg = arg;
+    newtask->next=NULL;//新加的任务放在队列尾端
+    
+    //线程池的状态被多个线程共享，操作前需要加锁
+    condition_lock(&pool->ready);
+    
+    if(pool->first == NULL)//第一个任务加入
+    {
+        pool->first = newtask;
+    }        
+    else    
+    {
+        pool->last->next = newtask;
+    }
+    pool->last = newtask;  //队列尾指向新加入的线程
+    
+    //线程池中有线程空闲，唤醒
+    if(pool->idle > 0)
+    {
+        condition_signal(&pool->ready);
+    }
+    //当前线程池中线程个数没有达到设定的最大值，创建一个新的线性
+    else if(pool->counter < pool->max_threads)
+    {
+        pthread_t tid;
+        pthread_create(&tid, NULL, thread_routine, pool);
+        pool->counter++;
+    }
+    //结束，访问
+    condition_unlock(&pool->ready);
+}
+
+//线程池销毁
+void threadpool_destroy(threadpool_t *pool)
+{
+    //如果已经调用销毁，直接返回
+    if(pool->quit)
+    {
+    return;
+    }
+    //加锁
+    condition_lock(&pool->ready);
+    //设置销毁标记为1
+    pool->quit = 1;
+    //线程池中线程个数大于0
+    if(pool->counter > 0)
+    {
+        //对于等待的线程，发送信号唤醒
+        if(pool->idle > 0)
+        {
+            condition_broadcast(&pool->ready);
+        }
+        //正在执行任务的线程，等待他们结束任务
+        while(pool->counter)
+        {
+            condition_wait(&pool->ready);
+        }
+    }
+    condition_unlock(&pool->ready);
+    condition_destroy(&pool->ready);
+}
+```
+测试代码
+```c++
+#include "threadpool.h"
+#include <unistd.h>
+#include <stdlib.h>
+#include <stdio.h>
+
+void* mytask(void *arg)
+{
+    printf("thread %d is working on task %d\n", (int)pthread_self(), *(int*)arg);
+    sleep(1);
+    free(arg);
+    return NULL;
+}
+
+//测试代码
+int main(void)
+{
+    threadpool_t pool;
+    //初始化线程池，最多三个线程
+    threadpool_init(&pool, 3);
+    int i;
+    //创建十个任务
+    for(i=0; i < 10; i++)
+    {
+        int *arg = malloc(sizeof(int));
+        *arg = i;
+        threadpool_add_task(&pool, mytask, arg);
+        
+    }
+    threadpool_destroy(&pool);
+    return 0;
+}
+```

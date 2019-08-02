@@ -1474,7 +1474,62 @@ std::adopt_lock|√|√|√
 * **互斥器Mutex**-互斥器的功能和临界区域很相似。区别是：Mutex所花费的时间比Critical Section多的多，但是Mutex是核心对象(Event、Semaphore也是)，可以跨进程使用，而且等待一个被锁住的Mutex可以设定TIMEOUT，不会像Critical Section那样无法得知临界区域的情况，而一直死等。MFC中的对应类为CMutex。Win32函数有：创建互斥体CreateMutex() ，打开互斥体OpenMutex()，释放互斥体ReleaseMutex()。Mutex的拥有权并非属于那个产生它的线程，而是最后那个对此Mutex进行等待操作（WaitForSingleObject等等）并且尚未进行ReleaseMutex()操作的线程。线程拥有Mutex就好像进入Critical Section一样，一次只能有一个线程拥有该Mutex。如果一个拥有Mutex的线程在返回之前没有调用ReleaseMutex()，那么这个Mutex就被舍弃了，但是当其他线程等待(WaitForSingleObject等)这个Mutex时，仍能返回，并得到一个WAIT_ABANDONED_0返回值。能够知道一个Mutex被舍弃是Mutex特有的。
 * **信号量Semaphore**-信号量是最具历史的同步机制。信号量是解决producer/consumer问题的关键要素。对应的MFC类是Csemaphore。Win32函数CreateSemaphore（）用来产生信号量。ReleaseSemaphore（）用来解除锁定。Semaphore的现值代表的意义是可用的资源数，如果Semaphore的现值为1，表示还有一个锁定动作可以成功。如果现值为5，就表示还有五个锁定动作可以成功。当调用Wait…等函数要求锁定，如果Semaphore现值不为0，Wait…马上返回，资源数减1。当调用ReleaseSemaphore（）资源数加1，当然不会超过初始设定的资源总数。
 
-**58. 怎么实现C++线程池**
+**58. C++函数模板与分离编译模式**
+
+**分离编译模式**：一个程序（项目）由若干个源文件共同实现，而每个源文件单独编译生成目标文件，最后将所有目标文件连接起来形成单一的可执行文件的过程称为分离编译模式。
+
+在C++程序设计中，在一个源文件中定义某个函数，然后在另一个源文件中使用该函数，这是一种非常普遍的做法。但是，如果定义和调用一个函数模板时也采用这种方式，会发生编译错误。
+
+```c++
+/***func.h***/
+template<class T> void func(const T&);
+/***end func.h***/
+
+/***func.cpp***/
+#include <iostream>
+using namespace std;
+
+#include "func.h"
+template<class T> void func(const T& t)
+{
+	cout<<t<<endl;
+}
+/***end func.cpp***/
+
+/***main.cpp***/
+#include <stdio.h>
+#include "func.h"
+
+int main()
+{
+	func(3);
+}
+/***end main.cpp***/
+```
+
+C++要求模板的声明和实现对引用者必须都可见，模板的声明和实现要放到一个文件里，都写在.h文件里
+
+解放方案：
+
+1. **将函数模板的定义放到头文件**
+
+2. **export关键字+仍然采用分离编译模式**
+
+一个可能的解决办法就是使用关键字export。也就是说，在func.cpp里定义函数模板的时候，将函数模板头写成：
+
+```c++
+export template<class T> void func(const T& t);
+```
+
+这样做的目的是告诉编译器，这个函数模板可能再其他源文件中被实例化。这是一个对程序员来说负担最轻的解决办法，但是，目前几乎所有的编译器都不支持关键字export，包括VC++和GNU C++。
+
+3. **显示实例化**
+
+显示实例化也称为外部实例化。在不发生函数调用的时候将函数模板实例化，或者在不使用类模板的时候将类模板实例化称之为模板显示实例化。
+
+上面遇到的问题是main.obj和func.obj中找不到模板函数func\<int\>的实现代码，那么就在func.cpp中将函数模板func<T>显示实例化为模板函数func\<int\>。
+
+**59. 怎么实现C++线程池**
 
 *为什么使用线程池*-简单来说就是线程本身存在开销，我们利用多线程来进行任务处理，单线程也不能滥用，无止禁的开新线程会给系统产生大量消耗，而线程本来就是可重用的资源，不需要每次使用时都进行初始化，因此可以采用有限的线程个数处理无限的任务。
 
@@ -1815,3 +1870,5 @@ int main(void)
     return 0;
 }
 ```
+
+

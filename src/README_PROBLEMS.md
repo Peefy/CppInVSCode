@@ -2027,11 +2027,282 @@ std::defer_lock|×|√|√
 std::try_to_lock|×|√|√
 std::adopt_lock|√|√|√
 
-**66. **
+**66. C++内存对齐**
 
-**67. **
+内存对齐，是为了让内存存取更有效率而采用的一种编译阶段优化内存存取的手段。
+结构体默认对齐是因为CPU对内存的读取操作是对齐的。
 
-**68. **
+简单类型，如int,char,float等，其对齐大小为其本身大小，即align(int) == sizeof(int)，align(char)==sizeof(char)，等等。
+
+对于复合类型，如struct,class，其本身并无所谓对齐，因为CPU没有直接存取一个struct的指令。对于struct而言，它的对齐指的是它里面的所有成员变量都是对齐的，class同理。
+
+#pragma pack(1)
+//...
+#pragma pack()
+
+* 内存对齐是指首地址对齐，而不是说每个变量大小对齐;
+* 结构体内存对齐要求结构体内每一个成员变量都是内存对齐的;
+* 结构体对齐除了第2点之外还要求结构体数组也必须是对齐的，也就是说每个相邻的结构体内部都是对齐的;
+
+```c++
+#include <cassert>
+
+
+int main(int argc, char* argv[])
+{
+    //此处指定对齐大小为1
+    //对于a，实际对齐大小为min(sizeof(int),1)=min(4,1)=1
+    //对于b，实际对齐大小为min(sizeof(char),1)=min(1,1)=1
+    //编译器会确保TEST_A首地址即a的地首址是1字节对齐的，此时a对齐
+    //对于b，由于b要求首地址1字节对齐，这显然对于任何地址都合适，所以a,b都是对齐的
+    //对于TEST_A数组，第一个TEST_A是对齐的（假设其地址为0），则第二个TEST_A的首地址为(0+5=5)，对于第二个TEST_A的两个变量a，b均对齐
+    //OK,对齐合理。因此整个结构体的大小为5
+#pragma pack(1)
+    struct TEST_A
+    {
+        int a;
+        char b;
+    };
+#pragma  pack()
+    assert(sizeof(TEST_A) == 5);
+
+    //此处指定对齐大小为2
+    //对于a，实际对齐大小为min(sizeof(int),2)=min(4,2)=2
+    //对于b，实际对齐大小为min(sizeof(char),2)=min(1,2)=1
+    //编译器会确保TEST_A首地址即a的地首址是2字节对齐的，此时a对齐
+    //对于b，由于b要求首地址1字节对齐，这显然对于任何地址都合适，所以a,b都是对齐的
+    //对于TEST_B数组，第一个TEST_B是对齐的（假设其地址为0），则第二个TEST_B的首地址为(0+5=5)，对于第二个TEST_B的变量a，显然地址5是不对齐于2字节的
+    //因此，需要在TEST_B的变量b后面填充1字节，此时连续相连的TEST_B数组才会对齐
+    //OK,对齐合理。因此整个结构体的大小为5+1=6
+#pragma pack(2)
+    struct TEST_B
+    {
+        int a;
+        char b;
+    };
+#pragma  pack()
+    assert(sizeof(TEST_B) == 6);
+
+    //此处指定对齐大小为4
+    //对于a，实际对齐大小为min(sizeof(int),2)=min(4,4)=4
+    //对于b，实际对齐大小为min(sizeof(char),2)=min(1,4)=1
+    //编译器会确保TEST_A首地址即a的地首址是4字节对齐的，此时a对齐
+    //对于b，由于b要求首地址1字节对齐，这显然对于任何地址都合适，所以a,b都是对齐的
+    //对于TEST_C数组，第一个TEST_C是对齐的（假设其地址为0），则第二个TEST_C的首地址为(0+5=5)，对于第二个TEST_C的变量a，显然地址5是不对齐于4字节的
+    //因此，需要在TEST_C的变量b后面填充3字节，此时连续相连的TEST_C数组才会对齐
+    //OK,对齐合理。因此整个结构体的大小为5+3=8
+#pragma pack(4)
+    struct TEST_C
+    {
+        int a;
+        char b;
+    };
+#pragma  pack()
+    assert(sizeof(TEST_C) == 8);
+
+    //此处指定对齐大小为8
+    //对于a，实际对齐大小为min(sizeof(int),8)=min(4,8)=4
+    //对于b，实际对齐大小为min(sizeof(char),8)=min(1,8)=1
+    //编译器会确保TEST_A首地址即a的地首址是4字节对齐的，此时a对齐
+    //对于b，由于b要求首地址1字节对齐，这显然对于任何地址都合适，所以a,b都是对齐的
+    //对于TEST_D数组，第一个TEST_D是对齐的（假设其地址为0），则第二个TEST_D的首地址为(0+5=5)，对于第二个TEST_D的变量a，显然地址5是不对齐于4字节的
+    //因此，需要在TEST_D的变量b后面填充3字节，此时连续相连的TEST_D数组才会对齐
+    //OK,对齐合理。因此整个结构体的大小为5+3=8
+#pragma pack(8)
+    struct TEST_D
+    {
+        int a;
+        char b;
+    };
+#pragma  pack()
+    assert(sizeof(TEST_D) == 8);
+
+
+    //此处指定对齐大小为8
+    //对于a，实际对齐大小为min(sizeof(int),8)=min(4,8)=4
+    //对于b，实际对齐大小为min(sizeof(char),8)=min(1,8)=1
+    //对于c，这是一个数组，数组的对齐大小与其单元一致，因而align(c)=align(double)=min(sizeof(double),8)=min(8,8)=8
+    //对于d，实际对齐大小为min(sizeof(char),8)=min(1,8)=1
+    //编译器会确保TEST_A首地址即a的地首址是4字节对齐的，此时a对齐
+    //对于b，由于b要求首地址1字节对齐，这显然对于任何地址都合适，所以a,b都是对齐的
+    //对于c，由于c要求首地址8字节对齐，因此前面的a+b=5，还要在c后面补上3个字节才能对齐
+    //对于d，显而易见，任何地址均对齐，此时结构体大小为4+1+3+10*8+1=89
+    //对于TEST_E数组，第一个TEST_E是对齐的（假设其地址为0），则第二个TEST_E的首地址为(0+89=89)，对于第二个TEST_E的变量a，显然地址89是不对齐于4字节的
+    //因此，需要在TEST_E的变量d后面填充7字节，此时连续相连的TEST_E数组才会对齐 
+    //(注意：此处不仅要确保下一个TEST_E的a,b变量对齐，还要确保c也对齐，所以这里不是填充3字节，而是填充7字节）
+    //OK,对齐合理。因此整个结构体的大小为(4)+(1+3)+(10*8)+(1+7)=96
+#pragma pack(8)
+    struct TEST_E
+    {
+        int a;
+        char b;
+        double c[10];
+        char d;
+    };
+#pragma  pack()
+    assert(sizeof(TEST_E) == 96);
+
+    return 0;
+}
+```
+
+**67. C++并发**
+
+C++11标准在标准库中为多线程提供了组件，这意味着使用C++编写与平台无关的多线程程序成为可能，而C++程序的可移植性也得到了有力的保证。
+
+**并发的概念**-与并发相近的另一个概念是并行。它们两者存在很大的差别。并行就是同时执行，计算机在同一时刻，在某个时间点上处理两个或以上的操作。判断一个程序是否并行执行，只需要看某个时刻上是否多两个或以上的工作单位在运行。一个程序如果是单线程的，那么它无法并行地运行。利用多线程与多进程可以使得计算机并行地处理程序
+
+并发的程序设计，提供了一种方式让我们能够设计出一种方案将问题（非必须地）并行地解决。如果我们将程序的结构设计为可以并发执行的，那么在支持并行的机器上，我们可以将程序并行地执行。
+
+C++11 新标准中引入了几个头文件来支持多线程编程：
+
+* **thread**-包含std::thread类以及std::this_thread命名空间。管理线程的函数和类在 中声明.
+* **atomic**-包含std::atomic和std::atomic_flag类，以及一套C风格的原子类型和与C兼容的原子操作的函数。
+* **mutex**-包含了与互斥量相关的类以及其他类型和函数
+* **future**-包含两个Provider类（std::promise和std::package_task）和两个Future类（std::future和std::shared_future）以及相关的类型和函数。
+* **condition_variable**-包含与条件变量相关的类，包括std::condition_variable和std::condition_variable_any。
+
+\<future\> 头文件中包含了以下几个类和函数：
+
+* Providers 类：std::promise, std::package_task
+* Futures 类：std::future, shared_future.
+* Providers 函数：std::async()
+* 其他类型：std::future_error, std::future_errc, std::future_status, std::launch.
+
+**std::promise** 类介绍:promise 对象可以保存某一类型 T 的值，该值可被 future 对象读取（可能在另外一个线程中），因此 promise 也提供了一种线程同步的手段。在 promise 对象构造时可以和一个共享状态（通常是std::future）相关联，并可以在相关联的共享状态(std::future)上保存一个类型为 T 的值。
+
+**Thread**
+
+```c++
+#include <iostream>
+#include <utility>
+#include <thread>
+#include <chrono>
+#include <functional>
+#include <atomic>
+ 
+void f1(int n)
+{
+    for (int i = 0; i < 5; ++i) {
+        std::cout << "Thread " << n << " executing\n";
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+ 
+void f2(int& n)
+{
+    for (int i = 0; i < 5; ++i) {
+        std::cout << "Thread 2 executing\n";
+        ++n;
+        std::this_thread::sleep_for(std::chrono::milliseconds(10));
+    }
+}
+ 
+int main()
+{
+    int n = 0;
+    std::thread t1; // t1 is not a thread
+    std::thread t2(f1, n + 1); // pass by value
+    std::thread t3(f2, std::ref(n)); // pass by reference
+    std::thread t4(std::move(t3)); // t4 is now running f2(). t3 is no longer a thread
+    t2.join();
+    t4.join();
+    std::cout << "Final value of n is " << n << '\n';
+}
+```
+
+**Mutex**
+
+Mutex 又称互斥量，C++ 11中与 Mutex 相关的类（包括锁类型）和函数都声明在 \<mutex\> 头文件中，所以如果你需要使用 std::mutex，就必须包含 \<mutex\> 头文件。
+
+Mutex 系列类(四种)
+* std::mutex，最基本的 Mutex 类。
+* std::recursive_mutex，递归 Mutex 类。
+* std::time_mutex，定时 Mutex 类。
+* std::recursive_timed_mutex，定时递归 Mutex 类。
+Lock 类（两种）
+* std::lock_guard，与 Mutex RAII 相关，方便线程对互斥量上锁。
+* std::unique_lock，与 Mutex RAII 相关，方便线程对互斥量上锁，但提供了更好的上锁和解锁控制。
+其他类型
+* std::once_flag
+* std::adopt_lock_t
+* std::defer_lock_t
+* std::try_to_lock_t
+函数
+* std::try_lock，尝试同时对多个互斥量上锁。
+* std::lock，可以同时对多个互斥量上锁。
+* std::call_once，如果多个线程需要同时调用某个函数，call_once 可以保证多个线程对该函数只调用一次。
+
+```c++
+#include <iostream>       // std::cout
+#include <thread>         // std::thread
+#include <mutex>          // std::mutex
+
+volatile int counter(0); // non-atomic counter
+std::mutex mtx;           // locks access to counter
+
+void attempt_10k_increases() {
+    for (int i=0; i<10000; ++i) {
+        if (mtx.try_lock()) {   // only increase if currently not locked:
+            ++counter;
+            mtx.unlock();
+        }
+    }
+}
+
+int main (int argc, const char* argv[]) {
+    std::thread threads[10];
+    for (int i=0; i<10; ++i)
+        threads[i] = std::thread(attempt_10k_increases);
+
+    for (auto& th : threads) th.join();
+    std::cout << counter << " successful increases of the counter.\n";
+
+    return 0;
+}
+```
+
+**Future**
+
+```c++
+#include <iostream>       // std::cout
+#include <functional>     // std::ref
+#include <thread>         // std::thread
+#include <future>         // std::promise, std::future
+
+void print_int(std::future<int>& fut) {
+    int x = fut.get(); // 获取共享状态的值.
+    std::cout << "value: " << x << '\n'; // 打印 value: 10.
+}
+
+int main ()
+{
+    std::promise<int> prom; // 生成一个 std::promise<int> 对象.
+    std::future<int> fut = prom.get_future(); // 和 future 关联.
+    std::thread t(print_int, std::ref(fut)); // 将 future 交给另外一个线程t.
+    prom.set_value(10); // 设置共享状态的值, 此处和线程t保持同步.
+    t.join();
+    return 0;
+}
+```
+
+**68. C++动态链接和静态链接**
+
+库是写好的现有的，成熟的，可以复用的代码。现实中每个程序都要依赖很多基础的底层库，不可能每个人的代码都从零开始，
+
+本质上来说库是一种可执行代码的二进制形式，可以被操作系统载入内存执行。库有两种：静态库 (.a; .lib) 和动态库 (.so; .dll)。
+
+动态库在程序编译时并不会被连接到目标代码中，而是在程序运行是才被载入。不同的应用程序如果调用相同的库，那么在内存里只需要有一份该共享库的实例，规避了空间浪费问题。动态库在程序运行是才被载入，也解决了静态库对程序的更新、部署和发布页会带来麻烦。用户只需要更新动态库即可，增量更新。
+
+动态库特点总结：
+
+* 动态库把对一些库函数的链接载入推迟到程序运行的时期。
+
+* 可以实现进程之间的资源共享。（因此动态库也称为共享库）
+
+* 将一些程序升级变得简单。
+
+* 甚至可以真正做到链接载入完全由程序员在程序代码中控制（显示调用）
 
 **69. **
 

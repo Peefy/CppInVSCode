@@ -2304,9 +2304,16 @@ int main ()
 
 * 甚至可以真正做到链接载入完全由程序员在程序代码中控制（显示调用）
 
-**69. **
+**69. C++ memcpy memmove和strcpy的区别**
 
-**70. **
+* memcpy与memmove都是对内存进行拷贝可以拷贝任何内容，而strcpy仅是对字符串进行操作。memcpy与memmove拷贝多少是通过其第三个参数进行控制而strcpy是当拷贝至'\0'停止。
+* memcpy函数的功能是从源src所指的内存地址的起始位置开始拷贝N个字节到目标dst所指的内存地址的起始位置中。
+* memmove函数的功能同memcpy基本一致，但是当src区域和dst内存区域重叠时，memcpy可能会出现错误，而memmove能正确进行拷贝。
+
+**70. C/C++内存分配**
+
+C语言跟内存申请相关的函数主要有 alloca,calloc,malloc,free,realloc,sbrk等。其中alloca是向栈申请内存,因此无需释放. malloc分配的内存是位于堆中的,并且没有
+初始化内存的内容,因此基本上malloc之后,调用函数memset来初始化这部分的内存空间. calloc则将初始化这部分的内存,设置为0. 而realloc则对malloc申请的内存进行大小的调整.申请的内存最终需要通过函数free来释放. 而sbrk则是增加数据段的大小;
 
 **71. **
 

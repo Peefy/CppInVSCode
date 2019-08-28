@@ -22,7 +22,7 @@ C++中还可以使用:类型(变量)的形式。
 * **函数**：Ｃ语言中函数没有参数默认值，在C++中函数有参数默认值的概念，注意参数默认值与函数重载的区别。C语言中函数的定义又两种形式，经典形式和标准形式，C++中只支持标准形式。标准形式：int string(int x,float y){......}
 经典形式: int string(x,y)int x;float y;{......}
 C++的函数必须先声名原型或定义才能使用,因为C++是强数据类型语言,在C语言中,未声名和定义函数之前调用函数是允许的.
-* **运算符&和关键字const**：&运算符最基本的含义是取地址，C和Ｃ++中都支持这一语法。但在C++中&还可以表示引用。有了引用的概念后函数调用可以作为左值。例如：int &rtux()......rtux()=5;以上表达式在C++中完全正确，但在C语言中是非法的。const关键字要注意一点不同的就是在C++的类函数中，函数可以声名是可以用const，表示这个函数没有改变类中的任何属性。如：void unchange()const;C不能有这样的生明。
+* **运算符&和关键字const**：&运算符最基本的含义是取地址，C和C++中都支持这一语法。但在C++中&还可以表示引用。有了引用的概念后函数调用可以作为左值。例如：int &rtux()......rtux()=5;以上表达式在C++中完全正确，但在C语言中是非法的。const关键字要注意一点不同的就是在C++的类函数中，函数可以声名是可以用const，表示这个函数没有改变类中的任何属性。如：void unchange()const;C不能有这样的生明。
 * **extern说明符**：在C语言的某些版本中，可以在程序中多次使用一个全局变量而无需使用extern说明符。但在C++中除定义全局变量外，在其他模块使用应先用extern生明。
 * **void指针**：在C语言中void指针可以赋给任何类型的指针，但在C++中，却不行，但可以先进行强制数据类型转换，在赋值。
 
@@ -2314,14 +2314,98 @@ int main ()
 * memcpy函数的功能是从源src所指的内存地址的起始位置开始拷贝N个字节到目标dst所指的内存地址的起始位置中。
 * memmove函数的功能同memcpy基本一致，但是当src区域和dst内存区域重叠时，memcpy可能会出现错误，而memmove能正确进行拷贝。
 
+memcpy和memmove的简单实现
+```c++
+void * myMemcpy(void * dest, const void * src, size_t count){
+    assert(src != nullptr && dest != nullptr); //判断des指针和src指针是否为空，若为空抛出异常 
+    char * tmp_dest = (char*)dest;
+    const char* tmp_src = (const char *)src;
+    // 将指针dest和指针src由void强转为char,
+    // 使得每次均是对内存中的一个字节进行拷贝
+    while (count--)
+        *tmp_dest++ = *tmp_src++;
+    return dest;
+}
+
+void * myMemmove(void * dest, const void * src, size_t count){
+    assert(src != nullptr && dest != nullptr);
+    char * tmp_dest = (char*)dest;
+    const char* tmp_src = (const char*)src;
+    if (tmp_src < tmp_dest)
+        while (count--)
+            *tmp_dest++ = *tmp_src++;
+    else if (tmp_src > tmp_dest){
+        tmp_src += count - 1;
+        tmp_dest += count - 1;
+        while (count--)
+            * tmp_dest-- = *tmp_src;
+    }
+    return dest;
+}
+```
+
 **70. C/C++内存分配**
 
 C语言跟内存申请相关的函数主要有 alloca,calloc,malloc,free,realloc,sbrk等。其中alloca是向栈申请内存,因此无需释放. malloc分配的内存是位于堆中的,并且没有
 初始化内存的内容,因此基本上malloc之后,调用函数memset来初始化这部分的内存空间. calloc则将初始化这部分的内存,设置为0. 而realloc则对malloc申请的内存进行大小的调整.申请的内存最终需要通过函数free来释放. 而sbrk则是增加数据段的大小;
 
 **71. C++内存池**
+ 
+内存池是池化技术中的一种形式。通常在编写程序的时候回使用 new delete 这些关键字来向操作系统申请内存，而这样造成的后果就是每次申请内存和释放内存的时候，都需要和操作系统的系统调用打交道，从堆中分配所需的内存。如果这样的操作太过频繁，就会找成大量的内存碎片进而降低内存的分配性能，甚至出现内存分配失败的情况。
 
+注意：*没有一个内存池适合所有的情况，根据不同的需求选择正确的内存池才是正道*
 
+* **固定大小缓冲池**
+
+适用于频繁分配和释放固定大小对象的情况，
+
+* **dlmalloc**
+
+支持大对象和小对象
+
+* **SGI STL中内存分配器(allocator)**
+
+基本思路是设计一个free_list\[16\]数组，负责管理从8bytes到128bytes不同大小的内存块(chunk),每一个内存块都由连续的固定大小(fixed size block)的很多chunk组成,并用指针链表串联起来。比如
+```
+free_list[3]->start_notuse->next_notuse->next_notuse->...->end_notuse
+```
+
+当用户要获取此大小的内存时，就在 free_list 的链表找一个最近的 free chunk 回传给用户，同时将此 chunk 从 free_list 里删除，即把此 chunk 前后 chunk 指针链结起来。用户使用完释放的时候，则把此chunk 放回到 free_list 中，应该是放到最前面的 start_free 的位置。这样经过若干次 allocator 和 deallocator 后， free_list 中的链表可能并不像初始的时候那么是 chunk 按内存分布位置依次链接的。假如free_list 中不够时， allocator 会自动再分配一块新的较大的内存区块来加入到 free_list 链表中。
+
+ 可以自动管理多种不同大小内存块并可以自动增长的内存池，这是 SGI STL 分配器设计的特点。
+
+* **Loki中小对象分配器(small object allocator)**
+
+Loki 的分配器与 SGI STL 的原理类似，不同之处是它管理 free_list 不是固定大小的数组，而是用一个 vector 来实现，因此可以用户指定 fixed size block 的大小，不像 SGI STL 是固定最大 128 bytes 的。另外它管理 free chunks 的方式也不太一样， Loki 是由一列记录了 free block 位置等信息的 Chunk 类的链表来维护的， free blocks 则是分布在另外一个连续的大内存区间中。而且 free Chunks 也可以根据使用情况自动增长和减少合适的数目，避免内存分配得过多或者过少。
+
+* **Boost的object_pool**
+
+Boost 中的 object_pool 也是一个可以根据用户具体应用类的大小来分配内存块的，也是通过维护一个 free nodes 的链表来管理的。可以自动增加 nodes 块，初始是 32 个 nodes ，每次增加都以两倍数向 system heap 要内存块。 object_pool 管理的内存块需要在其对象销毁的时候才返还给 system heap 。
+
+* **ACE中的ACE_Cathe_Allocator和ACE_Free_List**
+
+ACE 框架中也有一个可以维护固定大小的内存块的分配器，原理与上面讲的内存池都差不多。它是通过在 ACE_Cached_Allocator 中定义个 Free_list 链表来管理一个连续的大内存块的，里面包含很多小的固定大小的未使用的区块（ free chunk ），同时还使用 ACE_unbounded_Set 维护一个已使用的 chuncks ，管理方式与上面讲的内存池类似。也可以指定 chunks 的数目，也可以自动增长，定义大致如下所示：
+
+```c++
+template<class T>
+class ACE_Cached_Allocator : public ACE_New_Allocator<T> {
+public:
+    // Create a cached memory pool with @a n_chunks chunks
+    // each with sizeof (TYPE) size.
+    ACE_Cached_Allocator(SIZET n_chunks = ACE_DEFAULT_INIT_CHUNKS);
+    T* allocate();
+    void deallocate(T* p);
+private:
+    // List of memory that we have allocated.
+    Fast_Unbounded_Set<char *> _allocated_chunks;
+    // Maintain a cached memory free list.
+    ACE_Cached_Free_List<ACE_Cached_Mem_Pool_Node<T> > _free_list;
+};
+```
+
+* **TCMalloc**
+
+oogle的开源项目gperftools， 
 
 **72. **
 

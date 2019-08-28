@@ -2032,9 +2032,13 @@ std::adopt_lock|√|√|√
 内存对齐，是为了让内存存取更有效率而采用的一种编译阶段优化内存存取的手段。
 结构体默认对齐是因为CPU对内存的读取操作是对齐的。
 
-简单类型，如int,char,float等，其对齐大小为其本身大小，即align(int) == sizeof(int)，align(char)==sizeof(char)，等等。
+简单类型，如int,char,float等，其对齐大小为其本身大小，即alignof(int) == sizeof(int)，alignof(char)==sizeof(char)，等等。
 
 对于复合类型，如struct,class，其本身并无所谓对齐，因为CPU没有直接存取一个struct的指令。对于struct而言，它的对齐指的是它里面的所有成员变量都是对齐的，class同理。
+
+可以使用C++11标准定义的**alignof**函数来查看数据的对齐方式。
+
+C++11新提供的修饰符**alignas**来重新设定结构体的对齐方式。
 
 #pragma pack(1)
 //...
@@ -2315,7 +2319,9 @@ int main ()
 C语言跟内存申请相关的函数主要有 alloca,calloc,malloc,free,realloc,sbrk等。其中alloca是向栈申请内存,因此无需释放. malloc分配的内存是位于堆中的,并且没有
 初始化内存的内容,因此基本上malloc之后,调用函数memset来初始化这部分的内存空间. calloc则将初始化这部分的内存,设置为0. 而realloc则对malloc申请的内存进行大小的调整.申请的内存最终需要通过函数free来释放. 而sbrk则是增加数据段的大小;
 
-**71. **
+**71. C++内存池**
+
+
 
 **72. **
 

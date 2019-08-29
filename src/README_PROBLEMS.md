@@ -2357,11 +2357,104 @@ C语言跟内存申请相关的函数主要有 alloca,calloc,malloc,free,realloc
 
 * **固定大小缓冲池**
 
-适用于频繁分配和释放固定大小对象的情况，
+适用于频繁分配和释放固定大小对象的情况，基本实现思想就是每次从List的头上取内存，如果取不到则重新分配一定数量；用完后把内存放回List头部，这样的话效率很高，因为每次List上可以取到的话，肯定是空间的内存。
+
+一个多线程线程池的实现方式
+```c++
+class CCriticalSection{
+public:
+    CCriticalSection(){
+        InitializeCriticalSection(&m_cs);
+    }
+    ~CCriticalSection(){
+        DeleteCriticalSection(&m_cs);
+    }
+    void Lock(){
+        EnterCriticalSection(&m_cs);
+    }
+    void Unlock(){
+        LeaveCriticalSection(&m_cs);
+    }
+};
+
+template<typename T>
+class CMemoryPool{
+public:
+    enum {EXPANSION_SIZE = 32};
+
+    CMemoryPool(unsigned int nItemCount = EXPANSION_SIZE){
+        ExpandFreeList(nItemCount);
+    }
+
+    ~CMemoryPool(unsigned int nItemCount = EXPANSION_SIZE){
+        // free all memory in the list
+        CMemoryPool<T>* pNext = NULL;
+        for(pNext = m_pFreeList;p_Next != NULL;pNext = m_pFreeList){
+            m_pFreeList = m_pFreeList->m_pFreeList;
+            delete[] (char*)pNext;
+        }
+    }
+
+    void* Alloc(unsigned int /*size*/){
+        if(m_pFreeList == NULL){
+            ExpandFreeList();
+        }
+        // get the free memory from the head;
+        CMemoryPool<T>* pHead = m_pFreeList;
+        m_pFreeList = m_pFreeList->m_pFreeList;
+        return pHead;
+    }    
+
+    void Free(void* p){
+        // push the free memory back to list
+        CMemoryPool<T>* pHead = static_cast<CMemoryPool<T>* >(p);
+        pHead->m_pFreeList = m_pFreeList;
+        m_pFreeList = pHead;
+    }
+
+protected:
+    // allocate memory and push to the list
+    void ExpandFreeList(unsigned nItemCount = EXPANSION_SIZE){
+        unsigned int nSize = max(sizeof(T), sizeof(CMemoryPool<T>*));
+        CMemoryPool<T>* pLastItem = static_cast<CMemoryPool<T>*>(static_cast<void*>(new char[nSize]));
+        m_pFreeList = pLastItem;
+        for(int i = 0;i < nItemCount - 1;++i){
+            pLastItem->m_pFreeList = static_cast<CMemoryPool<T>*>(static_cast<void*>(new char[nSize]));
+            pLastItem = pLastItem->m_pFreeList;
+        }
+        pLastItem->m_pFreeList = NULL;
+    }
+private:
+    // 链表
+    CMemoryPool<T>* m_pFreeList;
+
+};
+
+template<typename POOLTYPE, typename LOCKTYPE>
+class CMTMemoryPool{
+public:
+    void* Alloc(unsigned int size){
+        void* p = NULL;
+        m_lock.Lock();
+        p = m_pool.Alloc(size);
+        m_Lock.Unlock();
+        return p;
+    } 
+
+    void Free(void* p){
+        m_lock.Lock();
+        m_pool.Free(p);
+        m_lock.Unlock();
+    }
+private:
+    POOLTYPE m_pool;
+    LOCKTYPE m_lock;
+};
+```
 
 * **dlmalloc**
 
-支持大对象和小对象
+支持大对象和小对象,采用边界标记法将内存划分成很多块，从而对内存的分配与护手进行管理。在dlmalloc的实现源码中定义了两种结构体malloc_chunk和malloc_tree_chunk来描述这些块，小于256字节的chunk块由结构体malloc_chunk(**双向链表**)来描述，大于256字节的chunk块由结构体malloc_tree_chunk(**二叉树链表**)来管理。
 
 * **SGI STL中内存分配器(allocator)**
 
@@ -2372,7 +2465,7 @@ free_list[3]->start_notuse->next_notuse->next_notuse->...->end_notuse
 
 当用户要获取此大小的内存时，就在 free_list 的链表找一个最近的 free chunk 回传给用户，同时将此 chunk 从 free_list 里删除，即把此 chunk 前后 chunk 指针链结起来。用户使用完释放的时候，则把此chunk 放回到 free_list 中，应该是放到最前面的 start_free 的位置。这样经过若干次 allocator 和 deallocator 后， free_list 中的链表可能并不像初始的时候那么是 chunk 按内存分布位置依次链接的。假如free_list 中不够时， allocator 会自动再分配一块新的较大的内存区块来加入到 free_list 链表中。
 
- 可以自动管理多种不同大小内存块并可以自动增长的内存池，这是 SGI STL 分配器设计的特点。
+可以自动管理多种不同大小内存块并可以自动增长的内存池，这是 SGI STL 分配器设计的特点。
 
 * **Loki中小对象分配器(small object allocator)**
 

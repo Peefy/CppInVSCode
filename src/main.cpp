@@ -4,8 +4,10 @@
 #include <list>
 #include <map>
 #include <memory>
-
+#include <atomic>
 #include <stdio.h>
+#include <thread>
+#include <sstream>
 
 #include "demo.h"
 #include "smartpointer.h"
@@ -28,7 +30,8 @@ int main()
     DuGu::smartPointerDemo();
 
     auto plane = PlaneType::Bo737;
-
+    atomic<int> foo(0);
+    map<int, int> m;
     return 0;
 }
 

@@ -54,7 +54,8 @@
         "unordered_set": "cpp",
         "numeric": "cpp",
         "ctime": "cpp",
-        "mutex": "cpp"
+        "mutex": "cpp",
+        "atomic": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.errorSquiggles": "Disabled"

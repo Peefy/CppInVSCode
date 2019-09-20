@@ -2514,11 +2514,98 @@ oogle的开源项目gperftools，
 
 所谓动态链接就是在编译的时候不直接拷贝可执行代码，而是通过记录一系列符号和参数，在程序运行或加载时将这些信息传递给操作系统，操作系统负责将需要的动态库加载到内存中，然后程序在运行到指定的代码时，去共享执行内存中已经加载的动态库可执行代码，最终达到运行时连接的目的。优点是多个程序可以共享同一段代码，而不需要在磁盘上存储多个拷贝，缺点是由于是运行时加载，可能会影响程序的前期执行性能。
 
-**74. **
+**74. C++11的memory_order**
 
-**75. **
+在C++11标准原子库中，大多数函数接收一个memory_order参数：
 
-**76. **
+```c++
+enum memory_order {
+    memory_order_relaxed,
+    memory_order_consume,
+    memory_order_acquire,
+    memory_order_release,
+    memory_order_acq_rel,
+    memory_order_seq_cst
+};
+```
+
+上面的值被称为内存顺序约束。每一个都有自己的目的。消费和获取都为了同一个目的：帮助非原子信息在线程间安全的传递。就像获取操作一样，消费操作必须与另一个线程的释放操作一起使用。
+
+```c++
+atomic<int> Guard(0);
+int Payload = 0;
+
+g = Guard.load(memory_order_acquire);
+if (g != 0)
+    p = Payload;
+```
+
+**75. C++11的std::atomic**
+
+* **std::atomic_flag**-std::atomic_flag是一个原子的布尔类型，可支持两种原子操作：test_and_set, 如果atomic_flag对象被设置，则返回true; 如果atomic_flag对象未被设置，则设置之，返回false；clear. 清楚atomic_flag对象
+
+```c++
+#include <iostream>
+#include <atomic>
+#include <vector>
+#include <thread>
+#include <sstream>
+
+std::atomic_flag lock = ATOMIC_FLAG_INIT;
+std::stringstream stream;
+
+void append_numer(int x){
+  while (lock.test_and_set());
+  stream << "thread#" << x << "\n";
+  lock.clear();
+}
+
+int main(){
+  std::vector<std::thread> ths;
+  for (int i=0; i<10; i++)
+    ths.push_back(std::thread(append_numer, i));
+  for (int i=0; i<10; i++)
+    ths[i].join();
+  std::cout << stream.str();
+  return 0;
+}
+```
+
+* **std::atomic**-std::atomic对int, char, bool等数据结构进行原子性封装，在多线程环境中，对std::atomic对象的访问不会造成竞争-冒险。利用std::atomic可实现数据结构的无锁设计。
+
+```c++
+#include <iostream>
+#include <atomic>
+#include <vector>
+#include <thread>
+#include <sstream>
+
+std::atomic<bool> ready(false);
+std::atomic_flag winner = ATOMIC_FLAG_INIT;
+
+void count1m(int i){
+  while (!ready);
+  for (int i=0; i<1000000; i++);
+  if (!winner.test_and_set())
+    std::cout << "winner: " << i << std::endl;
+}
+
+int main(){
+  std::vector<std::thread> ths;
+  for (int i=0; i<10; i++)
+    ths.push_back(std::thread(count1m, i));
+  ready = true;
+  for (int i=0; i<10; i++)
+    ths[i].join();
+  return 0;
+}
+```
+
+*atomic\<int\>支持++和--的原子操作。*
+
+**76. C++ constexpr编译时计算关键字**
+
+C++11有一些这样的改善，这种改善保证写出的代码比以往任何时候的执行效率都要好。这种改善之一就是生成常量表达式，允许程序利用编译时的计算能力。假如你熟悉模板元编程，你将发现constexpr使这一切变得更加简单。假如你不知道模板元编程，也没什么。constexpr使我们很容易利用上编译时编程的优势。
 
 **77. **
 

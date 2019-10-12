@@ -6,11 +6,11 @@ Cool! C++ In VSCode.
 
 > make
 
-[C++笔记](https://github.com/Peefy/CppInVSCode/tree/master/src/README.md)
+[C++笔记](https://github.com/Peefy/CppInVSCode/tree/master/doc/README.md)
 
-[C++问答](https://github.com/Peefy/CppInVSCode/tree/master/src/README_PROBLEMS.md)
+[C++问答](https://github.com/Peefy/CppInVSCode/tree/master/doc/README_PROBLEMS.md)
 
-[Windows VC++](https://github.com/Peefy/CppInVSCode/tree/master/src/README_PROBLEMS.md)
+[Windows VC++](https://github.com/Peefy/CppInVSCode/tree/master/doc/README_PROBLEMS.md)
 
 ## Thanks
 

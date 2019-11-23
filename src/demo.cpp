@@ -23,6 +23,7 @@
 using namespace std;  
 
 #define concat(a, b) a ## b
+#define enum_to_string(x) #x
 
 struct Books{
    char  title[50];
@@ -182,7 +183,7 @@ void noteDemo(){
     clog << "Error message : " << str << endl;
 
     strcpy( book.title, "C++ 教程");
-    strcpy( book.author, "Runoob"); 
+    strcpy( book.author, "dugu"); 
     strcpy( book.subject, "编程语言");
     book.book_id = 12345;
     cout << book.author << endl;
@@ -461,6 +462,10 @@ void noteDemo(){
     pq.push(5);
     printf("the pq ele is %d\n", pq.top());
 
+    auto lists = {0, 1, 2, 3, 4};
+    for (auto&& val : lists) {
+        printf("the const val is %d\n", val);
+    }
 }
 
 END_DEMO_NAMESPACE

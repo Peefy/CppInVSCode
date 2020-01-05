@@ -7,10 +7,22 @@
 #include <vector>
 
 #include <algorithm>
+#include <allocators>
+#include <any>
+#include <atomic>
+
+#include <bitset>
+
+#include <cassert>
+#include <ccomplex>
+#include <cctype>
+#include <cfenv>
+#include <cfloat>
+#include <chrono>
 
 #include <functional>
 #include <future>
-#include <atomic>
+#include <iostream>
 
 using namespace std;
 
@@ -46,14 +58,11 @@ void show_vector(_Iter start, _Iter end) {
 auto is_even = [](int const elem) -> bool { return !(elem % 2); };
 auto is_odd = [](int const elem) -> bool { return (elem % 2); };
 
-
-int msvc_main() {
-    std::cout << "Hello World!\n"; 
-	auto a = A<double, 3>();
-
+void header_algorithm() {
 	// #include <algorithm>
 	vector<int> v{ 1, 2, 3, 4 ,5 };
 	vector<int> v2{ 6, 7, 8, 9 ,10 };
+	vector<int> vsort{1, 2, 3, 4, 5 };
 	show_vector(v.begin(), v.end());
 	cout << *adjacent_find(v.begin(), v.end(), [](int a, int b) {return a * 2 == b; }) << std::endl;
 	cout << all_of(v.begin(), v.end(), [](int a) {return a <= 2; }) << std::endl;
@@ -68,5 +77,43 @@ int msvc_main() {
 	cout << equal(v.begin(), v.end(), v2.begin()) << std::endl;
 	cout << *(equal_range(v.begin(), v.end(), 3).first) << std::endl;
 
+	fill(v.begin(), v.end(), 2);
+	fill_n(v.begin(), 3, 3);
+	find(v.begin(), v.end(), 3);
+	find_end(v.begin(), v.end(), v2.begin(), v2.end());
+	find_first_of(v.begin(), v.end(), v2.begin(), v2.end());
+	find_if(v.begin(), v.end(), 3);
+	find_if_not(v.begin(), v.end(), 3);
+	for_each(v.begin(), v.end(), [](int x){return x + 1;});
+	for_each_n(v.begin(), 3, [](int x){return x + 1;});
+	generate(v.begin(), v.end(), rand);
+	generate_n(v.begin(), 3, rand);
+	includes(v.begin(), v.end(), v2.begin(), v2.end());
+	inplace_merge(v.begin(), v.begin() + 3 , v.end(), [](int elem1, int elem2){
+		return abs(elem1) - abs(elem2);
+	});
+	is_heap(v.begin(), v.end());
+	is_heap_until(v.begin(), v.end());
+	is_partitioned(v.begin(), v.end(), std::less<int>)
+	is_permutation(v.begin(), v.end(), v2.begin());
+	is_sorted(v.begin(), v.end());
+	is_sorted_until(v.begin(), v.end());
+	iter_swap(v.begin(), v.begin() + 1);
+	lexicographical_compare(v.begin(), v.end(), v2.begin(), v2.end());
+	lower_bound(vsort.begin(), vsort.end(), 3);
+	make_heap(v.begin(), v.end());
+	max(v, v2);
+	max_element(v.begin(), v.end());
+	
+}
+
+void header_allocators() {
+
+}
+
+int msvc_main() {
+    std::cout << "Hello MSVC C++ library!\n"; 
+	header_algorithm();
+	header_allocators();
 	return -1;
 }

@@ -55,7 +55,9 @@
         "numeric": "cpp",
         "ctime": "cpp",
         "mutex": "cpp",
-        "atomic": "cpp"
+        "atomic": "cpp",
+        "algorithm": "cpp",
+        "list": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.errorSquiggles": "Disabled"

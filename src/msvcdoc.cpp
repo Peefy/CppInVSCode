@@ -1,28 +1,41 @@
 
 #include "msvcdoc.h"
-
-#include <iostream>
-#include <cstddef>
-
-#include <vector>
-
+// <a>
 #include <algorithm>
 #include <allocators>
 #include <any>
 #include <atomic>
-
+// <b>
 #include <bitset>
-
+// <c>
 #include <cassert>
 #include <ccomplex>
 #include <cctype>
 #include <cfenv>
 #include <cfloat>
 #include <chrono>
-
+#include <cinttypes>
+#include <ciso646>
+#include <climits>
+#include <clocale>
+#include <cmath>
+#include <codecvt>
+#include <complex>
+#include <condition_variable>
+#include <csetjmp>
+// <d>
+// <e>
+// <f>
 #include <functional>
 #include <future>
+// <u>
+#include <utility>
+// <i>
 #include <iostream>
+// <s>
+#include <string>
+// <v>
+#include <vector>
 
 using namespace std;
 
@@ -94,7 +107,7 @@ void header_algorithm() {
 	});
 	is_heap(v.begin(), v.end());
 	is_heap_until(v.begin(), v.end());
-	is_partitioned(v.begin(), v.end(), std::less<int>)
+	is_partitioned(v.begin(), v.end(), std::less<int>);
 	is_permutation(v.begin(), v.end(), v2.begin());
 	is_sorted(v.begin(), v.end());
 	is_sorted_until(v.begin(), v.end());
@@ -104,6 +117,22 @@ void header_algorithm() {
 	make_heap(v.begin(), v.end());
 	max(v, v2);
 	max_element(v.begin(), v.end());
+	min(v, v2);
+	min_element(v.begin(), v.end());
+	minmax_element(v.begin(), v.end());
+	minmax(v.begin(), v.end());
+	mismatch(v.begin(), v.end(), v2.begin());
+	move(v.begin(), v.end(), v2.begin());
+	move_backward(v.begin(), v.end(), v2.end());
+	next_permutation(v.begin(), v.end());
+	nth_element(v.begin(), v.begin() + 3, v.end());
+	none_of(v.begin(), v.end(), [](int a) {return a <= 2; });
+	partial_sort(v.begin(), v.begin() + 3, v.end());
+	partial_sort_copy(v.begin(), v.end(), v2.begin(), v2.end());
+	partition(v.begin(), v.end(), [](int a) {return a <= 2; });
+	partition_copy(v.begin(), v.end(), v2.begin(), v2.end(), [](int a) {return a <= 2; });
+	partition_point(v.begin(), v.end(), [](int a) {return a <= 2; });
+	pop_heap(v.begin(), v.end());
 	
 }
 

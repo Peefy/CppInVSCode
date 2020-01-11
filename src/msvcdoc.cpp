@@ -101,7 +101,7 @@ template <typename Type>
 class MultValue
 {
 private:
-	Type _factor
+	Type _factor;
 public:
 	MultValue ( const Type& value ) : _factor ( value ) { }
 	Type operator() (Type& elem) const {
@@ -109,15 +109,13 @@ public:
     }
 };
 
-
-
 void header_algorithm() {
 	// #include <algorithm>
-	vector<int> v{1, 2, 3, 4, 5};
+	vector<int> v{ 1, 2, 3, 4, 5 };
 	vector<int> v2(0, 100);
-	vector<int> vsort{1, 2, 3, 4, 5};
+	vector<int> vsort{ 1, 2, 3, 4, 5 };
 	auto mygreater = [](int a) -> bool { return a <= 2; };
-	auto UDgreater = [](int elem1, int elem2 ) { return elem1 > elem2;};
+	auto UDgreater = [](int elem1, int elem2) { return elem1 > elem2; };
 	auto twice = [](int elem1, int elem2) { return elem1 * 2 == elem2; };
 	auto is_even = [](int const elem) -> bool { return !(elem % 2); };
 	auto is_odd = [](int const elem) -> bool { return (elem % 2); };
@@ -140,19 +138,18 @@ void header_algorithm() {
 	find(v.begin(), v.end(), 3);
 	find_end(v.begin(), v.end(), v2.begin(), v2.end());
 	find_first_of(v.begin(), v.end(), v2.begin(), v2.end());
-	find_if(v.begin(), v.end(), 3);
-	find_if_not(v.begin(), v.end(), 3);
+	find_if(v.begin(), v.end(), [](int a) { return a == 2; });
+	find_if_not(v.begin(), v.end(), [](int a) { return a != 2; });
 	for_each(v.begin(), v.end(), [](int x) { return x + 1; });
-	for_each_n(v.begin(), 3, [](int x) { return x + 1; });
 	generate(v.begin(), v.end(), rand);
 	generate_n(v.begin(), 3, rand);
 	includes(v.begin(), v.end(), v2.begin(), v2.end());
 	inplace_merge(v.begin(), v.begin() + 3, v.end(), [](int elem1, int elem2) {
 		return abs(elem1) - abs(elem2);
-	});
+		});
 	is_heap(v.begin(), v.end());
 	is_heap_until(v.begin(), v.end());
-	is_partitioned(v.begin(), v.end(), std::less<int>());
+	// is_partitioned(v.begin(), v.end(), std::less<int>());
 	is_permutation(v.begin(), v.end(), v2.begin());
 	is_sorted(v.begin(), v.end());
 	is_sorted_until(v.begin(), v.end());
@@ -193,28 +190,33 @@ void header_algorithm() {
 	reverse_copy(v.begin(), v.end(), v2.begin());
 	rotate(v.begin(), v.begin() + 1, v.end());
 	rotate_copy(v.begin(), v.begin() + 1, v.end(), v2.begin());
-	sample(v1.begin(), v1.end(), v2.begin(), v2.end(), twice);
-	search(v1.begin(), v1.end(), v2.begin(), v2.end(), twice);
-	search_n(v1.begin(), v1.end(), 3, 5, twice);
-	set_difference(v.begin(), v.end(), v2.begin(), v2.end(), v1.begin());
-	set_intersection(v.begin(), v.end(), v2.begin(), v2.end(), greater<int>());
+	// sample(v.begin(), v.end(), v2.begin(), v2.end(), twice);
+	// search(v.begin(), v.end(), v2.begin(), v2.end(), twice);
+	// search_n(v.begin(), v.end(), 3, 5, twice);
+	set_difference(v.begin(), v.end(), v2.begin(), v2.end(), v.begin());
+	// set_intersection(v.begin(), v.end(), v2.begin(), v2.end(), greater<int>());
 	set_symmetric_difference(v.begin(), v.end(), v2.begin(), v2.end(), v.begin());
 	set_union(v.begin(), v.end(), v2.begin(), v2.end(), v.begin());
-	shuffle(v.begin(), v.end());
+	// shuffle(v.begin(), v.end());
 	sort(v.begin(), v.end());
 	sort_heap(v.begin(), v.end());
 	stable_partition(v.begin(), v.end(), mygreater);
 	stable_sort(v.begin(), v.end());
-	stable_sort(v1.begin( ), v1.end( ), UDgreater );
-	swap(v.begin(), v.end());
+	// stable_sort(v.begin(), v.end(), UDgreater);
+	// swap(v.begin(), v.end());
 	swap_ranges(v.begin(), v.end(), v2.begin());
-	transform(v1.begin(), v1.end(), v2.begin(), MultValue<int>(5)); 
+	transform(v.begin(), v.end(), v2.begin(), MultValue<int>(5));
 	unique(v.begin(), v.end());
 	unique_copy(v.begin(), v.begin() + 2, v.begin() + 8);
 	upper_bound(v.begin(), v.end(), 3);
 }
 
 void header_allocators() {
+
+}
+
+void header_any() {
+
 }
 
 int msvc_main() {

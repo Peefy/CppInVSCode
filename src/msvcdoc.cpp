@@ -588,6 +588,47 @@ void header_atomic() {
         th.join();
 }
 
+void header_bitset() {
+	/*
+	 * bitset	类模板描述了一种对象类型，该对象存储由固定数量的位构成的序列，
+	 * 这些位提供一种压缩方法来保留一组项或条件的标志。
+	*/
+   bitset<5> b1 ( 6 );
+   bool b, rb;
+
+   cout << "The original bitset b1( 6 ) is: ( "<< b1 << " )"
+        << endl;
+
+   b = b1.any ( );
+
+   if ( b )
+      cout << "At least one of the bits in bitset is set to 1."
+           << endl;
+   else
+      cout << "None of the bits in bitset are set to 1."
+           << endl;
+
+   bitset<5> rb1;
+   rb1 = b1.reset ( );
+
+   cout << "The reset bitset is: ( "<< b1 << " )"
+        << endl;
+
+   rb = rb1.any ( );
+
+   if ( rb )
+      cout << "At least one of the bits in the reset bitset "
+           << "are set to 1." << endl;
+   else
+      cout << "None of the bits in bitset b1 are set to 1."
+           << endl;
+
+	string str("1111111000000011001101");
+	bitset<32> bitvec5(str, 5, 4); // 4 bits starting at str[5], 1100
+	bitset<32> bitvec6(str, str.size() - 4);     // use last 4 characters
+	
+}
+
 int msvc_main() {
 	cout << "Hello MSVC C++ library!\n";
 	header_algorithm();

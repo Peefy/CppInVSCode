@@ -55,13 +55,58 @@
 #include <hash_set>
 // <i>
 #include <initializer_list>
-// <u>
-#include <utility>
-// <i>
+#include <iomanip>
+#include <ios>
+#include <iosfwd>
 #include <iostream>
+#include <istream>
+#include <iterator>
+// <l>
+#include <limits>
+#include <list>
+#include <locale>
+// <m>
+#include <map>
+#include <memory>
+#include <memory_resource>
+#include <mutex>
+// <n>
+#include <new>
+#include <numeric> 
+// <o>
+#include <optional>
+#include <ostream>
+// <q>
+#include <queue>
+// <r>
+#include <random>
+#include <radio>
+#include <regex>
 // <s>
+#include <scoped_allocator>
+#include <set>
+#include <shared_mutex>
+#include <sstream>
+#include <stack>
+#include <stdexcept>
+#include <streambuf>
 #include <string>
+#include <string_view>
+#include <strstream>
+#include <system_error>
+// <t>
+#include <thread>
+#include <tuple>
+#include <type_traits>
+#include <typeindex>
+#include <typeinfo>
+// <u>
+#include <unordered_map>
+#include <unordered_set>
+#include <utility>
 // <v>
+#include <valarray>
+#include <variant>
 #include <vector>
 
 using namespace std;
@@ -483,6 +528,40 @@ void header_array() {
 }
 
 void header_atomic() {
+	/*
+     * atomic 结构	描述对存储值执行原子操作的对象。
+	 * atomic_flag 结构	描述一个对象，该对象以原子方式设置并清除布尔型标志。
+	 * memory_order 枚举	为内存位置上的同步操作提供符号名称。 这些操作将影响一个线程内的分配如何在另一个线程内变得可见。
+	 * atomic_compare_exchange_strong	执行原子比较和交换操作。
+	 * atomic_compare_exchange_strong_explicit	执行原子比较和交换操作。
+	 * atomic_compare_exchange_weak	执行弱原子比较和交换操作。
+	 * atomic_compare_exchange_weak_explicit	执行弱原子比较和交换操作。
+	 * atomic_exchange	替换存储值。
+	 * atomic_exchange_explicit	替换存储值。
+	 * atomic_fetch_add	将指定的值添加到现有存储值。
+	 * atomic_fetch_add_explicit	将指定的值添加到现有存储值。
+	 * atomic_fetch_and	对指定值和现有存储值执行按位 and。
+	 * atomic_fetch_and_explicit	对指定值和现有存储值执行按位 and。
+	 * atomic_fetch_or	对指定值和现有存储值执行按位 or。
+	 * atomic_fetch_or_explicit	对指定值和现有存储值执行按位 or。
+	 * atomic_fetch_sub	从现有存储值减去指定的值。
+	 * atomic_fetch_sub_explicit	从现有存储值减去指定的值。
+	 * atomic_fetch_xor	对指定值和现有存储值执行按位 exclusive or。
+	 * atomic_fetch_xor_explicit	对指定值和现有存储值执行按位 exclusive or。
+	 * atomic_flag_clear	将 atomic_flag 对象中的标志设置为false。
+	 * atomic_flag_clear_explicit	将 atomic_flag 对象中的标志设置为false。
+	 * atomic_flag_test_and_set	将 atomic_flag 对象中的标志设置为true。
+	 * atomic_flag_test_and_set_explicit	将 atomic_flag 对象中的标志设置为true。
+	 * atomic_init	设置 atomic 对象中存储的值。
+	 * atomic_is_lock_free	指定对指定对象执行的原子操作是否为无锁。
+	 * atomic_load	以原子方式检索一个值。
+	 * atomic_load_explicit	以原子方式检索一个值。
+	 * atomic_signal_fence	充当 fence，用于在调用线程中信号处理程序在同一线程中执行的 fence 之间建立内存排序要求。
+	 * atomic_store	以原子方式存储一个值。
+	 * atomic_store_explicit	以原子方式存储一个值。
+	 * atomic_thread_fence	充当就其他 fence 建立内存排序要求的 fence。
+	 * kill_dependency	中断可能的依赖关系链。
+	*/
 
 }
 

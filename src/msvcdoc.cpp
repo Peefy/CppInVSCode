@@ -12,6 +12,7 @@
 #include <cassert>
 #include <ccomplex>
 #include <cctype>
+#include <cerrno>
 #include <cfenv>
 #include <cfloat>
 #include <chrono>
@@ -110,6 +111,7 @@
 #include <vector>
 
 using namespace std;
+using namespace std::chrono;
 
 template <typename T, int N = 10>
 struct A
@@ -627,6 +629,161 @@ void header_bitset() {
 	bitset<32> bitvec5(str, 5, 4); // 4 bits starting at str[5], 1100
 	bitset<32> bitvec6(str, str.size() - 4);     // use last 4 characters
 	
+}
+
+void header_cassert() {
+	/*
+	 * 包括 C 标准库头文件<assert > 并将关联名称添加std到命名空间。 
+	 * 包括此头文件可确保在std命名空间中声明使用 C 标准库头文件中的外部链接声明的名称。
+	*/
+	assert(1 == 1);
+
+}
+
+void header_ccomplex() {
+	/* 
+	 * 定义了C语言的complex.h库，复数库
+	 * C++17中被弃用，C++20中被删除
+	*/
+}
+
+void header_cctype() {
+	/* 
+	 * 包含标准 C 库头文件 <ctype.h> 并将关联名称添加到 std 命名空间。
+	 * int isalnum(int c);
+	 * int isalpha(int c);
+	 * int isblank(int c);
+	 * int iscntrl(int c);
+	 * int isdigit(int c);
+	 * int isgraph(int c);
+	 * int islower(int c);
+	 * int isprint(int c);
+	 * int ispunct(int c);
+	 * int isspace(int c);
+	 * int isupper(int c);
+	 * int isxdigit(int c);
+	 * int tolower(int c);
+	 * int toupper(int c);
+	*/
+	cout << isalpha('1') << " ";
+	cout << islower('a') << " ";
+	cout << isalpha('1') << " " << "\n";
+}
+
+void header_cerrno() {
+	/*
+	 * 包括 C 标准库头文件<errno > 并将关联名称添加std到命名空间。 
+	*/
+}
+
+void header_cfenv() {
+	/*
+	 * 包含标准 C 库头文件 <fenv.h> 并将关联名称添加到 std 命名空间。
+	*/
+}
+
+void header_cfloat() {
+	/*
+	 * 包含标准 C 库头文件 <float.h>
+	*/
+}
+
+void header_chrono() {
+	/*
+	 * < chrono > 定义表示和操作持续时间及时刻的类和函数。
+	 * duration 类	描述保持时间间隔的类型。
+	 * time_point 类	描述表示时间点的类型。
+	 * common_type 结构	介绍 duration 和 time_point 实例化的类模板common_type的专用化。
+	 * duration_values 结构	提供 duration 模板参数 Rep 的特定值。
+	 * high_resolution_clock 结构	
+	 * steady_clock 结构	表示 steady 时钟。
+	 * system_clock 结构	表示基于系统实时时钟的时钟类型。
+	 * treat_as_floating_point 结构	指定是否可将一种类型视为浮点类型。
+	 * duration_cast	将 duration 对象转换为指定类型。
+	 * time_point_cast	将 time_point 对象转换为指定类型。
+	 * typedef duration<long long, nano> nanoseconds;	计时周期为1毫微秒的 duration 类型的同义词。
+	 * typedef duration<long long, micro> microseconds;	计时周期为1微秒的 duration 类型的同义词。
+	 * typedef duration<long long, milli> milliseconds;	计时周期为1毫秒的 duration 类型的同义词。
+	 * typedef duration<long long> seconds;	计时周期为1秒的 duration 类型的同义词。
+	 * typedef duration<int, ratio<60> > minutes;	计时周期为1分钟的 duration 类型的同义词。
+	 * typedef duration<int, ratio<3600> > hours;	计时周期为1小时的 duration 类型的同义词。
+	*/
+	constexpr auto day = 24h;
+	constexpr auto week = 24h* 7;
+	constexpr auto my_duration_unit = 108ms;
+	std::this_thread::sleep_for(10ms);
+
+	using std::chrono::system_clock;
+
+    std::chrono::duration<int,std::ratio<60*60*24> > one_day (1);
+
+    //current time
+    system_clock::time_point today = system_clock::now();
+
+    //tomorrow time
+    system_clock::time_point tomorrow = today + one_day;
+
+    //convert time type   
+    time_t tmTomorrow = system_clock::to_time_t ( tomorrow );
+
+    //time string
+    std::cout << "tomorrow will be: " << ctime(&tmTomorrow);
+
+    struct tm *p;   
+    p = localtime(&tmTomorrow); /*转换为struct tm结构的当地时间*/  
+    printf("%d/%d/%d ", 1900 + p->tm_year, 1 + p->tm_mon, p->tm_mday); 
+
+}
+
+void header_cinttypes() {
+	/*
+	 * 包含标准 C 库头文件 <inttypes.h>。 
+	 * 包含此头文件还将包括 <cstdint>。
+	*/
+}
+
+void header_ciso646() {
+	/*
+	 * 包括 C 标准库头文件<iso646 >, 并将关联名称添加std到命名空间。
+	*/
+}
+
+void header_climits() {
+	/*
+	 * #define CHAR_BIT
+	 * #define SCHAR_MIN
+	 * #define SCHAR_MAX
+	 * #define UCHAR_MAX 
+	 * #define CHAR_MIN
+	 * #define CHAR_MAX
+	 * #define MB_LEN_MAX
+	 * #define SHRT_MIN
+	 * #define SHRT_MAX
+	 * #define USHRT_MAX
+	 * #define INT_MIN
+	 * #define INT_MAX
+	 * #define UINT_MAX
+	 * #define LONG_MIN
+	 * #define LONG_MAX
+	 * #define ULONG_MAX
+	 * #define LLONG_MIN
+	 * #define LLONG_MAX
+	 * #define ULLONG_MAX
+	*/
+}
+
+void header_clocale() {
+	/*
+	 * struct lconv;
+	 * char* setlocale(int category, const char* locale);
+	 * lconv* localeconv();
+	*/
+}
+
+void header_cmath() {
+	/*
+	 * #include <math.h>  
+	*/
 }
 
 int msvc_main() {

@@ -80,7 +80,10 @@
         "future": "cpp",
         "thread": "cpp",
         "filesystem": "cpp",
-        "__tuple": "cpp"
+        "__tuple": "cpp",
+        "cassert": "cpp",
+        "ccomplex": "cpp",
+        "__locale": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.errorSquiggles": "Disabled"

@@ -78,7 +78,9 @@
         "memory_resource": "cpp",
         "ratio": "cpp",
         "future": "cpp",
-        "thread": "cpp"
+        "thread": "cpp",
+        "filesystem": "cpp",
+        "__tuple": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.errorSquiggles": "Disabled"

@@ -4,6 +4,7 @@
 #include <algorithm>
 #include <allocators>
 #include <any>
+#include <array>
 #include <atomic>
 // <b>
 #include <bitset>
@@ -376,11 +377,117 @@ void header_allocators() {
 }
 
 void header_any() {
+	any a(1);
+	any b(nullptr);
+	/* 
+	 * emplace	设置任何值。
+	 * has_value	返回 ，则返回 true如果任何具有一个值。
+	 * reset	重置了任何。
+	 * swap	交换两个任何对象。
+	 * type	返回的任何类型。
+	 * operator=	任何替换任何使用的另一个副本。
+	*/
+	std::out << a.has_value() << "\n";
+	std::vector<std::any> anys;    
+	anys.push_back(1);
+	anys.push_back(2.0);
+	anys.push_back(std::wstring(L"3.0"));
+
+	for (auto& val : anys) {
+    	if (val.type() == typeid(int)) {
+        	std::wcout << std::any_cast<int>(val) << std::endl;
+    	}
+    	else if (val.type() == typeid(double)) {
+        	std::wcout << std::any_cast<double>(val) << std::endl;
+    	}
+    	else if (val.type() == typeid(std::wstring)) {
+        	std::wcout << std::any_cast<std::wstring>(val) << std::endl;
+    	}
+	}
+}
+
+void header_array() {
+	/* 
+	 * 类
+     * array	存储元素的固定长度序列。
+	 * tuple_element	包装数组元素的类型。
+	 * tuple_size	包装数组元素的大小。
+	 * 函数
+	 * get	获取指定的数组元素。 
+	 * swap	将一个数组的内容与另一个数组的内容进行交换。
+	*/
+
+    std::array<int, 5> arr = {1, 2, 3, 4, 5};
+ 
+    cout << "array values: ";
+    for (auto it = arr.begin(); it != arr.end(); ++it) {
+        cout << *it << " ";
+    }
+    cout << std::endl;
+
+    std::array<int, 4> c0 { 0, 1, 2, 3 };
+
+    // display contents " 0 1 2 3"
+    for (const auto& e : c0)
+    {
+        cout << " " << e;
+    }
+    cout << endl;
+
+    // display odd elements " 1 3"
+    cout << " " << get<1>(c0);
+    cout << " " << get<3>(c0) << endl;
+
+ 	cout << "array[0] = " << arr[0] << std::endl;
+    cout << "array.at(4) = " << arr.at(4) << std::endl;
+    cout << "array.front() = " << arr.front() << std::endl;
+    cout << "array.back() = " << arr.back() << std::endl;
+
+	arr.fill(5);
+
+
+    std::array<int,5> a = {10, 20, 30, 40, 50};
+    std::array<int,5> b = {10, 20, 30, 40, 50};
+    std::array<int,5> c = {50, 40, 30, 20, 10};
+ 
+    if (a == b) {
+        cout << "a == b" << std::endl;
+    } else {
+        cout << "a != b" << std::endl;
+    }
+ 
+    if (a == c) {
+        cout << "a == c" << std::endl;
+    } else {
+        cout << "a != c" << std::endl;
+    }
+ 
+    if (a < c) {
+        cout << "a < c" << std::endl;
+    } else {
+        cout << "a >= c" << std::endl;
+    }
+
+  	std::array<int,3> myarray = {10, 20, 30};
+    std::tuple<int, int, int> mytuple (10, 20, 30);
+ 
+    std::tuple_element<0, decltype(myarray)>::type myelement;  // int myelement
+ 
+    myelement = std::get<2>(myarray);
+    std::get<2>(myarray) = std::get<0>(myarray);
+    std::get<0>(myarray) = myelement;
+ 
+    std::cout << "first element in myarray: " << std::get<0>(myarray) << std::endl;
+    std::cout << "first element in mytuple: " << std::get<0>(mytuple) << std::endl;
+
+}
+
+void header_atomic() {
 
 }
 
 int msvc_main() {
-	std::cout << "Hello MSVC C++ library!\n";
+	cout << "Hello MSVC C++ library!\n";
 	header_algorithm();
 	header_allocators();
 	return -1;

@@ -10,7 +10,7 @@ Cool! C++ In VSCode.
 
 [C++问答](https://github.com/Peefy/CppInVSCode/tree/master/doc/README_PROBLEMS.md)
 
-[Windows VC++](https://github.com/Peefy/CppInVSCode/tree/master/doc/README_PROBLEMS.md)
+[Windows VC++](https://github.com/Peefy/CppInVSCode/tree/master/doc/README_VC.md)
 
 ## Thanks
 

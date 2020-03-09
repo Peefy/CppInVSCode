@@ -786,6 +786,95 @@ void header_cmath() {
 	*/
 }
 
+void header_codecvt() { }
+void header_complex() { }
+void header_condition_variable() { }
+void header_csetjmp() { }
+void header_csignal() { }
+void header_cstdalign() { }
+void header_cstdarg() { }
+void header_cstdbool() { }
+void header_cstddef() { }
+void header_cstdint() { }
+void header_cstdio() { }
+void header_cstring() { }
+void header_ctgmath() { }
+void header_ctime() { }
+void header_cuchar() { }
+// void header_cvt-wbuffer() { }
+// void header_cvt-wstring() { }
+void header_cwchar() { }
+void header_cwctype() { }
+// <d>
+void header_deque() { }
+// <e>
+void header_exception() { }
+void header_execution() { }
+// <f>
+void header_filesystem() { }
+void header_forward_list() { }
+void header_fstream() { }
+void header_functional() { }
+void header_future() { }
+// <h>
+void header_hash_map() { }
+void header_hash_set() { }
+// <i>
+void header_initializer_list() { }
+void header_iomanip() { }
+void header_ios() { }
+void header_iosfwd() { }
+void header_iostream() { }
+void header_istream() { }
+void header_iterator() { }
+// <l>
+void header_limits() { }
+void header_list() { }
+void header_locale() { }
+// <m>
+void header_map() { }
+void header_memory() { }
+void header_memory_resource() { }
+void header_mutex() { }
+// <n>
+void header_new() { }
+void header_numeric() { } 
+// <o>
+void header_optional() { }
+void header_ostream() { }
+// <q>
+void header_queue() { }
+// <r>
+void header_random() { }
+void header_radio() { }
+void header_regex() { }
+// <s>
+void header_scoped_allocator() { }
+void header_set() { }
+void header_shared_mutex() { }
+void header_sstream() { }
+void header_stack() { }
+void header_stdexcept() { }
+void header_streambuf() { }
+void header_string() { }
+void header_string_view() { }
+void header_strstream() { }
+void header_system_error() { }
+// <t>
+void header_thread() { }
+void header_tuple() { }
+void header_type_traits() { }
+void header_typeindex() { }
+void header_typeinfo() { }
+// <u>
+void header_unordered_map() { }
+void header_unordered_set() { }
+void header_utility() { }
+// <v>
+void header_valarray() { }
+void header_variant() { }
+void header_vector() { }
+
 int msvc_main() {
 	cout << "Hello MSVC C++ library!\n";
 	header_algorithm();

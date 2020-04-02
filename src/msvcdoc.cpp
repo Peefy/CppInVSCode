@@ -645,6 +645,7 @@ void header_ccomplex() {
 	 * 定义了C语言的complex.h库，复数库
 	 * C++17中被弃用，C++20中被删除
 	*/
+
 }
 
 void header_cctype() {
@@ -784,96 +785,593 @@ void header_cmath() {
 	/*
 	 * #include <math.h>  
 	*/
+	/* 
+	 * float acos(float x);
+	 * double acos(double x);
+	 * long double acos(long double x);
+	 * float acosf(float x);
+	 * long double acosl(long double x);
+	 * float asin(float x);
+	 * double asin(double x);
+	 * long double asin(long double x);
+	 * float asinf(float x);
+	 * long double asinl(long double x);
+	 * float atan(float x);
+	 * double atan(double x);
+	 * long double atan(long double x);
+	 * float atanf(float x);
+	 * long double atanl(long double x);
+	 * float atan2(float y, float x);
+	 * double atan2(double y, double x);
+	 * long double atan2(long double y, long double x);
+	 * float atan2f(float y, float x);
+	 * long double atan2l(long double y, long double x);
+	 * float cos(float x);
+	 * double cos(double x);
+	 * long double cos(long double x);
+	 * float cosf(float x);
+	 * long double cosl(long double x);
+	 * float sin(float x);
+	 * double sin(double x);
+	 * long double sin(long double x);
+	 * float sinf(float x);
+	 * long double sinl(long double x);
+	 * float tan(float x);
+	 * double tan(double x);
+	 * long double tan(long double x);
+	 * float tanf(float x);
+	 * long double tanl(long double x);
+	 * float acosh(float x);
+	 * double acosh(double x);
+	 * long double acosh(long double x);
+	 * float acoshf(float x);
+	 * long double acoshl(long double x);
+	 * float asinh(float x);
+	 * double asinh(double x);
+	 * long double asinh(long double x);
+	 * float asinhf(float x);
+	 * long double asinhl(long double x);
+	 * float atanh(float x);
+	 * double atanh(double x);
+	 * long double atanh(long double x);
+	 * float atanhf(float x);
+	 * long double atanhl(long double x);
+	 * float cosh(float x);
+	 * double cosh(double x);
+	 * long double cosh(long double x);
+	 * float coshf(float x);
+	 * long double coshl(long double x);
+	 * float sinh(float x);
+	 * double sinh(double x);
+	 * long double sinh(long double x);
+	 * float sinhf(float x);
+	 * long double sinhl(long double x);
+	 * float tanh(float x);
+	 * double tanh(double x);
+	 * long double tanh(long double x);
+	 * float tanhf(float x);
+	 * long double tanhl(long double x);
+	 * float exp(float x);
+	 * double exp(double x);
+	 * long double exp(long double x);
+	 * float expf(float x);
+	 * long double expl(long double x);
+	 * float exp2(float x);
+	 * double exp2(double x);
+	 * long double exp2(long double x);
+	 * float exp2f(float x);
+	 * long double exp2l(long double x);
+	 * float expm1(float x);
+	 * double expm1(double x);
+	 * long double expm1(long double x);
+	 * float expm1f(float x);
+	 * long double expm1l(long double x);
+	 * float frexp(float value, int* exp);
+	 * double frexp(double value, int* exp);
+	 * long double frexp(long double value, int* exp);
+	 * float frexpf(float value, int* exp);
+	 * long double frexpl(long double value, int* exp);
+	 * int ilogb(float x);
+	 * int ilogb(double x);
+	 * int ilogb(long double x);
+	 * int ilogbf(float x);
+	 * int ilogbl(long double x);
+	 * float ldexp(float x, int exp);
+	 * double ldexp(double x, int exp);
+	 * long double ldexp(long double x, int exp);
+	 * float ldexpf(float x, int exp);
+	 * long double ldexpl(long double x, int exp);
+	 * float log(float x);
+	 * double log(double x);
+	 * long double log(long double x);
+	 * float logf(float x);
+	 * long double logl(long double x);
+	 * float log10(float x);
+	 * double log10(double x);
+	 * long double log10(long double x);
+	 * float log10f(float x);
+	 * long double log10l(long double x);
+	 * float log1p(float x);
+	 * double log1p(double x);
+	 * long double log1p(long double x);
+	 * float log1pf(float x);
+	 * long double log1pl(long double x);
+	 * float log2(float x);
+	 * double log2(double x);
+	 * long double log2(long double x);
+	 * float log2f(float x);
+	 * long double log2l(long double x);
+	 * float logb(float x);
+	 * double logb(double x);
+	 * long double logb(long double x);
+	 * float logbf(float x);
+	 * long double logbl(long double x);
+	 * float modf(float value, float* iptr);
+	 * double modf(double value, double* iptr);
+	 * long double modf(long double value, long double* iptr);
+	 * float modff(float value, float* iptr);
+	 * long double modfl(long double value, long double* iptr);
+	 * float scalbn(float x, int n);
+	 * double scalbn(double x, int n);
+	 * long double scalbn(long double x, int n);
+	 * float scalbnf(float x, int n);
+	 * long double scalbnl(long double x, int n);
+	 * float scalbln(float x, long int n);
+	 * double scalbln(double x, long int n);
+	 * long double scalbln(long double x, long int n);
+	 * float scalblnf(float x, long int n);
+	 * long double scalblnl(long double x, long int n);
+	 * float cbrt(float x);
+	 * double cbrt(double x);
+	 * long double cbrt(long double x);
+	 * float cbrtf(float x);
+	 * long double cbrtl(long double x);
+	 */
+
 }
 
-void header_codecvt() { }
-void header_complex() { }
-void header_condition_variable() { }
-void header_csetjmp() { }
-void header_csignal() { }
-void header_cstdalign() { }
-void header_cstdarg() { }
-void header_cstdbool() { }
-void header_cstddef() { }
-void header_cstdint() { }
-void header_cstdio() { }
-void header_cstring() { }
-void header_ctgmath() { }
-void header_ctime() { }
-void header_cuchar() { }
+void header_codecvt() { 
+	/* 
+	 * 在此头文件中声明的区域设置 facet 在几个字符编码之间进行转换。 
+	 * 对于宽字符（存储在固定大小整数程序中）：
+	 * UCS-4 是在程序内作为 32 位整数的编码的 Unicode (ISO 10646)。
+	 * UCS-2 是在程序内作为 16 位整数的编码的 Unicode。
+	 * UTF-16 是在程序内作为任意一个或两个 16 位整数的编码的 Unicode。 
+	 * （请注意，这不符合标准 C 或标准 C++ 的有效宽字符编码的全部要求。 不过，它仍被广泛使用。）
+	 * 对于字节流（存储在文件中，以字节序列的形式传输，或存储于char数组中的程序内）：
+	 * Utf-8 是字节流中已编码的 Unicode，为具有确定性字节顺序的一个或多个八位字节。
+	 * UTF 16LE 是字节流中作为 UTF-16 已编码的 Unicode，每个 16 位整数表示为两个八位字节，不重要字节优先。
+	 * UTF 16BE 是字节流中作为 UTF-16 已编码的 Unicode，每个 16 位整数表示为两个八位字节，重要字节优先。
+	 * 
+	 * 枚举 
+	 * codecvt_mode	指定区域设置 facet 的配置信息。
+	 * 
+	 * 类
+	 * codecvt_utf8	表示在编码为 UCS-2 或 UCS-4 的宽字符和编码为 UTF-8 的字节流之间转换的区域设置 facet。
+	 * codecvt_utf8_utf16	表示在编码为 UTF-16 的宽字符和编码为 UTF-8 的字节流之间转换的区域设置 facet。
+	 * codecvt_utf16	表示在编码为 UCS-2 或 UCS-4 的宽字符和编码为 UTF-16LE 或 UTF-16BE 的字节流之间转换的区域设置 facet。
+	 */
+}
+
+void header_complex() { 
+	/*
+	 * 定义容器类模板 complex 及其支持的模板。
+	 *  一个复数是有序的实数对。 在纯粹几何术语中，复平面是真实的二维平面。 
+	 * 将复平面与实平面区分开来的特质在于它具有其他代数结构。 这种代数结构有加法和乘法基本操作。
+	 * 带复数加法和复数乘法操作的复数集在标准代数意义上为域。
+	 * 
+	 * 函数
+	 * abs	计算复数的模。
+	 * acos	
+	 * acosh	
+	 * arg	从复数中提取自变量。
+	 * asin	
+	 * asinh	
+	 * atan	
+	 * atanh	
+	 * conj	返回复数的复数共轭。
+	 * cos	返回复数的余弦值。
+	 * cosh	返回复数的双曲余弦值。
+	 * exp	返回复数的指数函数。
+	 * imag	提取复数的虚分量。
+	 * log	返回复数的自然对数。
+	 * log10	返回复数的以 10 为底的对数。
+	 * norm	提取复数的范数。
+	 * polar	返回以笛卡尔坐标形式表示的，对应于指定模数和自变量的复数。
+	 * pow	计算通过进行底数为复数的另一个复数次幂运算获得的复数。
+	 * tfsbuild.proj	
+	 * real	提取复数的实分量。
+	 * sin	返回复数的正弦值。
+	 * sinh	返回复数的双曲正弦值。
+	 * sqrt	返回复数的平方根。
+	 * tan	返回复数的正切值。
+	 * tanh	返回复数的双曲正切值。
+	 * 
+	 * 运算符
+	 * operator!=	测试两个复数是否不相等，这两个复数或其中一个可能属于其类型与实部和虚部的类型相同的子集。
+	 * operator*	将两个复数相乘，这两个复数或其中一个可能属于其类型与实部和虚部的类型相同的子集。
+	 * operator+	将两个复数相加，这两个复数或其中一个可能属于其类型与实部和虚部的类型相同的子集。
+	 * operator-	将两个复数相减，这两个复数或其中一个可能属于其类型与实部和虚部的类型相同的子集。
+	 * operator/	将两个复数相除，这两个复数或其中一个可能属于其类型与实部和虚部的类型相同的子集。
+	 * operator<<	一个模板函数，用于将复数插入输出流。
+	 * operator==	测试两个复数是否相等，这两个复数或其中一个可能属于其类型与实部和虚部的类型相同的子集。
+	 * operator>>	一个模板函数，用于从输入流提取复值。
+	 * 
+	 * 类
+	 * complex<double>	显式专用化的类模板描述了一个对象，该对象存储两个类型的对象（均为double类型），第一个对象表示复数的实部，第二个对象表示虚部。
+	 * complex<float>	显式专用化的类模板描述了一个对象，该对象存储有序对象对，这两种类型都是float类型，第一个对象表示复数的实部，第二个对象表示虚部。
+	 * complex<long double>	显式专用化的类模板描述了一个对象，该对象存储两个类型为long double的有序对象对，第一个对象表示复数的实部，第二个对象表示复数的虚部。
+	 * complex	类模板描述了一个对象，该对象用于表示复数系统和执行复杂算术运算。
+	 */
+   using namespace std;
+   double pi = 3.14159265359;
+
+   // Complex numbers can be entered in polar form with
+   // modulus and argument parameter inputs but are
+   // stored in Cartesian form as real & imag coordinates
+   complex <double> c1 ( polar ( 5.0 ) );   // Default argument = 0
+   complex <double> c2 ( polar ( 5.0 , pi / 6 ) );
+   complex <double> c3 ( polar ( 5.0 , 13 * pi / 6 ) );
+   cout << "c1 = polar ( 5.0 ) = " << c1 << endl;
+   cout << "c2 = polar ( 5.0 , pi / 6 ) = " << c2 << endl;
+   cout << "c3 = polar ( 5.0 , 13 * pi / 6 ) = " << c3 << endl;
+
+   // The modulus and argument of a complex number can be recovered
+   // using abs & arg member functions
+   double absc1 = abs ( c1 );
+   double argc1 = arg ( c1 );
+   cout << "The modulus of c1 is recovered from c1 using: abs ( c1 ) = "
+        << absc1 << endl;
+   cout << "Argument of c1 is recovered from c1 using:\n arg ( c1 ) = "
+        << argc1 << " radians, which is " << argc1 * 180 / pi
+        << " degrees." << endl;
+
+   double absc2 = abs ( c2 );
+   double argc2 = arg ( c2 );
+   cout << "The modulus of c2 is recovered from c2 using: abs ( c2 ) = "
+        << absc2 << endl;
+   cout << "Argument of c2 is recovered from c2 using:\n arg ( c2 ) = "
+        << argc2 << " radians, which is " << argc2 * 180 / pi
+        << " degrees." << endl;
+
+   // Testing if the principal angles of c2 and c3 are the same
+   if ( (arg ( c2 ) <= ( arg ( c3 ) + .00000001) ) ||
+        (arg ( c2 ) >= ( arg ( c3 ) - .00000001) ) )
+      cout << "The complex numbers c2 & c3 have the "
+           << "same principal arguments."<< endl;
+   else
+      cout << "The complex numbers c2 & c3 don't have the "
+           << "same principal arguments." << endl;
+}
+
+void header_condition_variable() { 
+	/*
+	 * 定义类 condition_variable 和 condition_variable_any，它们用于创建等待条件变为 true 的对象。
+	 * 等待条件变量的代码必须也使用 mutex。 调用线程必须在其调用等待条件变量的函数前锁定 mutex。 
+	 * 然后，mutex 将在所调用的函数返回时被锁定。 mutex 在线程等待条件变为 true 时不被锁定。 
+	 * 因此，没有不可预知的结果，等待条件变量的每个线程必须使用同一 mutex 对象。
+	 * condition_variable_any 类型的对象可与任何类型的 mutex 一起使用。
+	 * 所使用的 mutex 类型不一定提供 try_lock 方法。 
+	 * condition_variable 类型的对象只能与 unique_lock<mutex> 类型的 mutex 一起使用。 
+	 * 此类型的对象可能比 condition_variable_any<unique_lock<mutex>> 类型的对象快。
+	 * 若要等待某个事件，首先锁定 mutex，然后调用条件变量上的其中一个 wait 方法。 wait 调用在其他线程向条件变量发出信号前将保持阻止状态。
+	 * 当等待条件变量的线程在没有适当的通知的情况下变为取消阻止时发生虚假唤醒。 
+	 * 若要识别此类虚假唤醒，等待条件变为 true 的代码应在代码从等待函数返回时显式检查该条件。 
+	 * 这通常是通过使用循环来实现的；可以使用 wait(unique_lock<mutex>& lock, Predicate pred) 为你执行此循环。
+	 * condition_variable_any 和 condition_variable 类各自拥有等待条件的三种方法。
+	 * wait 等待不受限制的时间段。
+	 * wait_until 在指定 time 前等待。
+	 * wait_for 等待指定的 time interval。
+	 * 这些方法各自拥有两个重载版本。 其中一个版本只需等待并可虚假唤醒。 而另一个版本使用其他模板参数定义谓词。 此方法不返回, 直到该谓词为true。
+	 * 每个类还具有两个方法, 这些方法用于通知条件变量其条件为true。
+	 * notify_one 唤醒等待条件变量的其中一个线程。
+	 * notify_all 唤醒等待条件变量的所有线程。
+	 * 
+	 * 构造函数
+	 * condition_variable	构造 condition_variable 对象。
+	 * 函数
+	 * 
+	 * native_handle	返回表示 condition_variable 句柄的特定于实现的类型。
+	 * notify_all	取消阻止正在等待 condition_variable 对象的所有线程。
+	 * notify_one	取消阻止正在等待 condition_variable 对象的某个线程。
+	 * 阻止线程。
+	 * wait_for	阻止某个线程，并设置线程阻止的时间间隔。
+	 * wait_until	阻止某个线程，并设置线程阻止的最大时间点。
+	*/
+}
+
+void header_csetjmp() {
+	/*
+	 * 包含标准 C 库头文件 <setjmp.h> 并将关联名称添加到 std 命名空间。
+	*/
+}
+
+void header_csignal() {
+	/*
+	 * 包含标准C头文件 <signal.h>
+	*/
+}
+
+void header_cstdalign() { 
+
+}
+
+void header_cstdarg() { 
+
+}
+
+void header_cstdbool() { 
+
+}
+
+void header_cstddef() { 
+
+}
+
+void header_cstdint() { 
+
+}
+
+void header_cstdio() { 
+
+}
+
+void header_cstring() { 
+
+}
+
+void header_ctgmath() { 
+
+}
+
+void header_ctime() { 
+
+}
+
+void header_cuchar() { 
+
+}
+
 // void header_cvt-wbuffer() { }
 // void header_cvt-wstring() { }
-void header_cwchar() { }
-void header_cwctype() { }
+void header_cwchar() { 
+
+}
+
+void header_cwctype() { 
+
+}
+
 // <d>
-void header_deque() { }
+void header_deque() { 
+
+}
+
 // <e>
-void header_exception() { }
-void header_execution() { }
+void header_exception() { 
+
+}
+
+void header_execution() { 
+
+}
+
 // <f>
-void header_filesystem() { }
-void header_forward_list() { }
-void header_fstream() { }
-void header_functional() { }
-void header_future() { }
+void header_filesystem() { 
+
+}
+
+void header_forward_list() { 
+
+}
+
+void header_fstream() { 
+
+}
+
+void header_functional() { 
+
+}
+
+void header_future() { 
+
+}
+
 // <h>
-void header_hash_map() { }
-void header_hash_set() { }
+void header_hash_map() { 
+
+}
+
+void header_hash_set() { 
+
+}
+
 // <i>
-void header_initializer_list() { }
-void header_iomanip() { }
-void header_ios() { }
-void header_iosfwd() { }
-void header_iostream() { }
-void header_istream() { }
-void header_iterator() { }
+void header_initializer_list() { 
+
+}
+
+void header_iomanip() { 
+
+}
+
+void header_ios() { 
+
+}
+
+void header_iosfwd() { 
+
+}
+
+void header_iostream() { 
+
+}
+
+void header_istream() { 
+
+}
+
+void header_iterator() { 
+
+}
+
 // <l>
-void header_limits() { }
-void header_list() { }
-void header_locale() { }
+void header_limits() { 
+
+}
+
+void header_list() { 
+
+}
+
+void header_locale() { 
+
+}
+
 // <m>
-void header_map() { }
-void header_memory() { }
-void header_memory_resource() { }
-void header_mutex() { }
+void header_map() { 
+
+}
+
+void header_memory() { 
+
+}
+
+void header_memory_resource() { 
+
+}
+
+void header_mutex() { 
+
+}
+
 // <n>
-void header_new() { }
-void header_numeric() { } 
+void header_new() { 
+
+}
+
+void header_numeric() { 
+
+} 
+
 // <o>
-void header_optional() { }
-void header_ostream() { }
+void header_optional() { 
+
+}
+
+void header_ostream() { 
+
+}
+
 // <q>
-void header_queue() { }
+void header_queue() { 
+
+}
+
 // <r>
-void header_random() { }
-void header_radio() { }
-void header_regex() { }
+void header_random() { 
+
+}
+
+void header_radio() { 
+
+}
+
+void header_regex() { 
+
+}
+
 // <s>
-void header_scoped_allocator() { }
-void header_set() { }
-void header_shared_mutex() { }
-void header_sstream() { }
-void header_stack() { }
-void header_stdexcept() { }
-void header_streambuf() { }
-void header_string() { }
-void header_string_view() { }
-void header_strstream() { }
-void header_system_error() { }
+void header_scoped_allocator() { 
+
+}
+
+void header_set() { 
+
+}
+
+void header_shared_mutex() { 
+
+}
+
+void header_sstream() { 
+
+}
+
+void header_stack() { 
+
+}
+
+void header_stdexcept() { 
+
+}
+
+void header_streambuf() { 
+
+}
+
+void header_string() { 
+
+}
+
+void header_string_view() { 
+
+}
+
+void header_strstream() { 
+
+}
+
+void header_system_error() { 
+
+}
+
 // <t>
-void header_thread() { }
-void header_tuple() { }
-void header_type_traits() { }
-void header_typeindex() { }
-void header_typeinfo() { }
+void header_thread() { 
+
+}
+
+void header_tuple() { 
+
+}
+
+void header_type_traits() { 
+
+}
+
+void header_typeindex() { 
+
+}
+
+void header_typeinfo() { 
+
+}
+
 // <u>
-void header_unordered_map() { }
-void header_unordered_set() { }
-void header_utility() { }
+void header_unordered_map() { 
+
+}
+
+void header_unordered_set() { 
+
+}
+
+void header_utility() { 
+
+}
+
 // <v>
-void header_valarray() { }
-void header_variant() { }
-void header_vector() { }
+void header_valarray() { 
+
+}
+
+void header_variant() { 
+
+}
+
+void header_vector() { 
+	
+}
 
 int msvc_main() {
 	cout << "Hello MSVC C++ library!\n";

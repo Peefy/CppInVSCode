@@ -1093,88 +1093,825 @@ void header_csignal() {
 }
 
 void header_cstdalign() { 
-
+	/*
+	 * 包含标准C头文件 <stdalign.h>
+	 * 
+	 * 宏
+	 * __alignas_is_defined	可扩展到整数常数1的 C 兼容性宏。
+	 * __alignof_is_defined	可扩展到整数常数1的 C 兼容性宏。
+	*/
 }
 
 void header_cstdarg() { 
-
+	/*
+	 * 包含标准C头文件 <stdarg.h>
+	 * namespace std {
+	 *     using va_list = see below;
+	 * }
+	 * #define va_arg(V, P)
+	 * #define va_copy(VDST, VSRC)
+	 * #define va_end(V)
+	 * #define va_start(V, P)
+	*/
 }
 
 void header_cstdbool() { 
-
+	/*
+	 * 包含标准C头文件 <stdbool.h>
+	*/
 }
 
 void header_cstddef() { 
-
+	/*
+	 * 包含标准C头文件 <stddef.h>
+	 * namespace std {
+	 *     using ptrdiff_t = see definition;
+	 *     using size_t = see definition;
+	 *     using max_align_t = see definition;
+	 *     using nullptr_t = decltype(nullptr);
+	 * }
+	 * 
+	 * #define NULL  // an implementation-defined null pointer constant
+	 * #define offsetof(type, member-designator)
+	 * 
+	 * 参数
+	 * ptrdiff_t 实现定义的有符号整数类型, 它可以保存数组对象中两个下标的差。
+	 * size_t 实现定义的无符号整数类型, 该类型足够大, 足以包含任何对象的大小 (以字节为单位)。
+	 * max_align_t 一个 POD 类型, 其对齐要求至少与每个标量类型的类型相同, 并且每个上下文都支持其对齐要求。
+	 * nullptr_t Nullptr表达式的类型的同义词。 尽管不能采用nullptr地址, 但也可以采用作为左值的另一个nullptr_t对象的地址。
+	 * 
+	 * byte类
+	*/
 }
 
 void header_cstdint() { 
-
+	/*
+	 * 包含标准C头文件 <stdint.h>
+	 * 
+	 * 宏
+	 * INT_[FAST LEAST]{8 16 32 64}_MIN
+	 * [U]INT_[FAST LEAST]{8 16 32 64}_MAX
+	 * INT{MAX PTR}_MIN
+	 * [U]INT{MAX PTR}_MAX
+	 * {PTRDIFF SIG_ATOMIC WCHAR WINT}{_MAX _MIN}
+	 * SIZE_MAX
+	 * 
+	 * [U]INT{8 16 32 64 MAX}_C
+	 * 
+	 * 类型
+	 * namespace std {
+	 *     using int8_t = signed integer type; // optional
+	 *     using int16_t = signed integer type; // optional
+	 *     using int32_t = signed integer type; // optional
+	 *     using int64_t = signed integer type; // optional
+	 *     using int_fast8_t = signed integer type;
+	 *     using int_fast16_t = signed integer type;
+	 *     using int_fast32_t = signed integer type;
+	 *     using int_fast64_t = signed integer type;
+	 *     using int_least8_t = signed integer type;
+	 *     using int_least16_t = signed integer type;
+	 *     using int_least32_t = signed integer type;
+	 *     using int_least64_t = signed integer type;
+	 *     using intmax_t = signed integer type;
+	 *     using intptr_t = signed integer type; // optional
+	 *     using uint8_t = unsigned integer type; // optional
+	 *     using uint16_t = unsigned integer type; // optional 
+	 *     using uint32_t = unsigned integer type; // optional
+	 *     using uint64_t = unsigned integer type; // optional
+	 *     using uint_fast8_t = unsigned integer type;
+	 *     using uint_fast16_t = unsigned integer type;
+	 *     using uint_fast32_t = unsigned integer type;
+	 *     using uint_fast64_t = unsigned integer type;
+	 *     using uint_least8_t = unsigned integer type;
+	 *     using uint_least16_t = unsigned integer type;
+	 *     using uint_least32_t = unsigned integer type;
+	 *     using uint_least64_t = unsigned integer type;
+	 *     using uintmax_t = unsigned integer type;
+	 *     using uintptr_t = unsigned integer type; // optional
+	 * }
+	*/
 }
 
 void header_cstdio() { 
+	/*
+	 * 包含标准C头文件 <stdio.h>
+	*/
+}
 
+void header_cstdlib() { 
+	/*
+	 * 包含标准C头文件 <stdlib.h>
+	*/
 }
 
 void header_cstring() { 
-
+	/*
+	 * 包含标准C头文件 <string.h>
+	 * 
+	 * 函数
+	 * void* memcpy(void* s1, const void* s2, size_t n);
+	 * void* memmove(void* s1, const void* s2, size_t n);
+	 * char* strcpy(char* s1, const char* s2);
+	 * char* strncpy(char* s1, const char* s2, size_t n);
+	 * char* strcat(char* s1, const char* s2);
+	 * char* strncat(char* s1, const char* s2, size_t n);
+	 * int memcmp(const void* s1, const void* s2, size_t n);
+	 * int strcmp(const char* s1, const char* s2);
+	 * int strcoll(const char* s1, const char* s2);
+	 * int strncmp(const char* s1, const char* s2, size_t n);
+	 * size_t strxfrm(char* s1, const char* s2, size_t n);
+	 * const void* memchr(const void* s, int c, size_t n); 
+	 * void* memchr(void* s, int c, size_t n) 
+	 * const char* strchr(const char* s, int c) 
+	 * char* strchr(char* s, int c) 
+	 * size_t strcspn(const char* s1, const char* s2);
+	 * const char* strpbrk(const char* s1, const char* s2) 
+	 * char* strpbrk(char* s1, const char* s2) 
+	 * const char* strrchr(const char* s, int c) 
+	 * char* strrchr(char* s, int c) 
+	 * size_t strspn(const char* s1, const char* s2);
+	 * const char* strstr(const char* s1, const char* s2) 
+	 * char* strstr(char* s1, const char* s2) 
+	 * char* strtok(char* s1, const char* s2);
+	 * void* memset(void* s, int c, size_t n);
+	 * char* strerror(int errnum);
+	 * size_t strlen(const char* s);
+	*/
 }
 
-void header_ctgmath() { 
-
-}
+// void header_ctgmath() { }
 
 void header_ctime() { 
-
+	/*
+	 * 包含标准C头文件 <time.h>
+	*/
 }
 
 void header_cuchar() { 
-
+	/*
+	 * 包含标准C头文件 <uchar.h>
+	 * 将mbstate_t和size_t std和函数c16rtomb、 c32rtomb、 mbrtoc16和mbrtoc32添加到命名空间。
+	*/
 }
 
 // void header_cvt-wbuffer() { }
 // void header_cvt-wstring() { }
 void header_cwchar() { 
-
+	/*
+	 * 包含标准C头文件 <wchar.h>
+	 * 
+	 * 常量
+	 * namespace std {
+	 *     using size_t = see below;
+	 *     using mbstate_t = see below ;
+	 *     using wint_t = see below ;
+	 * }
+	 * #define NULL see below
+	 * #define WCHAR_MAX see below
+	 * #define WCHAR_MIN see below
+	 * #define WEOF see below
+	 * 
+	 * 结构
+	 * struct tm;
+	 * 
+	 * 函数
+	 * int fwprintf(FILE* stream, const wchar_t* format, ...);
+	 * int fwscanf(FILE* stream, const wchar_t* format, ...);
+	 * int swprintf(wchar_t* s, size_t n, const wchar_t* format, ...);
+	 * int swscanf(const wchar_t* s, const wchar_t* format, ...);
+	 * int vfwprintf(FILE* stream, const wchar_t* format, va_list arg);
+	 * int vfwscanf(FILE* stream, const wchar_t* format, va_list arg);
+	 * int vswprintf(wchar_t* s, size_t n, const wchar_t* format, va_list arg);
+	 * int vswscanf(const wchar_t* s, const wchar_t* format, va_list arg);
+	 * int vwprintf(const wchar_t* format, va_list arg);
+	 * int vwscanf(const wchar_t* format, va_list arg);
+	 * int wprintf(const wchar_t* format, ...);
+	 * int wscanf(const wchar_t* format, ...);
+	 * wint_t fgetwc(FILE* stream);
+	 * wchar_t* fgetws(wchar_t* s, int n, FILE* stream);
+	 * wint_t fputwc(wchar_t c, FILE* stream);
+	 * int fputws(const wchar_t* s, FILE* stream);
+	 * int fwide(FILE* stream, int mode);
+	 * wint_t getwc(FILE* stream);
+	 * wint_t getwchar();
+	 * wint_t putwc(wchar_t c, FILE* stream);
+	 * wint_t putwchar(wchar_t c);
+	 * wint_t ungetwc(wint_t c, FILE* stream);
+	 * double wcstod(const wchar_t* nptr, wchar_t** endptr);
+	 * float wcstof(const wchar_t* nptr, wchar_t** endptr);
+	 * long double wcstold(const wchar_t* nptr, wchar_t** endptr);
+	 * long int wcstol(const wchar_t* nptr, wchar_t** endptr, int base);
+	 * long long int wcstoll(const wchar_t* nptr, wchar_t** endptr, int base);
+	 * unsigned long int wcstoul(const wchar_t* nptr, wchar_t** endptr, int base);
+	 * unsigned long long int wcstoull(const wchar_t* nptr, wchar_t** endptr, int base);
+	 * wchar_t* wcscpy(wchar_t* s1, const wchar_t* s2);
+	 * wchar_t* wcsncpy(wchar_t* s1, const wchar_t* s2, size_t n);
+	 * wchar_t* wmemcpy(wchar_t* s1, const wchar_t* s2, size_t n);
+	 * wchar_t* wmemmove(wchar_t* s1, const wchar_t* s2, size_t n);
+	 * wchar_t* wcscat(wchar_t* s1, const wchar_t* s2);
+	 * wchar_t* wcsncat(wchar_t* s1, const wchar_t* s2, size_t n);
+	 * int wcscmp(const wchar_t* s1, const wchar_t* s2);
+	 * int wcscoll(const wchar_t* s1, const wchar_t* s2);
+	 * int wcsncmp(const wchar_t* s1, const wchar_t* s2, size_t n);
+	 * size_t wcsxfrm(wchar_t* s1, const wchar_t* s2, size_t n);
+	 * int wmemcmp(const wchar_t* s1, const wchar_t* s2, size_t n);
+	 * const wchar_t* wcschr(const wchar_t* s, wchar_t c) 
+	 * wchar_t* wcschr(wchar_t* s, wchar_t c) 
+	 * size_t wcscspn(const wchar_t* s1, const wchar_t* s2);
+	 * const wchar_t* wcspbrk(const wchar_t* s1, const wchar_t* s2) 
+	 * wchar_t* wcspbrk(wchar_t* s1, const wchar_t* s2) 
+	 * const wchar_t* wcsrchr(const wchar_t* s, wchar_t c) 
+	 * wchar_t* wcsrchr(wchar_t* s, wchar_t c) 
+	 * size_t wcsspn(const wchar_t* s1, const wchar_t* s2);
+	 * const wchar_t* wcsstr(const wchar_t* s1, const wchar_t* s2) 
+	 * wchar_t* wcsstr(wchar_t* s1, const wchar_t* s2) 
+	 * wchar_t* wcstok(wchar_t* s1, const wchar_t* s2, wchar_t** ptr);
+	 * const wchar_t* wmemchr(const wchar_t* s, wchar_t c, size_t n) 
+	 * wchar_t* wmemchr(wchar_t* s, wchar_t c, size_t n) 
+	 * size_t wcslen(const wchar_t* s);
+	 * wchar_t* wmemset(wchar_t* s, wchar_t c, size_t n);
+	 * size_t wcsftime(wchar_t* s, size_t maxsize, const wchar_t* format, const struct tm* timeptr);
+	 * wint_t btowc(int c);
+	 * int wctob(wint_t c);
+	 * int mbsinit(const mbstate_t* ps);
+	 * size_t mbrlen(const char* s, size_t n, mbstate_t* ps);
+	 * size_t mbrtowc(wchar_t* pwc, const char* s, size_t n, mbstate_t* ps);
+	 * size_t wcrtomb(char* s, wchar_t wc, mbstate_t* ps);
+	 * size_t mbsrtowcs(wchar_t* dst, const char** src, size_t len, mbstate_t* ps);
+	 * size_t wcsrtombs(char* dst, const wchar_t** src, size_t len, mbstate_t* ps);
+	*/
 }
 
 void header_cwctype() { 
-
+	/*
+	 * 包含标准C头文件 <wctype.h>
+	 * 
+	 * 常量
+	 * namespace std {
+	 *     using wint_t = see below ;
+	 *     using wctrans_t = see below ;
+	 *     using wctype_t = see below ;
+	 * }
+	 * #define WEOF see below
+	 * 
+	 * 函数
+	 * int iswalnum(wint_t wc);
+	 * int iswalpha(wint_t wc);
+	 * int iswblank(wint_t wc);
+	 * int iswcntrl(wint_t wc);
+	 * int iswdigit(wint_t wc);
+	 * int iswgraph(wint_t wc);
+	 * int iswlower(wint_t wc);
+	 * int iswprint(wint_t wc);
+	 * int iswpunct(wint_t wc);
+	 * int iswspace(wint_t wc);
+	 * int iswupper(wint_t wc);
+	 * int iswxdigit(wint_t wc);
+	 * int iswctype(wint_t wc, wctype_t desc);
+	 * wctype_t wctype(const char* property);
+	 * wint_t towlower(wint_t wc);
+	 * wint_t towupper(wint_t wc);
+	 * wint_t towctrans(wint_t wc, wctrans_t desc);
+	 * wctrans_t wctrans(const char* property);
+	*/
 }
 
 // <d>
 void header_deque() { 
+	/*
+	 * 定义容器类模板 deque 和多个支持模板。
+	 * 
+	 * 运算符
+	 * operator!=	测试运算符左侧的 deque 对象是否不等于右侧的 deque 对象。
+	 * operator<	测试运算符左侧的 deque 对象是否小于右侧的 deque 对象。
+	 * operator<=	测试运算符左侧的 deque 对象是否小于或等于右侧的 deque 对象。
+	 * operator==	测试运算符左侧的 deque 对象是否等于右侧的 deque 对象。
+	 * operator>	测试运算符左侧的 deque 对象是否大于右侧的 deque 对象。
+	 * operator>=	测试运算符左侧的 deque 对象是否大于或等于右侧的 deque 对象。
+	 * 
+	 * 函数
+	 * swap	交换两个 deque 的元素。
+	 * 
+	 * 类
+	 * deque 类	序列容器的类模板，用于排列线性排列中给定类型的元素，
+	 * 例如向量，允许快速随机访问任何元素和在容器后面高效插入和删除。
+	 * 
+	 * 函数
+	 * assign	将元素从 deque 中清除并将新的元素序列复制到目标 deque。
+	 * at	返回对 deque 中指定位置的元素的引用。
+	 * back	返回对 deque 中最后一个元素的引用。
+	 * begin	返回发现 deque 中第一个元素的随机访问迭代器。
+	 * cbegin	返回一个指向 deque 中第一个元素的常量迭代器。
+	 * cend	返回一个随机访问常量迭代器，它指向刚超出 deque末尾的位置。
+	 * clear	清除 deque 的所有元素。
+	 * crbegin	返回一个指向以相反顺序查看的 deque 中的第一个元素的随机访问常量迭代器。
+	 * crend	返回一个指向以相反顺序查看的 deque 中的第一个元素的随机访问常量迭代器。
+	 * emplace	将就地构造的元素插入到指定位置的 deque 中。
+	 * emplace_back	将就地构造的元素添加到 deque 的末尾。
+	 * emplace_front	将就地构造的元素添加到 deque 的开头。
+	 * empty	如果 deque 包含零个元素，则返回true ; 如果包含一个或多个元素，则返回false 。
+	 * end	返回指向刚超出 deque 末尾位置的随机访问迭代器。
+	 * erase	从指定位置删除 deque 中一个或一系列元素。
+	 * front	返回对 deque 中第一个元素的引用。
+	 * get_allocator	返回用于构造 allocator 的 deque 对象的副本。
+	 * insert	将一个、多个或一系列元素插入到指定位置的 deque 中。
+	 * max_size	返回 deque 的最大可取长度。
+	 * pop_back	清除 deque 末尾处的元素。
+	 * pop_front	清除 deque 开头处的元素。
+	 * push_back	将元素添加到 deque 的末尾。
+	 * push_front	将元素添加到 deque 的开头。
+	 * rbegin	返回指向反向 deque 中的第一个元素的随机访问迭代器。
+	 * rend	返回指向刚超出反向 deque 中的最后一个元素位置的随机访问迭代器。
+	 * resize	为 deque 指定新的大小。
+	 * shrink_to_fit	放弃额外容量。
+	 * size	返回 deque 中的元素数量。
+	 * swap	交换两个 deque 的元素。
+	 * 
+	*/
+   	using namespace std;
+   	deque <int> c1, c2;
 
+   	c1.push_back( 1 );
+   	c1.push_back( 2 );
+   	c1.push_back( 4 );
+
+   	c2.push_back( 1 );
+   	c2.push_back( 3 );
+
+   	if ( c1 <= c2 )
+    	cout << "Deque c1 is less than or equal to deque c2." << endl;
+    else
+      	cout << "Deque c1 is greater than deque c2." << endl;
 }
 
 // <e>
 void header_exception() { 
-
+	/*
+	 * 定义与异常处理相关的若干类型和函数。 
+	 * 异常处理用于系统可从错误中恢复的情形。 
+	 * 它提供了将控制权从函数返回给程序的一种方法。 
+	 * 合并异常处理的目标是提高程序的可靠性，同时提供一种有序地从错误中恢复的方法。
+	 * 
+	 * Typedef
+	 * exception_ptr	该类型描述指向异常的指针。
+	 * terminate_handler	该类型描述指向适合用作 terminate_handler 的函数的指针。
+	 * unexpected_handler	该类型描述指向适合用作 unexpected_handler 的函数的指针。
+	 * 
+	 * 函数
+	 * current_exception	获取指向当前异常的指针。
+	 * get_terminate	获取当前的 terminate_handler 函数。
+	 * get_unexpected	获取当前的 unexpected_handler 函数。
+	 * make_exception_ptr	创建保留异常副本的 exception_ptr 对象。
+	 * rethrow_exception	引发作为参数传递的异常。
+	 * rethrow_if_nested	如果嵌套, 则强制转换和引发异常。
+	 * set_terminate	建立程序终止时要调用的新 terminate_handler。
+	 * set_unexpected	建立遇到意外异常时要调用的新 unexpected_handler。
+	 * terminate	调用终止处理程序。
+	 * throw_with_nested	如果嵌套, 则引发异常。
+	 * uncaught_exception	仅当引发的异常当前正在处理时返回 true。
+	 * unexpected	调用意外处理程序。
+	 * 
+	 * 类
+	 * bad_exception 类	该类描述可从 unexpected_handler 引发的异常。
+	 * exception 类	该类用作某些表达式和 C++ 标准库所引发的所有异常的基类。
+	 * nested_exception 类	类描述了一个可以捕获和存储的异常, 以便以后使用。
+	*/
 }
 
 void header_execution() { 
-
+	/*
+	 * 介绍并行算法的执行策略。
+	 * 
+	 * namespace std {
+	 *     template<class T> inline constexpr bool is_execution_policy_v = is_execution_policy<T>::value;
+	 * }
+	 * namespace std::execution {
+	 *     inline constexpr sequenced_policy seq { unspecified };
+	 *     inline constexpr parallel_policy par { unspecified };
+	 *     inline constexpr parallel_unsequenced_policy par_unseq { unspecified };
+	 * }
+	 * 
+	 * 类和结构
+	 * is_execution_policy 结构	检测执行策略，以排除其他不明确的重载决策参与的函数签名。
+	 * parallel_policy 类	用作消除并行算法重载的唯一类型，并指示并行算法的执行可能会并行化。
+	 * parallel_unsequenced_policy 类	用作消除并行算法重载的唯一类型，并指示并行算法的执行可能会并行化并向量化。
+	 * sequenced_policy 类	用作消除并行算法重载的唯一类型，并要求并行算法的执行不会并行化。
+	*/
 }
 
 // <f>
 void header_filesystem() { 
-
+	/*
+	 * <filesystem> 访问操作和检索有关路径、文件和目录的信息的类和函数。
+	 * 
+	 * 类
+	 * directory_entry 类	描述一个对象，该对象由 directory_iterator 或 recursive_directory_iterator 返回，并包含 path。
+	 * directory_iterator 类	描述通过文件系统目录中的文件名排序的输入迭代器。
+	 * filesystem_error 类	所引发以报告低级系统溢出的异常的基类。
+	 * path 类	定义一个类，该类存储适合用作文件名的模板类型 String 的对象。
+	 * recursive_directory_iterator 类	描述通过文件系统目录中的文件名排序的输入迭代器。 迭代器还可以降到子目录中。
+	 * file_status 类	包装 file_type。
+	 * 
+	 * 结构
+	 * space_info 结构	保存有关卷的信息。
+	 * 
+	 * 枚举
+	 * copy_options	如果目标文件已存在，则与 copy_file 一起使用的枚举将决定行为。
+	 * directory_options	为目录迭代器指定选项的枚举。
+	 * file_type	文件类型的枚举。
+	 * perm_options	枚举 permissions 函数的选项。
+	 * perms	用于传达权限和权限选项的位掩码类型
+	 * 
+	 * 函数
+	 * path absolute(const path& pval, const path& base = current_path());
+	 * 
+	 * const directory_iterator& begin(const directory_iterator& iter) noexcept;
+	 * const recursive_directory_iterator& begin(const recursive_directory_iterator& iter) noexcept;
+	 * 
+	 * path canonical(const path& pval, const path& base = current_path());
+	 * path canonical(const path& pval, error_code& ec);
+	 * path canonical(const path& pval, const path& base, error_code& ec);
+	 * 
+	 * void copy(const path& from, const path& to);
+	 * void copy(const path& from, const path& to, error_code& ec) noexcept;
+	 * void copy(const path& from, const path& to, copy_options opts);
+	 * void copy(const path& from, const path& to, copy_options opts, error_code& ec) noexcept;
+	 * 
+	 * bool copy_file(const path& from, const path& to);
+	 * bool copy_file(const path& from, const path& to, error_code& ec) noexcept;
+	 * bool copy_file(const path& from, const path& to, copy_options opts);
+	 * bool copy_file(const path& from, const path& to, copy_options opts, error_code& ec) noexcept;
+	 * 
+	 * void copy_symlink(const path& from, const path& to);
+	 * void copy_symlink(const path& from, const path& to, error_code& ec) noexcept;
+	 * 
+	 * bool create_directories(const path& pval);
+	 * bool create_directories(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * void create_directory_symlink(const path& to, const path& link);
+	 * void create_directory_symlink(const path& to, const path& link, error_code& ec) noexcept;
+	 * 
+	 * void create_hard_link(const path& to,  const path& link);
+	 * void create_hard_link(const path& to, const path& link, error_code& ec) noexcept;
+	 * 
+	 * void create_symlink(const path& to, const path& link);
+	 * void create_symlink(const path& to, const path& link, error_code& ec) noexcept;
+	 * 
+	 * path current_path();
+	 * path current_path(error_code& ec);
+	 * void current_path(const path& pval);
+	 * void current_path(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * directory_iterator& end(const directory_iterator& iter) noexcept;
+	 * recursive_directory_iterator& end(const recursive_directory_iterator& iter) noexcept;
+	 * 
+	 * bool exists(file_status stat) noexcept;
+	 * bool exists(const path& pval);
+	 * bool exists(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * uintmax_t file_size(const path& pval);
+	 * uintmax_t file_size(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * uintmax_t hard_link_count(const path& pval);
+	 * uintmax_t hard_link_count(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * size_t hash_value(const path& pval) noexcept;
+	 * 
+	 * bool is_block_file(file_status stat) noexcept;
+	 * bool is_block_file(const path& pval);
+	 * bool is_block_file(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * bool is_character_file(file_status stat) noexcept;
+	 * bool is_character_file(const path& pval);
+	 * bool is_character_file(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * bool is_directory(file_status stat) noexcept;
+	 * bool is_directory(const path& pval);
+	 * bool is_directory(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * bool is_empty(file_status stat) noexcept;
+	 * bool is_empty(const path& pval);
+	 * bool is_empty(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * bool is_fifo(file_status stat) noexcept;
+	 * bool is_fifo(const path& pval);
+	 * bool is_fifo(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * bool is_other(file_status stat) noexcept;
+	 * bool is_other(const path& pval);
+	 * bool is_other(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * bool is_regular_file(file_status stat) noexcept;
+	 * bool is_regular_file(const path& pval);
+	 * bool is_regular_file(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * bool is_socket(file_status stat) noexcept;
+	 * bool is_socket(const path& pval);
+	 * bool is_socket(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * bool is_symlink(file_status stat) noexcept;
+	 * bool is_symlink(const path& pval);
+	 * bool is_symlink(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * file_time_type last_write_time(const path& pval);
+	 * file_time_type last_write_time(const path& pval, error_code& ec) noexcept;
+	 * void last_write_time(const path& pval, file_time_type new_time);
+	 * void last_write_time(const path& pval, file_time_type new_time, error_code& ec) noexcept;
+	 * 
+	 * void permissions(const path& pval, perms mask);
+	 * void permissions(const path& pval, perms mask, error_code& ec) noexcept;
+	 * 
+	 * path proximate(const path& p, error_code& ec);
+	 * path proximate(const path& p, const path& base = current_path());
+	 * path proximate(const path& p, const path& base, error_code& ec);
+	 * 
+	 * path read_symlink(const path& pval);
+	 * path read_symlink(const path& pval, error_code& ec);
+	 * 
+	 * path relative(const path& p, error_code& ec);
+	 * path relative(const path& p, const path& base = current_path());
+	 * path relative(const path& p, const path& base, error_code& ec);
+	 * 
+	 * bool remove(const path& pval);
+	 * bool remove(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * uintmax_t remove_all(const path& pval);
+	 * uintmax_t remove_all(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * void rename(const path& from, const path& to);
+	 * void rename(const path& from, const path& to, error_code& ec) noexcept;
+	 * 
+	 * void resize(const path& pval, uintmax_t size);
+	 * void resize(const path& pval, uintmax_t size, error_code& ec) noexcept;
+	 * 
+	 * space_info space(const path& pval);
+	 * space_info space(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * file_status status(const path& pval);
+	 * file_status status(const path& pval, error_code& ec) noexcept;
+	 * 
+	 * bool status_known(file_status stat) noexcept;
+	 * 
+	 * void swap(path& left, path& right) noexcept;
+	 * 
+	 * file_status symlink_status(const path& pval);
+	 * file_status symlink_status(const path& pval, erroxr_code& ec) noexcept;
+	 * 
+	 * path system_complete(const path& pval);
+	 * path system_complete(const path& pval, error_code& ec);
+	 * 
+	 * path temp_directory_path();
+	 * path temp_directory_path(error_code& ec);
+	 * 
+	 * template <class Source>
+	 * path u8path(const Source& source);
+	 * template <class InIt>
+	 * path u8path(InIt first, InIt last);
+	 * 
+	 * path weakly_canonical(const path& p);
+	 * path weakly_canonical(const path& p, error_code& ec);
+	*/
 }
 
 void header_forward_list() { 
-
+	/*
+	 * 定义容器类模板 forward_list 和多个支持模板。描述用于控制变长元素序列的对象。
+	 * 序列存储为节点的单向链接列表，其中每个节点都包含 Type 类型的成员。
+	 * 
+	 * 运算符
+	 * operator==	测试运算符左侧的转发列表对象是否等于右侧的转发列表对象。
+	 * operator!=	测试运算符左侧的转发列表对象是否不等于右侧的转发列表对象。
+	 * operator<	测试运算符左侧的转发列表对象是否小于右侧的转发列表对象。
+	 * operator<=	测试运算符左侧的转发列表对象是否小于或等于右侧的转发列表对象。
+	 * operator>	测试运算符左侧的转发列表对象是否大于右侧的转发列表对象。
+	 * operator>=	测试运算符左侧的转发列表对象是否大于或等于右侧的转发列表对象。
+	 * 
+	 * 函数
+	 * swap	交换两个转发列表的元素。
+	 * 
+	 * 类
+	 * forward_list	描述用于控制变长元素序列的对象。 
+	 * 序列存储为元素的单向链接列表，其中每个节点都包含 Type 类型的成员。
+	 * 
+	 * Typedef
+	 * allocator_type	一种类型，用于表示转发列表对象的分配器类。
+	 * const_iterator	一种类型，用于为转发列表提供常量迭代器。
+	 * const_pointer	一种类型，它提供指向转发列表中const元素的指针。
+	 * const_reference	一种类型，用于提供对转发列表中元素的常量引用。
+	 * difference_type	一种有符号整数类型，可用于表示转发列表中某个范围类迭代器所指向元素之间的元素数目。
+	 * 迭代器	一种类型，用于为转发列表提供迭代器。
+	 * 指针	一种类型，用于提供指向转发列表中元素的指针。
+	 * reference	一种类型，用于提供对转发列表中元素的引用。
+	 * size_type	一种类型，用于表示两个元素之间的无符号距离。
+	 * value_type	一种类型，用于表示转发列表中存储的元素的类型。
+	 * 
+	 * 函数
+	 * assign	清除转发列表中的元素，并将一组新的元素复制到目标转发列表。
+	 * before_begin	返回寻址转发列表中第一个元素之前的位置的迭代器。
+	 * begin	返回寻址转发列表中第一个元素的迭代器。
+	 * cbefore_begin	返回寻址转发列表中第一个元素之前的位置的常量迭代器。
+	 * cbegin	返回寻址转发列表中第一个元素的常量迭代器。
+	 * cend	返回寻址转发列表中最后一个元素之后的位置的常量迭代器。
+	 * clear	清除转发列表中的所有元素。
+	 * emplace_after	在指定位置之后移动构造新元素。
+	 * emplace_front	在列表的起始位置添加一个就地构造的元素。
+	 * empty	测试转发列表是否为空。
+	 * end	返回寻址转发列表中最后一个元素之后的位置的迭代器。
+	 * erase_after	删除转发列表中指定位置之后的元素。
+	 * front	返回对转发列表中第一个元素的引用。
+	 * get_allocator	返回用于构造转发列表的分配器对象的一个副本。
+	 * insert_after	在转发列表中的指定位置之后添加元素。
+	 * max_size	返回转发列表的最大长度。
+	 * merge	将元素从参数列表中删除，将它们插入目标转发列表，将新的组合元素集以升序或其他指定顺序排序。
+	 * pop_front	删除转发列表起始处的一个元素。
+	 * push_front	在转发列表起始处添加一个元素。
+	 * remove	清除转发列表中与指定值匹配的元素。
+	 * remove_if	将满足指定谓词的元素从转发列表中清除。
+	 * resize	为转发列表指定新的大小。
+	 * reverse	颠倒转发列表中元素的顺序。
+	 * sort	按升序或按谓词指定的顺序排列元素。
+	 * splice_after	重新联结节点间的链接。
+	 * swap	交换两个转发列表的元素。
+	 * unique	删除通过了指定测试的相邻元素。
+	*/
 }
 
 void header_fstream() { 
+	/*
+	 * 定义若干类，这些类支持在存储于外部文件中的序列上的 iostreams 操作。
+	 * 
+	 * Typedef
+	 * 类型名称	描述
+	 * filebuf	@No__t_0 专用于char模板参数的类型。
+	 * fstream	@No__t_0 专用于char模板参数的类型。
+	 * ifstream	@No__t_0 专用于char模板参数的类型。
+	 * ofstream	@No__t_0 专用于char模板参数的类型。
+	 * wfstream	一个类型 basic_fstream 专用于wchar_t模板参数的类型。
+	 * wifstream	一个类型 basic_ifstream 专用于wchar_t模板参数的类型。
+	 * wofstream	一个类型 basic_ofstream 专用于wchar_t模板参数的类型。
+	 * wfilebuf	一个类型 basic_filebuf 专用于wchar_t模板参数的类型。
+	 * 
+	 * 类
+	 * basic_filebuf	类模板描述了一个流缓冲区，该缓冲区控制 Elem 类型的元素的传输，
+	 *     其字符特征由类 Tr、和从存储在外部文件中的一系列元素确定。
+	 * basic_fstream	类模板描述了一个对象，该对象使用类basic_filebuf <Elem， Tr> 的
+	 *     流缓冲区控制元素和编码对象的插入和提取，该对象的元素类型 Elem，其字符特征由类 Tr 确定。
+	 * basic_ifstream	类模板描述了一个对象，该对象控制从basic_filebuf <Elem， Tr> 类的
+	 *     流缓冲区提取元素和编码对象，其中的元素类型为 Elem，其字符特征为由类 Tr 确定。
+	 * basic_ofstream	类模板描述了一个对象，该对象可控制将元素和编码对象插入到类basic_filebuf <Elem， Tr> 的
+	 *     流缓冲区中，其中包含类型 Elem 的元素，其字符特征已确定由类 Tr。
+	 * 
+	 * 成员函数	说明
+	 * close	关闭文件。
+	 * is_open	确定文件是否打开。
+	 * open	打开文件。
+	 * rdbuf	返回存储的流缓冲区的地址。
+	 * swap	将此 basic_ofstream 的内容与提供的 basic_ofstream 的内容进行交换。
+	*/
+    fstream fs("fstream.txt", ios::in | ios::out | ios::trunc);
+    if (!fs.bad())
+    {
+        // Write to the file.
+        fs << "Writing to a basic_fstream object..." << endl;
+        fs.close();
 
+        // Dump the contents of the file to cout.
+        fs.open("fstream.txt", ios::in);
+        cout << fs.rdbuf();
+        fs.close();
+    }
+
+	ifstream ifs("basic_ifstream_class.txt");
+    if (!ifs.bad())
+    {
+        // Dump the contents of the file to cout.
+        cout << ifs.rdbuf();
+        ifs.close();
+    }
+
+    ifstream ifs("basic_ifstream_ctor.txt");
+    if (!ifs.bad())
+    {
+        // Dump the contents of the file to cout.
+        cout << ifs.rdbuf();
+        ifs.close();
+    }
+
+	ofstream ofs("ofstream.txt");
+    if (!ofs.bad())
+    {
+        ofs << "Writing to a basic_ofstream object..." << endl;
+        ofs.close();
+    }
 }
 
 void header_functional() { 
+	/*
+	 * 定义C++有助于构造函数对象（也称为函子）及其联编程序的标准库函数。 
+	 * 函数对象是用于定义 operator() 的类型的对象。 函数对象可以是函数指针，
+	 * 但该对象更常用于存储可在函数调用过程中访问的其他信息。
+	 * 
+	 * 类
+	 * bad_function_call	一种类，用于描述引发的异常，以指示对函数对象上的 operator() 的调用由于该对象为空而失败。
+	 * binary_negate	提供成员函数的类模板，用于对指定二元函数的返回值求反。（在 c + + 17 中弃用。）
+	 * binder1st	一个类模板，它提供了一个构造函数，该构造函数通过将二元函数的第一个自变量绑定到指定的值，
+	 *     将二元函数对象转换为一元函数对象。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * binder2nd	一个类模板，它提供了一个构造函数，该构造函数通过将二元函数的第二个
+	 *     参数绑定到指定的值，将二元函数对象转换为一元函数对象。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * boyer_moore_horspool_searcher	
+	 * boyer_moore_searcher	
+	 * const_mem_fun_ref_t	一种适配器类，在使用引用自变量进行初始化的情况下，
+	 *     该类允许将不带任何自变量的 const 成员函数作为一元函数对象调用。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * const_mem_fun_t	一种适配器类，在使用指针自变量进行初始化的情况下，
+	 *     该类允许将不带任何自变量的 const 成员函数作为一元函数对象调用。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * const_mem_fun1_ref_t	一种适配器类，在使用引用自变量进行初始化的情况下，
+	 *     该类允许将仅带一个自变量的 const 成员函数作为二元函数对象调用。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * const_mem_fun1_t	一种适配器类，在使用指针自变量进行初始化的情况下，
+	 *     该类允许将仅带一个自变量的 const 成员函数作为二元函数对象调用。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * default_searcher	
+	 * function	一种类，用于包装可调用的对象。
+	 * hash	一种类，用于计算值的哈希代码。
+	 * is_bind_expression	一种类，用于调用 bind 时是否会生成特定的类型。
+	 * is_placeholder	一种类，用于测试特定类型是否为占位符。
+	 * mem_fun_ref_t	一种适配器类，在使用引用自变量进行初始化时，
+	 *     该类允许将不带任何自变量的 non_const 成员函数作为一元函数对象调用。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * mem_fun_t	一种适配器类，在使用指针参数进行初始化时，
+	 *     该类允许将不带任何自变量的 non_const 成员函数作为一元函数对象调用。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * mem_fun1_ref_t	一种适配器类，在使用引用自变量进行初始化时，
+	 *     它允许使用单个自变量的 non_const 成员函数作为二元函数对象调用。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * mem_fun1_t	一种适配器类，在使用指针参数进行初始化时，
+	 *     此类允许使用单个自变量的 non_const 成员函数作为二元函数对象调用。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * pointer_to_binary_function	将二元函数指针转换为自适应二元函数。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * pointer_to_unary_function	将一元函数指针转换为自适应一元函数。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * reference_wrapper	一种类，用于包装引用。
+	 * unary_negate	提供成员函数的类模板，用于对指定一元函数的返回值求反。（在 c + + 17 中弃用。）
+	 * 
+	 * 函数
+	 * bind	将自变量绑定到可调用对象。	
+	 * bind1st	一种帮助程序模板类，用于创建适配器，通过将二元函数的第一个自变量绑定到指定的值，
+	 *     将二元函数对象转换为一元函数对象。（在 c + + 11 中已弃用，c + + 17 中已删除）。	
+	 * bind2nd	一种帮助程序模板类，用于创建适配器，通过将二元函数的第二个自变量绑定到指定的值，
+	 *     将二元函数对象转换为一元函数对象。（在 c + + 11 中已弃用，c + + 17 中已删除）。	
+	 * bit_and	返回两个参数的按位逻辑 AND（二元运算符 &）。	
+	 * bit_not	返回两个参数的按位逻辑求反（二元运算符 ~）。（添加到 c + + 14 中。）	
+	 * bit_or	返回两个参数的按位逻辑 OR（运算符	）。
+	 * bit_xor	返回两个参数的按位逻辑 XOR（二元运算符 ^）。	
+	 * cref	从变量构造常量 reference_wrapper。		
+	 * mem_fn	生成一个简单的调用包装器。	
+	 * mem_fun	帮助程序模板函数，在使用指针自变量进行初始化的情况下，
+	 *     用来构造成员函数的函数对象适配器。（在 c + + 11 中已弃用，c + + 17 中已删除）。	
+	 * mem_fun_ref	帮助程序模板函数，在使用引用自变量进行初始化的情况下，用来构造成员函数的函数对象适配器。	
+	 * not1	返回一元谓词的补集。（在 c + + 17 中弃用。）	
+	 * not2	返回二元谓词的补集。（在 c + + 17 中弃用。）	
+	 * not_fn	返回其函数对象的结果的补码。（在 c + + 17 中添加。）	
+	 * ptr_fun	帮助程序模板函数，用于将一元和二元函数指针分别转换为一元和二元自适应函数。（在 c + + 11 中已弃用，c + + 17 中已删除）。	
+	 * ref	从变量构造常量 reference_wrapper 。	
+	 * swap	交换两个 function 对象。	
+	 * 
+	 * 结构
+	 * binary_function	空基类，定义可能由提供二元函数对象的派生类继承的类型。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	 * divides	此类提供预定义的函数对象，后者对指定值类型的元素执行除法算术运算。
+	 * equal_to	此二元谓词测试指定类型的一个值是否等于该类型的另一个值。
+	 * greater	此二元谓词测试指定类型的一个值是否大于该类型的另一个值。
+	 * greater_equal	此二元谓词测试指定类型的一个值是否大于或等于该类型的另一个值。
+	 * less	此二元谓词测试指定类型的一个值是否小于该类型的另一个值。
+	 * less_equal	此二元谓词测试指定类型的一个值是否小于或等于该类型的另一个值。
+	 * logical_and	此类提供预定义的函数对象，后者对指定值类型的元素执行合取逻辑运算，并测试结果是 ture 还是 false。
+	 * logical_not	此类提供预定义的函数对象，后者对指定值类型的元素执行求反逻辑运算，并测试结果是 ture 还是 false。
+	 * logical_or	此类提供预定义的函数对象，后者对指定值类型的元素执行析取逻辑运算，并测试结果是 ture 还是 false。
+	 * minus	此类提供预定义的函数对象，后者对指定值类型的元素执行减法算术运算。
+	 * modulus	此类提供预定义的函数对象，后者对指定值类型的元素执行取模算术运算。
+	 * multiplies	此类提供预定义的函数对象，后者对指定值类型的元素执行乘法算术运算。
+	 * negate	此类提供预定义的函数对象，后者返回元素值的负值。
+	 * not_equal_to	此二元谓词测试指定类型的一个值是否不等于该类型的另一个值。
+	 * plus	此类提供预定义的函数对象，后对指定值类型的元素执行加法算术运算。
+	 * unary_function	空基类，定义可能由提供一元函数对象的派生类继承的类型。（在 c + + 11 中已弃用，c + + 17 中已删除）。
+	*/
+	using namespace std::placeholders;
+
+	void square(double x) {
+    	std::cout << x << "^2 == " << x * x << std::endl;
+	}
+
+	void product(double x, double y) {
+    	std::cout << x << "*" << y << " == " << x * y << std::endl;
+	}
+
+    double arg[] = { 1, 2, 3 };
+	std::for_each(&arg[0], arg + 3, square);
+    std::cout << std::endl;
+    std::for_each(&arg[0], arg + 3, std::bind(product, _1, 2));
+    std::cout << std::endl;
+    std::for_each(&arg[0], arg + 3, std::bind(square, _1));
 
 }
 
 void header_future() { 
-
+	/*
+	 * 包含标准标头 <future > 来定义类模板和支持模板，
+	 * 这些模板可简化运行函数（可能在单独的线程中）并检索其结果。 
+	 * 结果可以是由函数返回的值或由函数发出但函数中未捕获的异常。
+	*/
 }
 
 // <h>
@@ -1370,7 +2107,7 @@ void header_variant() {
 }
 
 void header_vector() { 
-	
+
 }
 
 int msvc_main() {

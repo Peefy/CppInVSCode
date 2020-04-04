@@ -1908,7 +1908,7 @@ void header_functional() {
 
 void header_future() { 
 	/*
-	 * 包含标准标头 <future > 来定义类模板和支持模板，
+	 * 包含标准头文件 <future > 来定义类模板和支持模板，
 	 * 这些模板可简化运行函数（可能在单独的线程中）并检索其结果。 
 	 * 结果可以是由函数返回的值或由函数发出但函数中未捕获的异常。
 	 * 异步提供程序存储函数调用的结果。 异步返回对象用于检索函数调用的结果。 
@@ -2012,28 +2012,387 @@ void header_hash_map() {
 }
 
 void header_hash_set() { 
+	/*
+	 * 此头文件已经弃用，替代项为 <unordered_set>。定义容器类模板 hash_set 和 hash_multiset 及其支持的模板。
+	 * 在STL中，set是以红黑树（RB-Tree）作为底层数据结构的，hash_set是以哈希表（Hash table）作为底层数据结构的。
+	 * set可以在时间复杂度为O（logN）的情况下插入，删除和查找数据。hash_set操作的时间度则比较复杂，取决于哈希函数和哈希表的负载情况。
+	*/
+ 	const int MAXN = 15;
+    int a[MAXN];
+    int i;
+    srand(time(NULL));
+    for (i = 0; i < MAXN; ++i)
+        a[i] = rand() % (MAXN * 2);
 
+    set<int> iset;   
+    set<int>::iterator pos; 
+
+    //插入数据 insert()有三种重载
+    iset.insert(a, a + MAXN);
+
+    //当前集合中个数 最大容纳数据量
+    printf("当前集合中个数: %d     最大容纳数据量: %d\n", iset.size(), iset.max_size());
+
+    //依次输出
+    printf("依次输出集合中所有元素-------\n");
+    for (pos = iset.begin(); pos != iset.end(); ++pos)
+        printf("%d ", *pos);
+    putchar('\n');
+
+    //查找
+    int findNum = MAXN;
+    printf("查找 %d是否存在-----------------------\n", findNum);
+    pos = iset.find(findNum);
+    if (pos != iset.end())
+        printf("%d 存在\n", findNum);
+    else
+        printf("%d 不存在\n", findNum);
+
+    //在最后位置插入数据，如果给定的位置不正确，会重新找个正确的位置并返回该位置
+    pos  = iset.insert(--iset.end(), MAXN * 2); 
+    printf("已经插入%d\n", *pos);
+
+    //删除
+    iset.erase(MAXN);
+    printf("已经删除%d\n", MAXN);
+
+    //依次输出
+    printf("依次输出集合中所有元素-------\n");
+    for (pos = iset.begin(); pos != iset.end(); ++pos)
+        printf("%d ", *pos);
+    putchar('\n');
 }
 
 // <i>
 void header_initializer_list() { 
+	/*
+	 * 定义容器类模板 initializer_list 和多个支持模板。
+	 * 
+	 * Typedef
+	 * value_type	initializer_list 中元素的类型。
+	 * reference	一个类型，它提供对 initializer_list 中元素的引用。
+	 * const_reference	一个类型，它提供对 initializer_list 中元素的常量引用。
+	 * size_type	一个类型，它表示 initializer_list 中元素的数目。
+	 * iterator	一个类型，它为 initializer_list 提供迭代器。
+	 * const_iterator	一个类型，它为 initializer_list 提供常量迭代器。
+	 * 
+	 * 成员函数
+	 * begin	返回指向 initializer_list 中第一个元素的指针。
+	 * end	返回指向 initializer_list 中最后一个元素之后的元素的指针。
+	 * size	返回 initializer_list 中的元素数量。
+	*/
+	using namespace std;
+    // Create an empty initializer_list c0
+    initializer_list <int> c0;
 
+    // Create an initializer_list c1 with 1 element
+    initializer_list <int> c1{ 3 };
+
+    // Create an initializer_list c2 with 5 elements
+    initializer_list <int> c2{ 5, 4, 3, 2, 1 };
+
+    // Create a copy, initializer_list c3, of initializer_list c2
+    initializer_list <int> c3(c2);
+
+    // Create a initializer_list c4 by copying the range c3[ first,  last)
+    const int* c3_ptr = c3.begin();
+    c3_ptr++;
+    c3_ptr++;
+    initializer_list <int> c4(c3.begin(), c3_ptr);
+
+    // Move initializer_list c4 to initializer_list c5
+    initializer_list <int> c5(move(c4));
+
+    cout << "c1 =";
+    for (auto c : c1)
+        cout << " " << c;
+    cout << endl;
+
+    cout << "c2 =";
+    for (auto c : c2)
+        cout << " " << c;
+    cout << endl;
+
+    cout << "c3 =";
+    for (auto c : c3)
+        cout << " " << c;
+    cout << endl;
+
+    cout << "c5 =";
+    for (auto c : c5)
+        cout << " " << c;
+    cout << endl;
 }
 
 void header_iomanip() { 
+	/*
+	 * <iomanip > 来定义多个操控器, 每个操控器都采用一个自变量。 iostreams
+	 * 
+	 * 操控器
+	 * get_money	获取货币金额（可选择采用国际格式）。
+	 * get_time	使用指定格式以某种时间结构获取时间。
+	 * put_money	提供货币金额（可选择采用国际格式）。
+	 * put_time	采用要使用的时间结构和格式字符串提供时间。
+	 * quoted	使用插入和提取运算符实现字符串的方便往返。
+	 * resetiosflags	清除指定标志。
+	 * setbase	为整数设置基数。
+	 * setfill	设置用于在右对齐显示中填充空格的字符。
+	 * setiosflags	设置指定标志。
+	 * setprecision	为浮点值设置精度。
+	 * setw	指定显示字段的宽度。
+	*/
+	// Results are identical regardless of input string type:
+    // string inserted { R"(This is a "sentence".)" }; // raw string literal
+    // string inserted { "This is a \"sentence\"." };  // regular string literal
+    const char* inserted = "This is a \"sentence\".";  // const char*
+    stringstream ss, ss_quoted;
+    string extracted, extracted_quoted;
 
+    ss << inserted;
+    ss_quoted << quoted(inserted);
+
+    cout << "ss.str() is storing       : " << ss.str() << endl;
+    cout << "ss_quoted.str() is storing: " << ss_quoted.str() << endl << endl;
+
+    // Round-trip the strings
+    ss >> extracted;
+    ss_quoted >> quoted(extracted_quoted);
+
+    cout << "After round trip: " << endl;
+    cout << "Non-quoted      : " << extracted << endl;
+    cout << "Quoted          : " << extracted_quoted << endl;
+
+	// Keep console window open in debug mode.
+    cout << endl << "Press Enter to exit" << endl;
+    string input{};
+    getline(cin, input);
+
+    string inserted{ R"("This" "is" "a" "heavily-quoted" "sentence".)" };
+    // string inserted{ "\"This\" \"is\" \"a\" \"heavily-quoted\" \"sentence\"" };
+    // const char* inserted{ "\"This\" \"is\" \"a\" \"heavily-quoted\" \"sentence\"" };
+    stringstream ss, ss_quoted;
+    string extracted;
+
+    ss_quoted << quoted(inserted, '*');
+    ss << inserted;
+    cout << "ss_quoted.str() is storing: " << ss_quoted.str() << endl;
+    cout << "ss.str() is storing       : " << ss.str() << endl << endl;
+
+    // Use the same quoted arguments as on insertion.
+    ss_quoted >> quoted(extracted, '*');
+
+    cout << "After round trip: " << endl;
+    cout << "Quoted          : " << extracted << endl;
+
+    extracted = {};
+    ss >> extracted;
+    cout << "Non-quoted      : " << extracted << endl << endl;
+
+	    string inserted{ R"(\\root\trunk\branch\nest\egg\yolk)" };
+    // string inserted{ "\\\\root\\trunk\\branch\\nest\\egg\\yolk" };
+    stringstream ss, ss_quoted, ss_quoted_custom;
+    string extracted;
+
+    // Use '"' as delimiter and '~' as escape character.
+    ss_quoted_custom << quoted(inserted, '"', '~');
+    ss_quoted << quoted(inserted);
+    ss << inserted;
+    cout << "ss_quoted_custom.str(): " << ss_quoted_custom.str() << endl;
+    cout << "ss_quoted.str()       : " << ss_quoted.str() << endl;
+    cout << "ss.str()              : " << ss.str() << endl << endl;
+
+    // No spaces in this string, so non-quoted behaves same as quoted
+    // after round-tripping.
+
+	// Keep console window open in debug mode.
+    cout << endl << "Press Enter to exit" << endl;
+    string input{};
+    getline(cin, input);
 }
 
 void header_ios() { 
+	/*
+	 * 定义作为 iostreams 操作的基础的多种类型和函数。 此头文件通常包含在另一 iostream 头文件中；
+	 * 
+	 * Typedef
+	 * ios	支持旧 iostream 库中的 ios 类。
+	 * streamoff	支持内部操作。
+	 * streampos	保留缓冲区指针或文件指针的当前位置。
+	 * streamsize	指定流的大小。
+	 * wios	支持旧 iostream 库中的 wios 类。
+	 * wstreampos	保留缓冲区指针或文件指针的当前位置。
+	 * 
+	 * 操控器
+	 * boolalpha	指定类型为 bool 的变量在流中显示为 true 或 false。
+	 * dec	指定以十进制计数法形式显示整数变量。
+	 * defaultfloat	配置 ios_base 对象的标记以使用浮点值的默认显示格式。
+	 * fixed	指定浮点数以自动设置小数点表示法显示。
+	 * hex	指定以十六进制计数法形式显示整数变量。
+	 * hexfloat	
+	 * internal	导致数字的符号左对齐，数字右对齐。
+	 * left	导致宽度比输出宽度短的文本在流刷新过程中显示时带有左边距。
+	 * noboolalpha	指定类型为 bool 的变量在流中显示为 1 或 0。
+	 * noshowbase	关闭显示数字所采用的进制的指示。
+	 * noshowpoint	仅显示浮点数（其小数部分为零）的整数部分。
+	 * noshowpos	导致正数不显式带有符号。
+	 * noskipws	导致输入流读取空格。
+	 * nounitbuf	导致缓冲区已满时缓冲和处理输出。
+	 * nouppercase	指定十六进制数字和科学计数法形式的指数以小写形式显示。
+	 * oct	指定以八进制计数法形式显示整数变量。
+	 * right	导致宽度比输出宽度短的文本在流刷新过程中显示时带有右边距。
+	 * scientific	导致使用科学表示法显示浮点数。
+	 * showbase	指示显示数字所采用的进制。
+	 * showpoint	显示浮点数的整数部分和小数点右侧的数字，即使小数部分为零。
+	 * showpos	导致正数显式带有符号。
+	 * skipws	导致输入流不读取空格。
+	 * unitbuf	导致在缓冲区未满时处理输出。
+	 * uppercase	指定十六进制数字和科学计数法形式的指数以大写形式显示。
+	 * 
+	 * 错误报告
+	 * io_errc	
+	 * is_error_code_enum	
+	 * iostream_category	
+	 * make_error_code	
+	 * make_error_condition
+	 * 
+	 * 类
+	 * basic_ios	类模板描述了依赖于模板参数的输入流（类模板basic_istream）和输出流（属于类模板basic_ostream）所共有的存储和成员函数。
+	 * fpos	类模板描述了一个对象，该对象可以存储还原任何流内的任意文件位置指示器所需的所有信息。
+	 * ios_base	此类描述了不依赖模板参数的输入和输出流通用的存储和成员函数。
+	*/
+   	using namespace std;
+   	bool b = true;
+   	cout << b << endl;
+   	boolalpha( cout );
+   	cout << b << endl;
+   	noboolalpha( cout );
+   	cout << b << endl;
+   	cout << boolalpha << b << endl;
+	
+	int i = 100;
+
+    cout << i << endl;   // Default is base 10
+    cout << hex << i << endl;
+    dec( cout );
+    cout << i << endl;
+    oct( cout );
+    cout << i << endl;
+    cout << dec << i << endl;
+
+	float ii = 1.1F;
+
+    cout << ii << endl;   // fixed is the default
+    cout << scientific << ii << endl;
+    cout.precision( 1 );
+    cout << fixed << ii << endl;
 
 }
 
 void header_iosfwd() { 
-
+	/*
+	 * 声明对在整个 iostreams 中使用的多个类模板的前向引用。 
+	 * 所有此类模板都是在其他标准头文件中定义的。 
+	 * 仅在需要其中一个声明而不是定义时将此头文件明确包含在内。
+	 * 
+	 * typedef T1 streamoff;
+	 * typedef T2 streamsize;
+	 * typedef fpos streampos;
+	 * // wchar_t TYPE DEFINITIONS
+	 * typedef basic_ios<char, char_traits<char>> ios;
+	 * typedef basic_streambuf<char, char_traits<char>> streambuf;
+	 * typedef basic_istream<char, char_traits<char>> istream;
+	 * typedef basic_ostream<char, char_traits<char>> ostream;
+	 * typedef basic_iostream<char, char_traits<char>> iostream;
+	 * typedef basic_stringbuf<char, char_traits<char>> stringbuf;
+	 * typedef basic_istringstream<char, char_traits<char>> istringstream;
+	 * typedef basic_ostringstream<char, char_traits<char>> ostringstream;
+	 * typedef basic_stringstream<char, char_traits<char>> stringstream;
+	 * typedef basic_filebuf<char, char_traits<char>> filebuf;
+	 * typedef basic_ifstream<char, char_traits<char>> ifstream;
+	 * typedef basic_ofstream<char, char_traits<char>> ofstream;
+	 * typedef basic_fstream<char, char_traits<char>> fstream;
+	 * // wchar_t TYPE DEFINITIONS
+	 * typedef basic_ios<wchar_t, char_traits<wchar_t>> wios;
+	 * typedef basic_streambuf<wchar_t, char_traits<wchar_t>> wstreambuf;
+	 * typedef basic_istream<wchar_t, char_traits<wchar_t>> wistream;
+	 * typedef basic_ostream<wchar_t, char_traits<wchar_t>> wostream;
+	 * typedef basic_iostream<wchar_t, char_traits<wchar_t>> wiostream;
+	 * typedef basic_stringbuf<wchar_t, char_traits<wchar_t>> wstringbuf;
+	 * typedef basic_istringstream<wchar_t, char_traits<wchar_t>> wistringstream;
+	 * typedef basic_ostringstream<wchar_t, char_traits<wchar_t>> wostringstream;
+	 * typedef basic_stringstream<wchar_t, char_traits<wchar_t>> wstringstream;
+	 * typedef basic_filebuf<wchar_t, char_traits<wchar_t>> wfilebuf;
+	 * typedef basic_ifstream<wchar_t, char_traits<wchar_t>> wifstream;
+	 * typedef basic_ofstream<wchar_t, char_traits<wchar_t>> wofstream;
+	 * typedef basic_fstream<wchar_t, char_traits<wchar_t>> wfstream;
+	 * 
+	 * 前向申明和类模版
+	 * template <class _Statetype>
+	 * class fpos;
+	 * 
+	 * template <class Elem>;
+	 * class char_traits;
+	 * 
+	 * class char_traits<char>;
+	 * 
+	 * class char_traits<wchar_t>;
+	 * 
+	 * template <class T>
+	 * class allocator;
+	 * 
+	 * class ios_base;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_ios;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class istreambuf_iterator;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class ostreambuf_iterator;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_streambuf;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_istream;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_ostream;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_iostream;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_stringbuf;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_istringstream;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_ostringstream;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_stringstream;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_filebuf;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_ifstream;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_ofstream;
+	 * 
+	 * template <class Elem, class Tr = char_traits<Elem>>
+	 * class basic_fstream;
+	*/
 }
 
 void header_iostream() { 
-
+	/*
+	 * 声明控制从标准流读取和写入到标准流的对象。 这通常是你需要从C++程序执行输入和输出操作的唯一头文件。
+	*/
 }
 
 void header_istream() { 

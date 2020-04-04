@@ -2392,7 +2392,55 @@ void header_iosfwd() {
 void header_iostream() { 
 	/*
 	 * 声明控制从标准流读取和写入到标准流的对象。 这通常是你需要从C++程序执行输入和输出操作的唯一头文件。
+	 * <iostream > 库使用 #include <ios>、#include <streambuf>、#include <istream>和 #include <ostream> 语句。
+	 * 
+	 * 这些对象分为两组：
+	 * * cin、 cout、 cerr和堵塞是面向字节的，可执行传统的一次性传输。
+	 * * wcin、wcout、wcerr 和 wclog 面向宽字节，与程序内部操作的宽字符相互转换。
+	 * 对流执行特定操作（如标准输入）后，不能对同一流执行不同方向的操作。 因此，程序不能在cin和wcin上互换操作，例如。
+	 * 此头文件中声明的所有对象都共享特殊属性，您可以假设它们是在您定义的任何静态对象之前构造的，
+	 * 在包含 <iostream > 的翻译单元中。 同样，你可以假定在你定义的任何此类静态对象的析构函数之前，这些对象不会被销毁。 
+	 * （但是，在程序终止过程中输出流将刷新。）因此，您可以在程序启动之前和程序终止之后安全地读取或写入标准流。
+	 * 但这种保证并不是通用的。 静态构造函数可能调用另一个翻译单元中的函数。 
+	 * 被调用的函数不能假定已构造了此头文件中声明的对象，因为翻译单元在静态构造中的顺序不确定。 
+	 * 若要在此类上下文中使用这些对象，必须先构造 ios_base::Init 类的对象。
+	 * 
+	 * 全局流对象
+	 * cerr	指定 cerr 全局流。
+	 * cin	指定 cin 全局流。
+	 * clog	指定 clog 全局流。
+	 * cout	指定 cout 全局流。
+	 * wcerr	指定 wcerr 全局流。
+	 * wcin	指定 wcin 全局流。
+	 * wclog	指定 wclog 全局流。
+	 * wcout	指定 wcout 全局流。
 	*/
+    int i = 0;
+    cout << "Enter a number: ";
+    cin >> i;
+    cerr << "test for cerr" << endl;
+    clog << "test for clog" << endl;
+
+	int i = 0;
+    wcout << L"Enter a number: ";
+    wcin >> i;
+    wcerr << L"test for wcerr" << endl;
+    wclog << L"test for wclog" << endl;
+
+    int x;
+    cout << "enter choice:";
+    cin >> x;
+    while (x < 1 || x > 4) {
+        cout << "Invalid choice, try again:";
+        cin >> x;
+        // not a numeric character, probably
+        // clear the failure and pull off the non-numeric character
+        if (cin.fail()) {
+          	cin.clear();
+          	char c;
+         	cin >> c;
+      	}
+   }
 }
 
 void header_istream() { 

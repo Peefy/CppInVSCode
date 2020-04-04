@@ -1934,13 +1934,81 @@ void header_future() {
 	 * packaged_task 类	描述作为调用包装器且其调用签名为 Ty(ArgTypes...) 的异步提供程序。 除可能的结果外，其关联异步状态还保留可调用对象的副本。
 	 * promise 类	描述异步提供程序。
 	 * shared_future 类	描述异步返回对象。 相较于 future 对象，异步提供程序可与任意数量的 shared_future 对象关联。
+	 * 
+	 * 结构
+	 * is_error_code_enum 结构	指示 future_errc 适合存储 error_code 的专用化。
+	 * uses_allocator 结构	始终保持 true 的专用化。
+	 * 
+	 * 函数
+	 * async	表示一个异步提供程序。
+	 * future_category	返回一个描述与 future 对象相关联错误的 error_category 对象的引用。
+	 * make_error_code	创建具有 error_category 对象（此对象描述 future 错误的特点）的 error_code。
+	 * make_error_condition	创建具有 error_category 对象（此对象描述 future 错误的特点）的 error_condition。
+	 * swap	将一个 promise 对象的关联异步状态与另一对象的关联异步状态交换。
+	 * 
+	 * 枚举
+	 * future_errc	为 future_error 类报告的错误提供符号名称。
+	 * future_status	为计时等待函数可返回的原因提供符号名称。
+	 * begin	表示描述模板函数 async 的可能模式的位掩码类型。
+	 * 
+	 * future和promise的作用是在不同线程之间传递数据。使用指针也可以完成数据的传递，
+	 * 但是指针非常危险，因为互斥量不能阻止指针的访问；而且指针的方式传递的数据是固定的，
+	 * 如果更改数据类型，那么还需要更改有关的接口，比较麻烦；promise支持泛型的操作，更加方便编程处理。
 	*/
 
+	void thread_set_promise(std::promise<int>& promiseObj) {
+    	std::cout << "In a thread, making data...\n";
+    	std::this_thread::sleep_for(std::chrono::milliseconds(1000));
+    	promiseObj.set_value(35);
+    	std::cout << "Finished\n";
+	}
+
+    std::promise<int> promiseObj;
+    std::future<int> futureObj = promiseObj.get_future();
+    std::thread t(&thread_set_promise, std::ref(promiseObj));
+    std::cout << futureObj.get() << std::endl;
+    t.join();
 }
 
 // <h>
 void header_hash_map() { 
+	/*
+	 * 定义容器类模板 hash_map 和 hash_multimap 及其支持的模板。
+	 * 运算符
+	 * operator!= (hash_map)	operator！ = （hash_multimap）	测试运算符左侧和右侧的 hash_map 或 hash_multimap 对象是否不相等。
+	 * operator== (hash_map)	operator== (hash_multimap)	测试运算符左侧和右侧的 hash_map 或 hash_multimap 对象是否相等。
+	 * 
+	 * 类
+	 * hash_compare 类	描述一个对象，该对象可供任何哈希关联容器（hash_map、hash_multimap、hash_set 或 hash_multiset）使用，作为默认的 Traits 参数对象，以对其所包含的元素进行排序和哈希处理。
+	 * value_compare 类	提供一个函数对象，该对象能通过比较 hash_map 元素的键值来比较这些元素，以确定其在 hash_map 中的相对顺序。
+	 * hash_map 类	用于存储和快速检索集合中的数据，集合中的每个元素都是具有排序键和关联数据值的元素对，而排序键的值是唯一的。
+	 * hash_multimap 类	用于存储和快速检索集合中的数据，集合中的每个元素都是具有排序键和关联数据值的元素对，而排序键的值不需要具有唯一性。
+	*/
+	hash_map<int, int> IntHash;  
+	IntHash[1] = 123;  
+	IntHash[2] = 456;  
+	int val = IntHash[1];  
+	int val = IntHash[2];  
 
+	hash_map<const char*, int, hash_compare<const char*, CharLess> > CharHash;  
+	CharHash["a"] = 123;  
+	CharHash["b"] = 456;  
+	char szInput[64] = "";  
+	scanf("%s", szInput);  
+	int val = CharHash[szInput];  
+
+ 	struct string_less : public binary_function<const string, const string, bool>  {   
+	public:   
+    	result_type operator()(const first_argument_type& _Left, const second_argument_type& _Right) const   {   
+        	return(_Left.compare(_Right) < 0 ? true : fase);   
+    	}   
+	};  
+
+	hash_map<string, int, hash_compare<string, string_less> > StringHash;  
+	StringHash["a"] = 123;  
+	StringHash["b"] = 456;  
+	string strKey = "a";  
+	int val = CharHash[strKey];  
 }
 
 void header_hash_set() { 

@@ -83,7 +83,8 @@
         "__tuple": "cpp",
         "cassert": "cpp",
         "ccomplex": "cpp",
-        "__locale": "cpp"
+        "__locale": "cpp",
+        "__tree": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.errorSquiggles": "Disabled"

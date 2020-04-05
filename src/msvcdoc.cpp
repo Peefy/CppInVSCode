@@ -2901,24 +2901,392 @@ void header_locale() {
 	/*
 	 * 定义类模板和函数， C++这些模板和函数可用于封装和操作有关数字、货币和日历数据（包括国际化支持）
 	 * 的表示形式和格式的不同文化约定用于字符分类和字符串排序规则。
+	 * 
+	 * 函数
+	 * has_facet	测试某一特定 facet 是否存储在指定区域设置中。
+	 * isalnum	测试区域设置中的某一元素是否是字母字符或数字字符。
+	 * isalpha	测试区域设置中的某一元素是否是字母字符。
+	 * iscntrl	测试区域设置中的某一元素是否是控制字符。
+	 * isdigit	测试区域设置中的某一元素是否是数字字符。
+	 * isgraph	测试区域设置中的某一元素是否是字母数字字符或标点字符。
+	 * islower	测试区域设置中的某一元素是否是小写。
+	 * isprint	测试区域设置中的某一元素是否是可打印字符。
+	 * ispunct	测试区域设置中的某一元素是否是标点字符。
+	 * isspace	测试区域设置中的某一元素是否是空白字符。
+	 * isupper	测试区域设置中的某一元素是否是大写。
+	 * isxdigit	测试区域设置中的某一元素是否是用于表示十六进制数字的字符。
+	 * tolower	将字符转换为小写。
+	 * toupper	将字符转换为大写。
+	 * use_facet	返回对区域设置中存储的某一指定类型 facet 的引用。
+	 * 
+	 * 类
+	 * codecvt	提供用于在内部和外部字符编码之间进行转换的 facet 的类模板。
+	 * codecvt_base	用于定义称为 result 的枚举类型的 codecvt 类的基类，此类枚举类型用作 facet 成员函数的返回类型，以指示转换的结果。
+	 * codecvt_byname	一个派生类模板，用于描述一个对象，该对象可充当给定区域设置的排序规则 facet，从而能够检索涉及转换的文化区域的信息。
+	 * collate	一种排序类模板，用于提供处理字符串排序约定的方面。
+	 * collate_byname	一个派生类模板，用于描述一个对象，该对象可充当给定区域设置的排序规则 facet，从而能够检索特定于涉及字符串排序约定的区域性区域的信息。
+	 * ctype	一个类模板，该模板提供用于对字符进行分类、在本机字符集和本地字符集之间进行转换的方面以及区域设置使用的设置。
+	 * ctype <char >	一个类，该类是类模板的显式专用化 ctype<CharType> 为类型char，描述可用作区域设置 facet 的对象，用于描述类型为char的字符的各种属性。
+	 * ctype_base	一种 ctype 类的基类，用于定义枚举类型来分类或测试单个字符或整个范围内的字符。
+	 * ctype_byname	一种派生类模板，用于描述一个对象，该对象可充当给定区域设置的 ctype facet，启用字符分类以及区分大小写和本地和区域设置指定字符集之间的字符的转换。
+	 * locale	一种描述区域设置对象的类，可将区域性特定信息封装为一组 facet，以便共同定义特定的本地化环境。
+	 * messages	一个类模板，用于描述一个对象，该对象可充当区域设置 facet，以便从给定区域设置的国际化消息目录中检索本地化消息。
+	 * messages_base	描述消息目录的int类型的基类。
+	 * messages_byname	一种派生类模板，用于描述一个对象，该对象可充当给定区域设置的消息方面，并支持检索本地化消息。
+	 * money_base	一种 ctype 类的基类，用于定义枚举类型来分类或测试单个字符或整个范围内的字符。
+	 * money_get	一个类模板，用于描述一个对象，该对象可充当区域设置 facet，以便控制CharType类型的序列到货币值的转换。
+	 * money_put	一个类模板，用于描述一个对象，该对象可充当区域设置 facet，以便控制货币值到CharType类型的转换。
+	 * moneypunct	一个类模板，该模板描述可用作区域设置 facet 的对象，以描述用于表示货币输入字段或货币输出字段的CharType类型的序列。
+	 * moneypunct_byname	一个派生类模板，用于描述一个对象，该对象可充当给定区域设置的 moneypunct facet，从而启用格式货币输入或输出字段。
+	 * num_get	一个类模板，用于描述一个对象，该对象可充当区域设置 facet，以便控制CharType类型的序列到数值的转换。
+	 * num_put	一个类模板，用于描述一个对象，该对象可充当区域设置 facet，以便控制数值到类型CharType的序列的转换。
+	 * numpunct	一个类模板，用于描述一个对象，该对象可用作本地方面，以描述用于表示有关数值和布尔表达式的格式和标点的信息的CharType类型的序列。
+	 * numpunct_byname	一个派生类模板，用于描述一个对象，该对象可充当给定区域设置的 moneypunct facet，从而支持数值和布尔表达式的格式设置和标点。
+	 * time_base	一个类，用于作为类模板 time_get 的各方面的基类，只定义枚举的类型 dateorder 以及此类型的几个常量。
+	 * time_get	一个类模板，用于描述一个对象，该对象可充当区域设置 facet，以控制CharType类型的序列到时间值的转换。
+	 * time_get_byname	一种派生类模板，用于描述一个对象，该对象可充当类型为 time_get <CharType， InputIterator> 的区域设置 facet。
+	 * time_put	一个类模板，用于描述一个对象，该对象可充当区域设置 facet，以控制将时间值转换为CharType类型的序列。
+	 * time_put_byname	一个派生类模板，用于描述一个对象，该对象可充当类型 time_put <CharType， OutputIterator> 的区域设置 facet。
+	 * wbuffer_convert 类	描述用于控制元素与字节流缓冲区之间的来回传输的流缓冲区。
+	 * wstring_convert 类	一个类模板，它在宽字符串和字节字符串之间执行转换。
 	*/
+
+   	locale loc ( "German_Germany" );
+   	bool result1 = use_facet<codecvt<char, char, mbstate_t> >
+      	( loc ).always_noconv( );
+
+   	if ( result1 )
+      	cout << "No conversion is needed." << endl;
+   	else
+      	cout << "At least one conversion is required." << endl;
+
+   	bool result2 = use_facet<codecvt<wchar_t, char, mbstate_t> >
+      	( loc ).always_noconv( );
+
+   	if ( result2 )
+      	cout << "No conversion is needed." << endl;
+   	else
+      	cout << "At least one conversion is required." << endl;
+
+	typename _TCHAR = char;
+
+   	_TCHAR * s1 = _T("Das ist wei\x00dfzz."); // \x00df is the German sharp-s, it comes before z in the German alphabet
+   	_TCHAR * s2 = _T("Das ist weizzz.");
+   	int result1 = use_facet<collate<_TCHAR> > ( loc ).
+      	compare ( s1, &s1[_tcslen( s1 )-1 ],  s2, &s2[_tcslen( s2 )-1 ] );
+   	cout << result1 << endl;
+
+   	locale loc2 ( "C" );
+   	int result2 = use_facet<collate<_TCHAR> > ( loc2 ).
+      	compare (s1, &s1[_tcslen( s1 )-1 ],  s2, &s2[_tcslen( s2 )-1 ] );
+   	cout << result2 << endl;
+
+   	locale loc1 ( "english" );
+   	wchar_t *str1 = L"\x0392fhello everyone";
+   	char str2 [16];
+   	bool result1 = (use_facet<ctype<wchar_t> > ( loc1 ).narrow
+      	( str1, str1 + wcslen(str1), 'X', &str2[0] ) != 0);  // C4996
+   	str2[wcslen(str1)] = '\0';
+   	wcout << str1 << endl;
+   	cout << &str2[0] << endl;
+
 }
 
 // <m>
 void header_map() { 
+	/*
+	 * 定义容器类模板 map 和多重映射及其支持的模板。
+	 * 用于存储和检索集合中的数据，此集合中的每个元素均为包含数据值和排序键的元素对。 键的值是唯一的，用于自动排序数据。
+	 * 可以直接更改映射中的元素值。 键值是常量，不能更改。 必须先删除与旧元素关联的键值，才能为新元素插入新键值。
+	 * 
+	 * C++ 标准库 map 类为：
+	 * - 大小可变的关联容器，基于关联键值高效检索元素值。
+	 * - 可逆，因为它提供双向迭代器来访问其元素。
+	 * - 有序，因为它的元素根据指定的比较函数按键值排序。
+	 * - 唯一。 因为它的每个元素必须具有唯一键。
+	 * - 关联容器对，因为它的元素数据值与其键值不同。
+	 * - 类模板，因为它提供的功能是泛型的，独立于元素或键类型。 用于元素和键的数据类型作为类模板以及比较函数和分配器中的参数指定。
+	 * 
+	 * map 类提供的迭代器是双向迭代器，但 insert 和 map 类成员函数有一些版本可以将功能较少的输入迭代器作为 template 参数，
+	 * 这种迭代器的功能要求比双向迭代器类保证的功能要求少。 不同的迭代器概念通过它们的功能优化相关联。 每个迭代器概念有它自己的一套要求，
+	 * 使用这些概念的算法必须受这些要求的限制。 输入迭代器可取消引用以引用某个对象，并可递增到序列中的下一迭代器。
+	 * 
+	 * 建议根据应用程序需要的搜索和插入类型选择容器类型。 关联容器针对查找、插入和移除操作进行了优化。 
+	 * 显式支持这些操作的成员函数执行这些操作的最坏情况时间与容器中元素数量的对数成比例。 
+	 * 插入元素不会使迭代器失效，移除元素仅会使专门指向已移除元素的迭代器失效。
+	 * 
+	 * 建议在应用程序满足将值与键关联的条件时，选择映射作为关联容器。 
+	 * 此类结构的模型是关键字排序列表，这些关键字只出现一次，并具有提供定义的关联字符串值。 
+	 * 如果关键字有多个正确定义，则此关键字不唯一，应选择多重映射作为容器。 如果仅存储关键字列表，则应使用集作为适当容器。
+	 * 如果允许关键字多次出现，则多重集合为适当容器。
+	 * 
+	 * map 通过调用存储的 key_compare 类型的函数对象，对它控制的元素进行排序。 此存储的对象是比较函数，
+	 * 可通过调用 key_comp 方法访问。 通常，将比较任意两个给当元素，以确定其中一个是否小于另一个或两者是否等效。 
+	 * 比较所有元素后，将创建非等效元素的排序序列。
+	*/
+	typedef std::map<char, int> Mymap;
+	Mymap c1;
+
+    c1.insert(Mymap::value_type('a', 1));
+    c1.insert(Mymap::value_type('b', 2));
+    c1.insert(Mymap::value_type('c', 3));
+
+	// find and show elements
+    std::cout << "c1.at('a') == " << c1.at('a') << std::endl;
+    std::cout << "c1.at('b') == " << c1.at('b') << std::endl;
+    std::cout << "c1.at('c') == " << c1.at('c') << std::endl;
+
+    map <int, int> m1;
+
+    map <int, int> :: iterator m1_Iter;
+    map <int, int> :: const_iterator m1_cIter;
+    typedef pair <int, int> Int_Pair;
+
+    m1.insert ( Int_Pair ( 0, 0 ) );
+    m1.insert ( Int_Pair ( 1, 1 ) );
+    m1.insert ( Int_Pair ( 2, 4 ) );
+
+    m1_cIter = m1.begin ( );
+    cout << "The first element of m1 is " << m1_cIter -> first << endl;
+
+    m1_Iter = m1.begin ( );
+    m1.erase ( m1_Iter );
+
+    // The following 2 lines would err because the iterator is const
+    // m1_cIter = m1.begin ( );
+    // m1.erase ( m1_cIter );
+
+    m1_cIter = m1.begin( );
+    cout << "The first element of m1 is now " << m1_cIter -> first << endl;
+
+   	multimap <int, int> m t;
+
+   	multimap <int, int> :: iterator mt1_Iter;
+   	multimap <int, int> :: const_iterator mt1_cIter;
+   	typedef pair <int, int> Int_Pair;
+
+   	mt1.insert ( Int_Pair ( 0, 0 ) );
+   	mt1.insert ( Int_Pair ( 1, 1 ) );
+   	mt1.insert ( Int_Pair ( 2, 4 ) );
+
+   	mt1_cIter = mt1.begin ( );
+   	cout << "The first element of mt1 is " << mt1_cIter -> first << endl;
+
+   	mt1_Iter = mt1.begin ( );
+   	mt1.erase ( mt1_Iter );
+
+   	// The following 2 lines would err as the iterator is const
+   	// mt1_cIter = mt1.begin ( );
+   	// mt1.erase ( mt1_cIter );
+
+   	mt1_cIter = mt1.begin( );
+   	cout << "First element of mt1 is now " << mt1_cIter -> first << endl;
 
 }
 
 void header_memory() { 
+	/*
+	 * 定义一个类、运算符和一些模板来帮助分配和释放对象。特别地，是智能指针所在的头文件
+	 * auto_ptr bad_weak_ptr weak_ptr unique_ptr shared_ptr
+	 * 
+	 * 函数
+	 * addressof	获取对象的实际地址。
+	 * align	根据所提供的对齐和起始地址，返回指向给定大小范围的指针。
+	 * allocate_shared	创建一个 shared_ptr，指向使用指定分配器分配和构造的给定类型的对象。
+	 * atomic_compare_exchange_strong	
+	 * atomic_compare_exchange_weak	
+	 * atomic_compare_exchange_strong_explicit	
+	 * atomic_compare_exchange_weak_explicit	
+	 * atomic_exchange	
+	 * atomic_exchange_explicit	
+	 * atomic_is_lock_free	
+	 * atomic_load	
+	 * atomic_load_explicit	
+	 * atomic_store	
+	 * atomic_store_explicit	
+	 * const_pointer_cast	常量强制转换为 shared_ptr。
+	 * declare_no_pointers	通知垃圾回收器：从指定地址开始且属于所指示块大小范围内的字符不包含可跟踪的指针。
+	 * declare_reachable	通知垃圾回收器：所指示的地址属于分配的存储并可到达。
+	 * default_delete	删除使用 operator new 分配的对象。 适合与 unique_ptr 一起使用。
+	 * destroy_at	速记 destroy 方法。
+	 * destroy	速记 destroy 方法。
+	 * destroy_n	速记 destroy 方法。
+	 * dynamic_pointer_cast	动态强制转换为 shared_ptr。
+	 * get_deleter	从 shared_ptr 获取删除器。
+	 * get_pointer_safety	返回任意垃圾回收器所采用的指针安全类型。
+	 * get_temporary_buffer	为不超过指定元素数量的元素序列分配临时存储。
+	 * make_shared	创建并返回一个 shared_ptr，指向使用默认分配器从零个或多个参数构造的分配对象。
+	 * make_unique	创建并返回一个 unique_ptr，指向从零个或多个自变量构建的分配对象。
+	 * pointer_safety	一种对 get_pointer_safety 的所有可能返回值的枚举。
+	 * return_temporary_buffer	对使用 get_temporary_buffer 模板函数分配的临时内存执行解除分配。
+	 * static_pointer_cast	静态强制转换为 shared_ptr。
+	 * swap	交换两个 shared_ptr 或 weak_ptr 对象。
+	 * undeclare_no_pointers	通知垃圾回收器：通过基地址指针和块大小而定义的内存块中的字符现在可包含可跟踪的指针。
+	 * undeclare_reachable	通知 garbage_collector：指定的内存位置无法达到。
+	 * uninitialized_copy	将来自指定输入范围的对象复制到未初始化的目标范围。
+	 * uninitialized_copy_n	创建来自输入迭代器的指定数量的元素的副本。 副本放置在向前迭代器中。
+	 * uninitialized_default_construct	速记 uninitialized_default_construct 方法
+	 * uninitialized_default_construct_n	速记 uninitialized_construct 方法。
+	 * uninitialized_fill	将具有指定值的对象复制到未初始化的目标范围。
+	 * uninitialized_fill_n	将具有指定值的对象复制到未初始化目标范围的指定数量的元素。
+	 * uninitialized_move	速记 uninitialized_move 方法。
+	 * uninitialized_move_n	速记 uninitialized_move 方法。
+	 * uninitialized_value_construct	速记 uninitialized_value_construct 方法。
+	 * uninitialized_value_construct_n	速记 uninitialized_value_construct 方法。
+	 * uses_allocator_v	
+	 * 
+	 * 运算符
+	 * operator!=	测试指定类的分配器对象之间是否不相等。
+	 * operator==	测试指定类的分配器对象之间是否相等。
+	 * operator>=	测试指定类的某一分配器对象是否大于或等于另一个分配器对象。
+	 * operator<	测试指定类的某一对象是否小于另一个对象。
+	 * operator<=	测试指定类的某一对象是否小于或等于另一个对象。
+	 * operator>	测试指定类的某一对象是否大于另一个对象。
+	 * operator<<	shared_ptr 插入器。
+	 * 
+	 * 类
+	 * allocator	类模板描述了一个对象，该对象管理类型为的对象数组的存储分配和释放。
+	 * allocator_traits	描述一个对象，用于确定支持分配器的容器所需要的全部信息。
+	 * auto_ptr	类模板描述了一个对象，该对象存储一个指向类型为type *的已分配对象的指针，该指针可确保当它的封闭 auto_ptr 被销毁时，它指向的对象将被删除。
+	 * bad_weak_ptr	报告不良的 weak_ptr 异常。
+	 * enabled_shared_from_this	帮助生成一个 shared_ptr。
+	 * pointer_traits	提供 allocator_traits 类型的对象所需的信息，以描述指针类型为 Ptr 的分配器。
+	 * raw_storage_iterator	一种所提供的适配器类，使算法能够将它们的结果存储到未初始化的内存中。
+	 * shared_ptr	将引用计数智能指针回绕在动态分配的对象周围。
+	 * unique_ptr	存储指向拥有的对象的指针。 指针不归任何其他 unique_ptr 所拥有。 当所有者被销毁后，unique_ptr 也会被销毁。
+	 * weak_ptr	回绕弱链接指针。
+	*/
+
+	char buffer[256]; // for simplicity
+	size_t alignment = std::alignment_of<int>::value;
+	void * ptr = buffer;
+	std::size_t space = sizeof(buffer); // Be sure this results in the true size of your buffer
+
+	while (std::align(alignment, sizeof(MyObj), ptr, space)) {
+    	// You now have storage the size of MyObj, starting at ptr, aligned on
+    	// int boundary. Use it here if you like, or save off the starting address
+    	// contained in ptr for later use.
+    	// ...
+    	// Last, move starting pointer and decrease available space before
+    	// the while loop restarts.
+    	ptr = reinterpret_cast<char*>(ptr) + sizeof(MyObj);
+    	space -= sizeof(MyObj);
+	}
+
+    std::shared_ptr<int> sp0(new int);
+    std::shared_ptr<const int> sp1 =
+        std::const_pointer_cast<const int>(sp0);
+
+    *sp0 = 3;
+    std::cout << "sp1 == " << *sp1 << std::endl;
+
+	struct base {
+    	virtual ~base() {}
+    	int value;
+	};
+
+	struct derived : public base { };
+
+    std::shared_ptr<base> spbase0(new derived);
+    std::shared_ptr<derived> spderived1 =
+        std::dynamic_pointer_cast<derived>(spbase0);
+
+    spbase0->value = 3;
+    std::cout << "sp1->value == " << spderived1->value << std::endl;
+
+        // Create an array of ints
+    int intArray [] = { 10, 20, 30, 40, 100, 200, 300, 1000, 2000 };
+    int count = sizeof ( intArray ) / sizeof ( int );
+    cout << "The number of integers in the array is: "
+        << count << "." << endl;
+
+    pair<int *, ptrdiff_t> resultPair;
+    resultPair = get_temporary_buffer<int>( count );
+
+    cout << "The number of elements that the allocated memory\n"
+        << "could store is given by: resultPair.second = "
+        << resultPair.second << "." << endl;
 
 }
 
 void header_memory_resource() { 
+	/*
+	 * 定义容器类模板 memory_resource 及其支持的模板。
+	 * 
+	 * 运算符
+	 * operator!=	测试位于运算符左侧的 memory_resource 对象是否不等于右侧的 memory_resource 对象。
+	 * operator==	测试位于运算符左侧的 memory_resource 对象是否等于右侧的 memory_resource 对象。
+	 * 
+	 * 专用化模板函数
+	 * polymorphic_allocator
+	 * 
+	 * 函数
+	 * get_default_resource	
+	 * new_delete_resource	
+	 * null_memory_resource	
+	 * set_default_resource
+	 * 
+	 * 类和结构
+	 * memory_resource 类	
+	 * monotonic_buffer_resource 类	
+	 * pool_options 结构	
+	 * synchronized_pool_resource 类	
+	 * unsynchronized_pool_resource 类
+	*/
 
 }
 
 void header_mutex() { 
-
+	/*
+	 * 包括：用于定义类 mutex、recursive_mutex、timed_mutex 和 recursive_timed_mutex 的标准头文件 <mutex>，
+	 * 模板 lock_guard 和 unique_lock，以及用于定义互斥代码区域的支持类型和函数。
+	 * 
+	 * 类 mutex 和 recursive_mutex 是互斥体类型。 互斥体类型的默认构造函数和析构函数不会引发异常。 
+	 * 当多个线程尝试锁定同一对象时，这些对象有方法实现互相排斥。 具体而言，互斥体类型包含的方法有 lock、try_lock 和 unlock：
+	 * * lock 方法是阻止调用线程，直到线程获取互斥体的所有权。 忽略其返回值。
+	 * * try_lock 方法尝试在不阻止的情况下获取互斥体的所有权。 如果该方法获取所有权, 则其返回类型可转换为bool , 为true , 否则为false。
+	 * * unlock 方法是从调用线程中释放互斥体的所有权。
+	 * 
+	 * 可以使用互斥体类型作为类型参数来对模板 lock_guard 和 unique_lock 进行实例化。 
+	 * 可以将这些类型的对象作为 Lock 自变量以用于模板 condition_variable_any 中的等待成员函数。
+	 * 定时互斥体类型满足互斥体类型的需求。 此外, 它还具有try_lock_for和try_lock_until方法, 
+	 * 这些方法必须可使用一个参数进行调用, 并且必须返回可转换为布尔值的类型。 
+	 * 定时互斥体类型可使用其他自变量来定义这些函数，前提是这些其他自变量都具有默认值。
+	 * * try_lock_for 方法必须可使用一个自变量 Rel_time 进行调用，该自变量的类型是 chrono::duration 的实例化。 
+	 *     此方法尝试获取互斥体的所有权，但无论成功与否，都会在 Rel_time 指定的时间内返回。 
+	 *     如果该方法获取所有权, 则返回值将转换为true ;否则, 返回值将转换为false。
+	 * * try_lock_until 方法必须可使用一个自变量 Abs_time 进行调用，该自变量的类型是 chrono::time_point 的实例化。 
+	 *     此方法尝试获取互斥体的所有权，但无论成功与否，都会在不迟于 Abs_time 指定的时间内返回。 如果该方法获取所有权, 则返回值将转换为true ;
+	 *     否则, 返回值将转换为false。
+	 * 互斥体类型也称为可锁定类型。 如果未提供成员函数 try_lock，则为基本可锁定类型。 定时互斥体类型也称为定时可锁定类型。
+	 * 
+	 * 类
+	 * lock_guard 类	表示可进行实例化以创建其析构函数解锁 mutex 的对象的模板。
+	 * mutex 类（C++ 标准库）	表示互斥体类型。 使用此类型的对象以在程序内强制实现互相排斥。
+	 * recursive_mutex 类	表示互斥体类型。 与 mutex 类相反，为已锁定的对象调用锁定方法的行为是有明确定义的。
+	 * recursive_timed_mutex 类	表示定时互斥体类型。 使用此类型的对象以在程序内强制实现有时间限制的互相排斥。 
+	 *     与 timed_mutex 类型的对象不同，为 recursive_timed_mutex 对象调用锁定方法的效果是有明确定义的。
+	 * scoped_lock 类	
+	 * timed_mutex 类	表示定时互斥体类型。 使用此类型的对象以在程序内强制实现有时间限制的互相排斥。
+	 * unique_lock 类	表示可进行实例化以创建管理 mutex 锁定和解锁的对象的模板。
+	 * 
+	 * 函数
+	 * call_once	提供在执行期间只调用一次指定的可调用对象的机制。
+	 * lock	尝试在不死锁的情况下锁定所有自变量。
+	 * swap	
+	 * try_lock	
+	 * 
+	 * 结构
+	 * adopt_lock_t 结构	表示用于定义 adopt_lock 的类型。
+	 * defer_lock_t 结构	表示定义用于选择 unique_lock 的重载构造函数之一的 defer_lock 对象的类型。
+	 * once_flag 结构	表示一个结构, 该结构与模板函数call_once结合使用, 以确保初始化代码只调用一次, 即使存在多个执行线程。
+	 * try_to_lock_t 结构	表示一个结构, 该结构try_to_lock定义对象并用于选择unique_lock的重载构造函数之一。
+	 * 
+	 * 变量
+	 * adopt_lock	表示可传递给 lock_guard 和 unique_lock 的构造函数，以指示同样传递给该构造函数的互斥体对象已锁定的对象。
+	 * defer_lock	表示可以传递给 unique_lock 的构造函数的对象，以指示该构造函数不应锁定同样传递给它的互斥体对象。
+	 * try_to_lock	表示可以传递给 unique_lock 的构造函数的对象，以指示该构造函数应尝试在不阻止的情况下解锁同样传递给它的 mutex。
+	*/
 }
 
 // <n>

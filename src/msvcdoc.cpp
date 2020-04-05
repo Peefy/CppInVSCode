@@ -3291,20 +3291,241 @@ void header_mutex() {
 
 // <n>
 void header_new() { 
+	/*
+	 * 定义一些类型和函数，它们控制程序控件下存储空间的分配和释放。 
+	 * 它还定义了用于报告存储管理错误的组件。
+	 * 
+	 * 对象
+	 * nothrow	提供一个对象, 该对象用作new和delete的nothrow版本的参数。
+	 * 
+	 * Typedef
+	 * new_handler	一个类型，它指向适合用作新处理程序的函数。
+	 * hardware_constructive_interference_size	
+	 * hardware_destructive_interference_size
+	 * 
+	 * 函数
+	 * get_new_handler	
+	 * launder	
+	 * set_new_handler	安装一个用户函数，当尝试分配内存再次失败时会调用该函数。
+	 * 
+	 * 运算符
+	 * 运算符 delete	由 delete 表达式调用来解除单个对象的存储空间分配的函数。
+	 * 运算符 []	由 delete 表达式调用来解除对象数组的存储空间分配的函数。
+	 * 运算符 new	由 new 表达式调用来为单个对象分配存储空间的函数。
+	 * 运算符 new[]	由 new 表达式调用来为对象数组分配存储空间的函数。
+	 * 
+	 * 枚举
+	 * align_val_t
+	 * 
+	 * 类
+	 * bad_alloc 类	该类描述引发的异常以指示分配请求未成功。
+	 * bad_array_new_length 类	
+	 * nothrow_t Class	该类用作运算符 new 的函数参数，指示函数应返回一个 null 指针来报告分配失败，而不是引发异常。
+	*/
+	struct X { const int n; };
 
+	X *p = new X{3};
+	const int a = p->n;
+	new (p) X{5}; // p does not point to new object because X::n is const
+	const int b = p->n; // undefined behavior
+	const int c = std::launder(p)->n; // OK
 }
 
 void header_numeric() { 
+	/*
+	 * 定义执行数值处理算法的容器模板函数。数字算法类似于 <algorithm> 中的 C++ 标准库算法，并可以应用于多个数据结构。
+	 * 这包括标准库容器类（例如 vector 和 list）、程序定义的数据结构和满足特定算法需求的元素数组。 
+	 * 这些算法通过迭代器间接访问并遍历容器元素来实现此一般性级别。 这些算法处理通常由开始或末尾位置指定的迭代器范围。 
+	 * 引用的范围必须有效，即范围中的所有指针必须可以取消引用，并且在每个范围的序列中，可从第一个位置递增到达最后一个位置。
+	 * 这些算法可扩展每个 C++ 标准库容器的运算和成员函数支持的操作，并允许同时与不同类型的容器对象进行交互。
+	 * 
+	 * 函数
+	 * accumulate	通过计算连续的部分和来计算指定范围中所有元素的总和（包括初始值），或计算通过使用指定二元运算而非求和运算获得的连续部分结果的结果总和。
+	 * adjacent_difference	计算输入范围中每个元素与其前一元素之间的连续差值，并将结果输出到目标范围，或计算将差值运算替换为其他指定二元运算的一般化程序的结果。
+	 * exclusive_scan	
+	 * gcd	
+	 * inclusive_scan	
+	 * inner_product	计算两个范围的逐元素集乘积的总和并将总和添加到指定初始值，或计算将求和与乘积运算替换为其他指定二元运算的一般化程序的结果。
+	 * iota	存储一个起始值，从第一个元素开始，在间隔 value++ 内的每个元素中填充此值的连续递增值 ([first, last))。	
+	 * partial_sum	计算输入范围中从第一个元素到第 i 个元素的一系列总和，并在目标范围的第 i 个元素中存储每个总和的结果，或计算将求和运算替换为其他指定二元运算的一般化程序的结果。
+	 * transform_exclusive_scan	
+	 * transform_inclusive_scan	
+	 * transform_reduce	
+	*/
+
+ 	vector <int> v1, v2(20);
+    vector <int>::iterator iter1, iter2;
+
+    int i;
+    for (i = 1; i < 21; i++) {
+      	v1.push_back(i);
+   	}
+
+   	cout << "The original vector v1 is:\n ( " ;
+   	for (iter1 = v1.begin(); iter1 != v1.end(); iter1++)
+      	cout << *iter1 << " ";
+   	cout << ")." << endl;
+
+   	// The first member function for the accumulated sum
+   	int total;
+   	total = accumulate(v1.begin(), v1.end(), 0);
+
+   	cout << "The sum of the integers from 1 to 20 is: "
+         << total << "." << endl;
+
+    // Constructing a vector of partial sums
+    int j = 0, partotal;
+    for (iter1 = v1.begin(); iter1 != v1.end(); iter1++) {
+      	partotal = accumulate(v1.begin(), iter1 + 1, 0);
+      	v2[j] = partotal;
+      	j++;
+   	}
+
+    cout << "The vector of partial sums is:\n ( " ;
+    for (iter2 = v2.begin(); iter2 != v2.end(); iter2++)
+      	cout << *iter2 << " ";
+   	cout << ")." << endl << endl;
+
+   	// The second member function for the accumulated product
+   	vector <int> v3, v4(10);
+   	vector <int>::iterator iter3, iter4;
+
+   	int s;
+   	for (s = 1; s < 11; s++) {
+      	v3.push_back(s);
+   	}
+
+   	cout << "The original vector v3 is:\n ( " ;
+   	for (iter3 = v3.begin(); iter3 != v3.end(); iter3++)
+      	cout << *iter3 << " ";
+   	cout << ")." << endl;
+
+   	int ptotal;
+   	ptotal = accumulate(v3.begin(), v3.end(), 1, multiplies<int>());
+
+   	cout << "The product of the integers from 1 to 10 is: "
+         << ptotal << "." << endl;
+
+    // Constructing a vector of partial products
+    int k = 0, ppartotal;
+   	for (iter3 = v3.begin(); iter3 != v3.end(); iter3++) {
+		ppartotal = accumulate(v3.begin(), iter3 + 1, 1, multiplies<int>());
+      	v4[k] = ppartotal;
+      	k++;
+   	}
+
+   	cout << "The vector of partial products is:\n ( " ;
+   	for (iter4 = v4.begin(); iter4 != v4.end(); iter4++)
+      	cout << *iter4 << " ";
+   	cout << ")." << endl;
+
+   	vector<int> V1( 10 ), V2( 10 );
+   	vector<int>::iterator VIter1, VIter2, VIterend, VIterend2;
+
+   	list <int> L1;
+   	list <int>::iterator LIter1, LIterend, LIterend2;
+
+   	int t;
+   	for ( t = 1 ; t <= 10 ; t++ ) {
+      	L1.push_back( t * t );
+   	}
+
+    cout << "The input list L1 is:\n ( " ;
+   	for ( LIter1 = L1.begin( ) ; LIter1 != L1.end( ) ; LIter1++ )
+      	cout << *LIter1 << " ";
+   	cout << ")." << endl;
+
+   	// The first member function for the adjacent_differences of
+   	// elements in a list output to a vector
+   	VIterend = adjacent_difference ( L1.begin ( ) , L1.end ( ) , V1.begin ( ) );
+
+   	cout << "Output vector containing adjacent_differences is:\n ( " ;
+   	for ( VIter1 = V1.begin( ) ; VIter1 != VIterend ; VIter1++ )
+      	cout << *VIter1 << " ";
+   	cout << ")." << endl;
+
+   	// The second member function used to compute
+   	// the adjacent products of the elements in a list
+   	VIterend2 = adjacent_difference ( L1.begin ( ) , L1.end ( ) , V2.begin ( ) , multiplies<int>( ) );
+
+   	cout << "The output vector with the adjacent products is:\n ( " ;
+   	for ( VIter2 = V2.begin( ) ; VIter2 != VIterend2 ; VIter2++ )
+      	cout << *VIter2 << " ";
+   	cout << ")." << endl;
+
+   	// Computation of adjacent_differences in place
+   	LIterend2 = adjacent_difference ( L1.begin ( ) , L1.end ( ) , L1.begin ( ) );
+   	cout << "In place output adjacent_differences in list L1 is:\n ( " ;
+   	for ( LIter1 = L1.begin( ) ; LIter1 != LIterend2 ; LIter1++ )
+      	cout << *LIter1 << " ";
+   	cout << ")." << endl;
 
 } 
 
 // <o>
 void header_optional() { 
-
+	/*
+	 * 定义容器类模板 optional 和多个支持模板。
+	 * 
+	 * 函数
+	 * make_optional	使对象成为可选的。
+	 * swap	交换两个 optional 对象的包含值。
+	 * 
+	 * 类和结构
+	 * hash	返回所包含的对象的哈希值。
+	 * optional	描述一个对象，该对象不能包含值。
+	 * nullopt_t 结构	描述不包含值的对象。
+	 * bad_optional_access 类	描述作为异常引发的对象，以报告尝试访问不存在的值。
+	 * 
+	 * 对象
+	 * nullopt	用于比较 nullopt_t 的实例。
+	 * 
+	 * 类模板 optional<T> 描述一个对象，该对象可能包含也可能不包含 T类型的值，称为包含值。
+	 * 当的实例 optional<T> 包含一个值时，包含的值将在 optional 对象的存储中分配，该区域在为类型 T进行了适当对齐的区域中。 
+	 * 将 optional<T> 转换为 bool时，如果该对象包含一个值，则将 true 结果;否则，false。
+	 * T 包含的对象类型不得为in_place_t或nullopt_t。 T 必须是易损坏，也就是说，其析构函数必须回收所有拥有的资源，并且可能不会引发异常。
+	 * optional 类是 c++ 17 中的新类。
+	*/
 }
 
 void header_ostream() { 
+	/*
+	 * 定义类模板basic_ostream，它可调节 iostreams 的插入。 此头文件还定义了若干相关的操控程序。 
+	 * （此头文件通常包含在另一个 iostream 头文件中。 很少会直接包含它。）
+	 * 
+	 * Typedef
+	 * ostream	从 basic_ostream 创建一个类型，该类型在char上专用化并 char_traits 专用化。
+	 * wostream	从 basic_ostream 创建一个类型，该类型在wchar_t上特殊化并专用于wchar_tchar_traits。
+	 * 
+	 * 操控器
+	 * endl	终止行并刷新缓冲区。
+	 * ends	终止字符串。
+	 * flush	刷新缓冲区。
+	 * swap	将 basic_ostream 对象参数左侧的值与 basic_ostream 对象参数右侧的值进行交换。
+	 * 
+	 * 类
+	 * basic_ostream	类模板描述了控制元素和编码对象插入流缓冲区的对象。
+	 * 成员函数
+	 * flush	刷新缓冲区。
+	 * put	将字符放入流中。
+	 * seekp	重置在输出流中的位置。
+	 * sentry	嵌套的类描述一个对象，该对象的声明构造格式化的输出函数和未格式化的输出函数。
+	 * swap	将此 basic_ostream 对象的值与提供的 basic_ostream 对象的值进行交换。
+	 * tellp	报告在输出流中的位置。
+	 * write	将字符放入流中。
+	*/
+	using namespace std;
+    ofstream x("basic_ostream_seekp.txt");
+    streamoff i = x.tellp();
+    cout << i << endl;
+    x << "testing";
+    i = x.tellp();
+    cout << i << endl;
+    x.seekp(2);   // Put char in third char position in file
+    x << " ";
 
+    x.seekp(2, ios::end);   // Put char two after end of file
+    x << "z";
 }
 
 // <q>

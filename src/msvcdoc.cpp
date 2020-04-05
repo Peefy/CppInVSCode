@@ -2444,24 +2444,464 @@ void header_iostream() {
 }
 
 void header_istream() { 
+	/*
+	 * 定义用于调节 iostreams 提取的类模板 basic_istream，以及用于调节插入和提取的类模板 basic_iostream。 
+	 * 头文件还定义了一个相关的操控程序。 通常会由另一个 iostreams 头文件为你包括此头文件；几乎不需要直接包括它。
+	 * 
+	 * Typedef
+	 * iostream	在charbasic_iostream 专用化的类型。
+	 * istream	在charbasic_istream 专用化的类型。
+	 * wiostream	专用于 wchar 的类型 basic_iostream。
+	 * wistream	专用于 wchar 的类型 basic_istream。
+	 * 
+	 * 操控器
+	 * ws	跳过流中的空白。
+	 * swap	交换两个流对象。
+	 * 
+	 * 运算符
+	 * operator>>	从流中提取字符和字符串。
+	 * 
+	 * 类
+	 * basic_iostream	可以完成输入和输出的流类。
+	 * basic_istream	类模板描述了一个对象，该对象可控制从流缓冲区提取元素和编码对象，
+	 * 其元素类型为 Elem （也称为char_type），其字符特征由类 Tr （也称为traits_type。
+	*/
+   	ws( cin );
+   	char c[10];
 
+   	cin.width( 9 );
+   	cin >> c;
+   	cout << c << endl;
 }
 
 void header_iterator() { 
+	/*
+	 * 定义迭代器基元、预定义的迭代器和流迭代器，以及一些支持模板。 
+	 * 预定义的迭代器包含插入及反向适配器。 插入迭代器适配器包括三类：前向、后向和常规。 
+	 * 它们提供的是插入语义而不是容器成员函数迭代器所提供的覆盖语义。
+	 * 
+	 * 迭代器是指针的泛化，它从这些指针的需求中抽象出来，允许 C++ 程序使用统一的方式来处理不同的数据结构。 
+	 * 迭代器充当容器和泛型算法之间的媒介。 算法被定义为对某一迭代器类型所指定的范围起作用，而不是作用于特定的数据类型。 
+	 * 随后，算法可能会作用于任何满足迭代器要求的数据结构。 迭代器有五个类型或类别，各自具有自己的要求和最终功能：
+	 * - 输出：向前移动，可以存储但不能检索值，由 ostream 和 inserter 提供。
+	 * - 输入：向前移动，可以检索但不能存储值，由 istream 提供。
+	 * - 向前：向前移动，可以存储和检索值。
+	 * - 双向：向前和向后移动，可以存储和检索值，由列表、集合、多重集、映射和多重映射提供。
+	 * - 随机访问：以任意顺序访问元素，可以存储和检索值，由向量、双端队列、字符串和数组提供。
+	 * 
+	 * 可使用要求较高、因而需要更强大元素访问的迭代器来代替要求较低的迭代器。 例如，如果调用向前迭代器，则可使用随机访问迭代器来代替。
+	 * 
+	 * 函数
+	 * advance	使迭代器递增指定数量的位置。
+	 * back_inserter	创建一个可以在指定容器的后面插入元素的迭代器。
+	 * begin	检索一个指向指定容器中第一个元素的迭代器。
+	 * cbegin	检索一个指向指定容器中第一个元素的常量迭代器。
+	 * cend	检索一个指向指定容器中最后元素之后的元素的常量迭代器。
+	 * crbegin	
+	 * crend	
+	 * data	
+	 * distance	确定两个迭代器定址位置之间的增量数。
+	 * end	检索指向指定容器中最后一个元素之后的元素的迭代器。
+	 * empty	
+	 * front_inserter	创建一个可以在指定容器前面插入元素的迭代器。
+	 * inserter	一个可以在指定插入点向容器添加新元素的迭代器适配器。
+	 * make_checked_array_iterator	创建可由其他算法使用的 checked_array_iterator。 
+	 *     注意： 该函数是 C++ 标准库的 Microsoft 扩展。 使用该函数实现的代码不可移植到不支持该 Microsoft 扩展的 C++ 标准生成环境中。
+	 * make_move_iterator	返回一个移动迭代器，其中包含所提供的迭代器作为其存储的基迭代器。
+	 * make_unchecked_array_iterator	创建可由其他算法使用的 unchecked_array_iterator。 
+	 *     注意： 该函数是 C++ 标准库的 Microsoft 扩展。 使用该函数实现的代码不可移植到不支持该 Microsoft 扩展的 C++ 标准生成环境中。
+	 * next	迭代指定的次数并返回新的迭代器位置。
+	 * prev	反向迭代指定的次数并返回新的迭代器位置。
+	 * rbegin	
+	 * rend	
+	 * size	
+	 * 
+	 * 运算符
+	 * operator!=	测试运算符左侧的迭代器对象是否不等于右侧的迭代器对象。
+	 * operator==	测试运算符左侧的迭代器对象是否等于右侧的迭代器对象。
+	 * operator<	测试运算符左侧的迭代器对象是否小于右侧的迭代器对象。
+	 * operator<=	测试运算符左侧的迭代器对象是否小于或等于右侧的迭代器对象。
+	 * operator>	测试运算符左侧的迭代器对象是否大于右侧的迭代器对象。
+	 * operator>=	测试运算符左侧的迭代器对象是否大于或等于右侧的迭代器对象。
+	 * operator+	将偏移量添加到迭代器，并返回在新偏移位置处发现插入元素的新 reverse_iterator。
+	 * operator-	从另一个迭代器中减去一个迭代器并返回差值。
+	 * 
+	 * 类
+	 * back_insert_iterator	类模板描述输出迭代器对象。 它将元素插入到 Container 类型的容器中，该容器通过它存储的受保护 pointer 对象（称为容器）进行访问。
+	 * bidirectional_iterator_tag	一个类，该类为表示双向迭代器的 iterator_category 函数提供返回类型。
+	 * checked_array_iterator	一种使用随机访问检查迭代器来访问数组的类。 
+	 *     注意： 此类为 C++ 标准库的 Microsoft 扩展。 使用该函数实现的代码不可移植到不支持该 Microsoft 扩展的 C++ 标准生成环境中。
+	 * forward_iterator_tag	一种为表示向前迭代器的 iterator_category 函数提供返回类型的类。
+	 * front_insert_iterator	类模板描述输出迭代器对象。 它将元素插入到 Container 类型的容器中，该容器通过它存储的受保护 pointer 对象（称为容器）进行访问。
+	 * input_iterator_tag	为表示输入迭代器的 iterator_category 函数提供返回类型的类。
+	 * insert_iterator	类模板描述输出迭代器对象。 它将元素插入到 Container 类型的容器中，该容器通过它存储的受保护 pointer 对象（称为容器）进行访问。 它还将类 Container::iterator 的受保护 iterator 对象（称为 iter）存储。
+	 * istream_iterator	类模板描述一个输入迭代器对象。 它从输入流中提取类 Ty 的对象，该输入流通过它存储的对象访问该对象，其类型指针指向 basic_istream <Elem， Tr>。
+	 * istreambuf_iterator	类模板描述一个输入迭代器对象。 它将类 Elem 的元素插入到输出流缓冲区中，该缓冲区通过它存储的对象（类型 pointer）访问 basic_streambuf <Elem， Tr>。
+	 * iterator	类模板用作所有迭代器的基类型。
+	 * iterator_traits	一种模板 helper 类，可以提供与不同迭代器类型相关联的关键类型，以便用相同的方式引用这些迭代器。
+	 * move_iterator	move_iterator 对象可以存储 RandomIterator 类型的随机访问迭代器。 它的行为类似于随机访问迭代器，但在解引用时除外。 operator* 的结果将隐式强制转换为 value_type&&:，以便形成 rvalue reference。
+	 * ostream_iterator	类模板描述输出迭代器对象。 它在输出流中插入类 Type 的对象，并将其通过其所存储的对象进行访问，将 pointer 类型 basic_ostream <Elem、 Tr>。
+	 * ostreambuf_iterator 类	类模板描述输出迭代器对象。 它将类 Elem 的元素插入到输出流缓冲区中，并通过它存储的对象访问该缓冲区，将类型指针插入到 basic_streambuf <Elem， Tr>。
+	 * output_iterator_tag	一个类，该类为表示输出迭代器的 iterator_category 函数提供返回类型。
+	 * random_access_iterator_tag	一个类，该类提供表示随机访问迭代器 iterator_category 函数的返回类型。
+	 * reverse_iterator	类模板描述的行为类似于随机访问迭代器的对象，仅反向进行。
+	 * unchecked_array_iterator	一种使用随机访问未检查迭代器来访问数组的类。 
+	 *     注意： 此类为 C++ 标准库的 Microsoft 扩展。 使用该函数实现的代码不可移植到不支持该 Microsoft 扩展的 C++ 标准生成环境中。
+	*/
+   	using namespace std;
+   	int i;
 
+   	list<int> L;
+   	for ( i = 1 ; i < 9 ; ++i ) {
+    	L.push_back ( i );
+   	}
+   	list <int>::iterator L_Iter, LPOS = L.begin ( );
+
+   	cout << "The list L is: ( ";
+   	for ( L_Iter = L.begin( ) ; L_Iter != L.end( ); L_Iter++)
+      	cout << *L_Iter << " ";
+   	cout << ")." << endl;
+
+   	cout << "The iterator LPOS initially points to the first element: "
+         << *LPOS << "." << endl;
+
+    advance ( LPOS , 4 );
+   	cout << "LPOS is advanced 4 steps forward to point"
+         << " to the fifth element: "
+         << *LPOS << "." << endl;
+
+    advance ( LPOS , -3 );
+    cout << "LPOS is moved 3 steps back to point to the "
+         << "2nd element: " << *LPOS << "." << endl;
+
+	   list <int>::iterator L_Iter;
+
+    list<int> L;
+    for (i = 2 ; i < 5 ; ++i ) {
+    	L.push_back ( 10 * i );
+    }
+
+    cout << "The list L is:\n ( ";
+    for ( L_Iter = L.begin( ) ; L_Iter != L.end( ); L_Iter++ )
+    	cout << *L_Iter << " ";
+    cout << ")." << endl;
+
+    // Using the template version to insert an element
+    insert_iterator<list <int> > Iter( L, L.begin ( ) );
+	*Iter = 1;
+
+    // Alternatively, using the member function to insert an element
+    inserter ( L, L.end ( ) ) = 500;
+
+    cout << "After the insertions, the list L is:\n ( ";
+    for ( L_Iter = L.begin( ) ; L_Iter != L.end( ); L_Iter++)
+      	cout << *L_Iter << " ";
+   	cout << ")." << endl;
 }
 
 // <l>
 void header_limits() { 
+	/*
+	 * 定义类模板 numeric_limits 和两个有关浮点表示形式和舍入的枚举。
+	 * 
+	 * 枚举
+	 * float_denorm_style	此枚举描述实现可以选择用于表示非标准化浮点值的各种方法，这种浮点值由于太小而无法表示为规范化值：
+	 * float_round_style	此枚举描述实现可以选择用于将浮点值舍入为整数值的各种方法。
+	 * 
+	 * 类
+	 * numeric_limits 类	类模板描述内置数值类型的算术属性。
+	 * 
+	 * 枚举
+	 * enum float_denorm_style {
+	 *     denorm_indeterminate = -1,
+	 *     denorm_absent = 0,
+	 *     denorm_present = 1    
+	 * };
+	 * 
+	 * enum float_round_style {
+	 *     round_indeterminate = -1,
+	 *     round_toward_zero = 0,
+	 *     round_to_nearest = 1,
+	 *     round_toward_infinity = 2,
+	 *     round_toward_neg_infinity = 3    
+	 * };
+	 * 
+	 * 头文件为类型wchar_t、 bool、 char、有符号字符、无符号 char、 short、无符号短、整数、无符号整数、
+	 * 长、无符号长、浮点、双 精度、长双精度、长整数、无符号长、 char16_t和char32_t定义显式专用化。 
+	 * 对于这些显式专用化，成员numeric_limits：： is_specialized为true，所有相关成员都具有有意义的值。 
+	 * 程序可提供额外的显式专用化。 类的大多数成员函数描述或测试float的可能实现。
+	 * 对于任意专用化，所有成员均无有意义的值。 不具有有意义的值的成员对象将存储零（或false），并且不返回有意义的值的成员函数将返回 Type(0)。
+	 * 
+	 * 静态函数和常数
+	 * denorm_min	返回最小的非规范化非零值。
+	 * digits	返回类型可以表示而不会降低精度的基数数字的位数。
+	 * digits10	返回类型可以表示而不会降低精度的十进制数字的位数。
+	 * epsilon	返回数据类型可以表示的 1 与大于 1 的最小值之间的差值。
+	 * has_denorm	测试类型是否允许非规范化值。
+	 * has_denorm_loss	测试是否将准确度降低检测为非规范化损失，而不是不准确结果。
+	 * has_infinity	测试某一类型是否能够表示正无穷。
+	 * has_quiet_NaN	测试某一类型是否具有 quiet （非信号）的表示形式。
+	 * has_signaling_NaN	测试某一类型是否能表示信号性沉寂非数值 (NAN)。
+	 * infinity	某一类型用于表示正无穷的值（若适用）。
+	 * is_bounded	测试某一类型可表示的值设置是否为有限。
+	 * is_exact	测试针对某一类型进行的计算是否不产生舍入错误。
+	 * is_iec559	测试某一类型是否符合 IEC 559 标准。
+	 * is_integer	测试某一类型是否具有具有整数表示形式。
+	 * is_modulo	测试某一类型是否具有具有取模表示形式。
+	 * is_signed	测试某一类型是否具有带符号的表示形式。
+	 * is_specialized	测试某一类型是否具有在类模板 numeric_limits中定义的显式专用化。
+	 * lowest	返回最小的负有限值。
+	 * max	返回某个类型的最大有限值。
+	 * max_digits10	返回确保类型的两个非重复值具有不同的十进制表示形式所需的十进制数字的位数。
+	 * max_exponent	返回最大正整数指数，当计算基数的该指数次幂时，浮点类型可将其表示为有限值。
+	 * max_exponent10	返回最大正整数指数，当计算 10 的该指数次幂时，浮点类型可将其表示为有限值。
+	 * min	返回某个类型的最小规范化值。
+	 * min_exponent	返回最大负整数指数，当计算基数的该指数次幂时，浮点类型可将其表示为有限值。
+	 * min_exponent10	返回最大负整数指数，当计算 10 的该指数次幂时，浮点类型可将其表示为有限值。
+	 * quiet_NaN	返回类型的静默非数值 (NAN) 表示形式。
+	 * radix	返回用于表示类型的整数底数（称为基数）。
+	 * round_error	返回类型的最大舍入误差值。
+	 * round_style	返回一个值，该值描述可供实现选择用于将浮点值舍入为整数值的各种方法。
+	 * signaling_NaN	返回类型的信令非数值 (NAN) 表示形式。
+	 * tinyness_before	测试某个类型是否可在舍入某个值之前确定该值太小而无法表示为规范化值。
+	 * traps	测试是否为某个类型实现了报告算术异常的捕获。
+	*/
+   	cout << "The smallest nonzero denormalized value" << endl
+         << "for float objects is: "
+         << numeric_limits<float>::denorm_min( ) << endl;
+    cout << "The smallest nonzero denormalized value" << endl
+         << "for double objects is: "
+         << numeric_limits<double>::denorm_min( ) << endl;
+    cout << "The smallest nonzero denormalized value" << endl
+         << "for long double objects is: "
+         << numeric_limits<long double>::denorm_min( ) << endl;
+
+   // A smaller value will round to zero
+   cout << numeric_limits<float>::denorm_min( )/2 <<endl;
+   cout << numeric_limits<double>::denorm_min( )/2 <<endl;
+   cout << numeric_limits<long double>::denorm_min( )/2 <<endl;
+
+   cout << numeric_limits<float>::digits <<endl;
+   cout << numeric_limits<double>::digits <<endl;
+   cout << numeric_limits<long double>::digits <<endl;
+   cout << numeric_limits<int>::digits <<endl;
+   cout << numeric_limits<__int64>::digits <<endl;
+
+   cout << numeric_limits<float>::digits10 <<endl;
+   cout << numeric_limits<double>::digits10 <<endl;
+   cout << numeric_limits<long double>::digits10 <<endl;
+   cout << numeric_limits<int>::digits10 <<endl;
+   cout << numeric_limits<__int64>::digits10 <<endl;
+   float f = (float)99999999;
+   cout.precision ( 10 );
+   cout << "The float is; " << f << endl;
+
+   cout << "The difference between 1 and the smallest "
+        << "value greater than 1" << endl
+        << "for float objects is: "
+        << numeric_limits<float>::epsilon( ) << endl;
+   cout << "The difference between 1 and the smallest "
+        << "value greater than 1" << endl
+        << "for double objects is: "
+        << numeric_limits<double>::epsilon( ) << endl;
+   cout << "The difference between 1 and the smallest "
+        << "value greater than 1" << endl
+        << "for long double objects is: "
+        << numeric_limits<long double>::epsilon( ) << endl;
+
+   cout << "Whether float objects allow denormalized values: "
+        << numeric_limits<float>::has_denorm
+        << endl;
+   cout << "Whether double objects allow denormalized values: "
+        << numeric_limits<double>::has_denorm
+        << endl;
+   cout << "Whether long int objects allow denormalized values: "
+        << numeric_limits<long int>::has_denorm
+        << endl;
+
+   cout << "Whether float objects can detect denormalized loss: "
+        << numeric_limits<float>::has_denorm_loss
+        << endl;
+   cout << "Whether double objects can detect denormalized loss: "
+        << numeric_limits<double>::has_denorm_loss
+        << endl;
+   cout << "Whether long int objects can detect denormalized loss: "
+        << numeric_limits<long int>::has_denorm_loss
+        << endl;
+
+   cout << "Whether float objects have infinity: "
+        << numeric_limits<float>::has_infinity
+        << endl;
+   cout << "Whether double objects have infinity: "
+        << numeric_limits<double>::has_infinity
+        << endl;
+   cout << "Whether long int objects have infinity: "
+        << numeric_limits<long int>::has_infinity
+        << endl;
+
+   cout << "Whether float objects have a signaling_NaN: "
+        << numeric_limits<float>::has_signaling_NaN
+        << endl;
+   cout << "Whether double objects have a signaling_NaN: "
+        << numeric_limits<double>::has_signaling_NaN
+        << endl;
+   cout << "Whether long int objects have a signaling_NaN: "
+        << numeric_limits<long int>::has_signaling_NaN
+        << endl;
+
+   cout << numeric_limits<float>::has_infinity <<endl;
+   cout << numeric_limits<double>::has_infinity<<endl;
+   cout << numeric_limits<long double>::has_infinity <<endl;
+   cout << numeric_limits<int>::has_infinity <<endl;
+   cout << numeric_limits<__int64>::has_infinity <<endl;
+
+   cout << "The representation of infinity for type float is: "
+        << numeric_limits<float>::infinity( ) <<endl;
+   cout << "The representation of infinity for type double is: "
+        << numeric_limits<double>::infinity( ) <<endl;
+   cout << "The representation of infinity for type long double is: "
+        << numeric_limits<long double>::infinity( ) <<endl;
+
+   cout << "Whether float objects have bounded set "
+        << "of representable values: "
+        << numeric_limits<float>::is_bounded
+        << endl;
+   cout << "Whether double objects have bounded set "
+        << "of representable values: "
+        << numeric_limits<double>::is_bounded
+        << endl;
+   cout << "Whether long int objects have bounded set "
+        << "of representable values: "
+        << numeric_limits<long int>::is_bounded
+        << endl;
+   cout << "Whether unsigned char objects have bounded set "
+        << "of representable values: "
+        << numeric_limits<unsigned char>::is_bounded
+        << endl;
 
 }
 
 void header_list() { 
+	/*
+	 * 定义容器类模板列链表和多个支持模板。
+	 * 
+	 * 运算符
+	 * operator!=	测试运算符左侧的列表对象是否不等于右侧的列表对象。
+	 * operator<	测试运算符左侧的列表对象是否小于右侧的列表对象。
+	 * operator<=	测试运算符左侧的列表对象是否小于或等于右侧的列表对象。
+	 * operator==	测试运算符左侧的列表对象是否等于右侧的列表对象。
+	 * operator>	测试运算符左侧的列表对象是否大于右侧的列表对象。
+	 * operator>=	测试运算符左侧的列表对象是否大于或等于右侧的列表对象。
+	 * 
+	 * 函数
+	 * swap	交换两个列表的元素。
+	 * 
+	 * 类
+	 * list 类	序列容器的类模板，它以线性方式维护其元素，并允许在序列内的任何位置高效插入和删除。
+	 * 
+	 * Typedef
+	 * allocator_type	表示列表对象的 allocator 类的类型。
+	 * const_iterator	提供可读取列表中 const 元素的双向迭代器的类型。
+	 * const_pointer	一种类型，它提供指向列表中const元素的指针。
+	 * const_reference	提供对存储于列表中供读取和执行 const 操作的 const 元素的引用的类型。
+	 * const_reverse_iterator	提供可读取列表中任何 const 元素的双向迭代器的类型。
+	 * difference_type	提供引用同一列表中的元素的两个迭代器之间的差异的类型。
+	 * Iterator	提供可读取或修改列表中任何元素的双向迭代器的类型。
+	 * pointer	提供指向列表中元素的指针的类型。
+	 * reference	提供对存储于列表中供读取和执行 const 操作的 const 元素的引用的类型。
+	 * reverse_iterator	提供可读取或修改反向列表中的元素的双向迭代器的类型。
+	 * size_type	计算列表中元素的数目的类型。
+	 * value_type	表示列表中存储的数据类型的类型。
+	 * 
+	 * 函数
+	 * assign	将元素从列表中擦除并将一组新的元素复制到目标列表。
+	 * back	返回对列表中最后一个元素的引用。
+	 * begin	返回发现列表中第一个元素的位置的迭代器。
+	 * cbegin	返回发现列表中第一个元素的位置的常量迭代器。
+	 * cend	返回发现一个列表中最后一个元素之后的位置的敞亮表达式。
+	 * clear	消除列表中的全部元素。
+	 * crbegin	返回发现反向列表中第一个元素的位置的常量迭代器。
+	 * crend	返回用于发现反向列表中最后一个元素之后的位置的常量迭代器。
+	 * emplace	将构造的元素插入到列表中的指定位置。
+	 * emplace_back	在列表的结尾处添加一个就地构造的元素。
+	 * emplace_front	在列表的起始位置添加一个就地构造的元素。
+	 * empty	测试列表是否为空。
+	 * end	返回用于发现列表中最后一个元素之后的位置的迭代器。
+	 * erase	从列表中的指定位置移除一个或一系列元素。
+	 * front	返回对列表中第一个元素的引用。
+	 * get_allocator	返回用于构造列表的 allocator 对象的一个副本。
+	 * insert	将一个、几个或一系列元素插入列表中的指定位置。
+	 * max_size	返回列表的最大长度。
+	 * merge	将元素从参数列表移除，将它们插入目标列表，将新的组合元素集以升序或其他指定顺序排序。
+	 * pop_back	删除列表末尾的元素。
+	 * pop_front	删除列表起始处的一个元素。
+	 * push_back	在列表的末尾添加元素。
+	 * push_front	在列表的开头添加元素。
+	 * rbegin	返回发现反向列表中第一个元素的位置的迭代器。
+	 * remove	清除列表中与指定值匹配的元素。
+	 * remove_if	将满足指定谓词的元素从列表中消除。
+	 * rend	返回发现反向列表中最后一个元素之后的位置的迭代器。
+	 * resize	为列表指定新的大小。
+	 * reverse	反转列表中元素的顺序。
+	 * size	返回列表中元素的数目。
+	 * sort	按升序或其他顺序关系排列列表中的元素。
+	 * splice	将元素从自变量列表中删除或将它们插入目标列表。
+	 * swap	交换两个列表的元素。
+	 * unique	从列表中删除满足某些其他二元谓词的相邻重复元素或相邻元素。
+	 * 
+	 * 容器类型选择通常应根据应用程序所需的搜索和插入的类型。 当对任何元素的随机访问超出限制并且仅要求在序列的末尾插入或删除元素时，
+	 * 矢量应作为用于管理序列的首选容器。 当需要随机访问并且在序列起始处和末尾处插入和删除元素已到达极限时，应首选类 deque 容器进行操作。
+	 * 列表成员函数 merge、reverse、unique、remove 和 remove_if 已针对对列表的操作进行了优化，它们可作为泛型对应函数的高性能替代函数。
+	 * 当成员函数必须插入或删除列表中的元素时，将发生列表的重新分配。 在所有这类情况下，仅指向受控制序列被消除部分的迭代器或引用将变为无效。
+	*/
+	using namespace std;
+	list <int> c1, c2;
+	c1.push_back( 1 );
+	c2.push_back( 2 );
 
+	if ( c1 != c2 )
+		cout << "Lists not equal." << endl;
+	else
+		cout << "Lists equal." << endl;
+
+    list<int>::const_iterator cIter;
+
+    c1.push_back(10);
+    c1.push_back(20);
+    c1.push_back(30);
+    c2.push_back(40);
+    c2.push_back(50);
+    c2.push_back(60);
+
+    cout << "c1 =";
+    for (auto c : c1)
+        cout << " " << c;
+    cout << endl;
+
+    c1.assign(++c2.begin(), c2.end());
+    cout << "c1 =";
+    for (auto c : c1)
+        cout << " " << c;
+    cout << endl;
+
+    c1.assign(7, 4);
+    cout << "c1 =";
+    for (auto c : c1)
+        cout << " " << c;
+    cout << endl;
+
+    c1.assign({ 10, 20, 30, 40 });
+    cout << "c1 =";
+    for (auto c : c1)
+        cout << " " << c;
+    cout << endl;
 }
 
 void header_locale() { 
-
+	/*
+	 * 定义类模板和函数， C++这些模板和函数可用于封装和操作有关数字、货币和日历数据（包括国际化支持）
+	 * 的表示形式和格式的不同文化约定用于字符分类和字符串排序规则。
+	*/
 }
 
 // <m>

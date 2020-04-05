@@ -3530,12 +3530,124 @@ void header_ostream() {
 
 // <q>
 void header_queue() { 
+	/*
+	 * 定义类模板 priority_queue 和 queue 以及多个支持模板。
+	 * 
+	 * 运算符
+	 * operator!=	测试运算符左侧和右侧的 queue 对象是否不相等。
+	 * operator<	测试运算符左侧的 queue 对象是否小于右侧的 queue 对象。
+	 * operator<=	测试运算符左侧的 queue 对象是否小于或等于右侧的 queue 对象。
+	 * operator==	测试运算符左侧和右侧的 queue 对象是否相等。
+	 * operator>	测试运算符左侧的 queue 对象是否大于右侧的 queue 对象。
+	 * operator>=	测试运算符左侧的 queue 对象是否大于或等于右侧的 queue 对象。
+	 * 
+	 * 类
+	 * queue 类	一个模板容器适配器类，它提供功能的限制，限制一些基本容器类型的前端和后端元素的访问权限。
+	 * priority_queue 类	一个模板容器适配器类，它提供功能的限制，限制一些基本容器类型顶端元素的访问权限，并且该类通常为最大类。
+	*/
+   // The first member function declares priority_queue
+   // with a default vector base container
+   priority_queue <int> q1;
+   cout << "q1 = ( ";
+   while ( !q1.empty( ) )
+   {
+      cout << q1.top( ) << " ";
+      q1.pop( );
+   }
+   cout << ")" << endl;
 
+   // Explicitly declares a priority_queue with nondefault
+   // deque base container
+   priority_queue <int, deque <int> > q2;
+   q2.push( 5 );
+   q2.push( 15 );
+   q2.push( 10 );
+   cout << "q2 = ( ";
+   while ( !q2.empty( ) )
+   {
+      cout << q2.top( ) << " ";
+      q2.pop( );
+   }
+   cout << ")" << endl;
+
+   // This method of printing out the elements of a priority_queue
+   // removes the elements from the priority queue, leaving it empty
+   cout << "After printing, q2 has " << q2.size( ) << " elements." << endl;
+
+   // The third member function declares a priority_queue
+   // with a vector base container and specifies that the comparison
+   // function greater is to be used for ordering elements
+   priority_queue <int, vector<int>, greater<int> > q3;
+   q3.push( 2 );
+   q3.push( 1 );
+   q3.push( 3 );
+   cout << "q3 = ( ";
+   while ( !q3.empty( ) )
+   {
+      cout << q3.top( ) << " ";
+      q3.pop( );
+   }
+   cout << ")" << endl;
+
+   // The fourth member function declares a priority_queue and
+   // initializes it with elements copied from another container:
+   // first, inserting elements into q1, then copying q1 elements into q4
+   q1.push( 100 );
+   q1.push( 200 );
+   priority_queue <int> q4( q1 );
+   cout << "q4 = ( ";
+   while ( !q4.empty( ) )
+   {
+      cout << q4.top( ) << " ";
+      q4.pop( );
+   }
+   cout << ")" << endl;
+
+   // Creates an auxiliary vector object v5 to be used to initialize q5
+   vector <int> v5;
+   vector <int>::iterator v5_Iter;
+   v5.push_back( 10 );
+   v5.push_back( 30 );
+   v5.push_back( 20 );
+   cout << "v5 = ( " ;
+   for ( v5_Iter = v5.begin( ) ; v5_Iter != v5.end( ) ; v5_Iter++ )
+      cout << *v5_Iter << " ";
+   cout << ")" << endl;
+
+   // The fifth member function declares and
+   // initializes a priority_queue q5 by copying the
+   // range v5[ first,  last) from vector v5
+   priority_queue <int> q5( v5.begin( ), v5.begin( ) + 2 );
+   cout << "q5 = ( ";
+   while ( !q5.empty( ) )
+   {
+      cout << q5.top( ) << " ";
+      q5.pop( );
+   }
+   cout << ")" << endl;
+
+   // The sixth member function declares a priority_queue q6
+   // with a comparison function greater and initializes q6
+   // by copying the range v5[ first,  last) from vector v5
+   priority_queue <int, vector<int>, greater<int> >
+      q6( v5.begin( ), v5.begin( ) + 2 );
+   cout << "q6 = ( ";
+   while ( !q6.empty( ) )
+   {
+      cout << q6.top( ) << " ";
+      q6.pop( );
+   }
+   cout << ")" << endl;
 }
 
 // <r>
 void header_random() { 
-
+	/*
+	 * 定义随机数生成设备，从而允许创建均匀分布的随机数。
+	 * 随机数生成器是指可产生伪随机值序列的对象。 可产生在指定范围内均匀分布的值的生成器称为均匀随机数生成器 (URNG)。 
+	 * 如果类具有某些常见特征，则设计为 URNG 的类模板称为引擎，本文稍后将对此进行介绍。 
+	 * 通过将 URNG 作为自变量传递到分布的 operator()，URNG 可以（通常也会）和分布一起使用，从而产生以该分布定义的方式分布的值。
+	*/
 }
 
 void header_radio() { 

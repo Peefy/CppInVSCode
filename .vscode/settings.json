@@ -84,7 +84,9 @@
         "cassert": "cpp",
         "ccomplex": "cpp",
         "__locale": "cpp",
-        "__tree": "cpp"
+        "__tree": "cpp",
+        "regex": "cpp",
+        "__config": "cpp"
     },
     "C_Cpp.intelliSenseEngineFallback": "Enabled",
     "C_Cpp.errorSquiggles": "Disabled"

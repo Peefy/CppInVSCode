@@ -3647,107 +3647,1673 @@ void header_random() {
 	 * 随机数生成器是指可产生伪随机值序列的对象。 可产生在指定范围内均匀分布的值的生成器称为均匀随机数生成器 (URNG)。 
 	 * 如果类具有某些常见特征，则设计为 URNG 的类模板称为引擎，本文稍后将对此进行介绍。 
 	 * 通过将 URNG 作为自变量传递到分布的 operator()，URNG 可以（通常也会）和分布一起使用，从而产生以该分布定义的方式分布的值。
+	 * 
+	 * 随机数分布
+	 * 以下部分列出了 <random > 头文件中提供的分布。 这些分布是后处理机制，通常将 URNG 输出用作输入并通过定义的统计概率密度函数分布输出。、
+	 * 
+	 * 均匀分布
+	 * uniform_int_distribution 类	在闭区间 [a，b]（包含起始值和结束值）范围内产生均匀整数值分布。
+	 * uniform_real_distribution 类	在半开区间 [a，b)（包含起始值，不包含结束值）范围内产生均匀真（浮点）值分布。
+	 * generate_canonical	产生 [0，1)（包含起始值，不包含结束值）上给定精度的真（浮点）值的均匀分布。
+	 * [随机数分布]
+	 * 伯努利分布
+	 * bernoulli_distribution 类	生成布尔值的伯努利分布。
+	 * binomial_distribution 类	产生整数值的二项式分布。
+	 * geometric_distribution 类	产生整数值的几何分布。
+	 * negative_binomial_distribution 类	产生整数值的负二项式分布。
+	 * [随机数分布]
+	 * 正态分布
+	 * cauchy_distribution 类	产生真（浮点）值的柯西分布。
+	 * chi_squared_distribution 类	产生真（浮点）值的卡方分布。
+	 * fisher_f_distribution 类	生成实（浮点）值的 F-分布（也称为 Snedecor 的 F 分布或费舍尔-Snedecor 分布）。
+	 * lognormal_distribution 类	产生真（浮点）值的对数正态分布。
+	 * normal_distribution 类	产生真（浮点）值的正态（高斯）分布。
+	 * student_t_distribution 类	产生真（浮点）值的学生 t-分布。
+	 * [随机数分布]
+	 * 泊松分布
+	 * exponential_distribution 类	产生真（浮点）值的指数分布。
+	 * extreme_value_distribution 类	产生真（浮点）值的极值分布。
+	 * gamma_distribution 类	产生真（浮点）值的 gamma 分布。
+	 * poisson_distribution 类	产生整数值的泊松分布。
+	 * weibull_distribution 类	产生真（浮点）值的韦伯分布。
+	 * [随机数分布]
+	 * discrete_distribution 类	产生离散型整数分布。
+	 * piecewise_constant_distribution 类	产生真（浮点）值的分段常数分布。
+	 * piecewise_linear_distribution 类	产生真（浮点）值的分段线性分布。
 	*/
+    random_device rd;   // non-deterministic generator
+    mt19937 gen(rd());  // to seed mersenne twister.
+                        // replace the call to rd() with a
+                        // constant value to get repeatable
+                        // results.
+
+    for (int i = 0; i < 5; ++i) {
+        cout << gen() << " "; // print the raw output of the generator.
+    }
+    cout << endl;
 }
 
 void header_radio() { 
-
+	/*
+	 * 包括标准头文件 <ratio>，以定义用于在编译时存储和操作有理数的常量和模板。
+	 * 专用化
+	 * 
+	 * <ratio> 还定义具有以下形式的 ratio 的专用化。
+	 * template <class R1, class R2> struct ratio_specialization
+	 * 每个专用化采用两个同时必须为 ratio 的专用化的模板参数。 type 的值由关联的逻辑操作确定。
+	 * 
+	 * ratio_add	R1 + R2
+	 * ratio_divide	R1 / R2
+	 * ratio_equal	R1 == R2
+	 * ratio_greater	R1 > R2
+	 * ratio_greater_equal	R1 >= R2
+	 * ratio_less	R1 < R2
+	 * ratio_less_equal	R1 <= R2
+	 * ratio_multiply	R1 * R2
+	 * ratio_not_equal	!(R1 == R2)
+	 * ratio_subtract	R1 - R2
+	 * 
+	 * typedefs
+	 * 为方便起见，头文件定义标准 SI 前缀的比率：
+	 * typedef ratio<1, 1000000000000000000> atto;
+	 * typedef ratio<1, 1000000000000000> femto;
+	 * typedef ratio<1, 1000000000000> pico;
+	 * typedef ratio<1, 1000000000> nano;
+	 * typedef ratio<1, 1000000> micro;
+	 * typedef ratio<1, 1000> milli;
+	 * typedef ratio<1, 100> centi;
+	 * typedef ratio<1, 10> deci;
+	 * typedef ratio<10, 1> deca;
+	 * typedef ratio<100, 1> hecto;
+	 * typedef ratio<1000, 1> kilo;
+	 * typedef ratio<1000000, 1> mega;
+	 * typedef ratio<1000000000, 1> giga;
+	 * typedef ratio<1000000000000, 1> tera;
+	 * typedef ratio<1000000000000000, 1> peta;
+	 * typedef ratio<1000000000000000000, 1> exa;
+	*/
 }
 
 void header_regex() { 
+	/*
+	 * 定义用于分析正则表达式的类模板C++（），以及用于在文本中搜索与正则表达式对象的匹配项的多个类模板和函数。
+	 * 若要创建正则表达式对象，请使用类模板Basic_regex 类或其专用化、 regex和wregex之一，
+	 *     以及类型regex_constants：： syntax_option_type的语法标志。
+	 * 若要在文本中搜索正则表达式对象的匹配项，请将模板函数regex_match和regex_search与类型regex_constants：： 
+	 *     match_flag_type的匹配标志一起使用。 这些函数通过以下方式返回结果：使用类模板Match_results 类及其专用化、 cmatch、 wcmatch、 
+	 *     smatch和wsmatch，以及类模板sub_match 类及其专用化、 csub_match、 wcsub_match、 ssub_match和wssub_match。
+	 * 若要替换匹配正则表达式对象的文本，请将模板函数regex_replace与类型regex_constants：： match_flag_type的匹配标志一起使用。
+	 * 若要循环访问正则表达式对象的多个匹配项，请使用类模板regex_iterator类和regex_token_iterator 类，或其专用化、 cregex_iterator、
+	 *     sregex_iterator中的一个wcregex_iterator、 wsregex_iterator、 cregex_token_iterator、 sregex_token_iterator、 
+	 *     wcregex_token_iterator或wsregex_token_iterator，以及类型为 regex_ 的匹配标志常量：： match_flag_type。
+	 * 若要修改正则表达式语法的详细信息，请编写一个实现正则表达式特征的类。
+	 * 类
+	 * basic_regex	包装正则表达式。
+	 * match_results	包含一系列子匹配项。
+	 * regex_constants	包含各种类型的常量。
+	 * regex_error	报告错误的正则表达式。
+	 * regex_iterator	循环访问匹配结果。
+	 * regex_traits	描述用于匹配的元素的特征。
+	 * regex_traits<char>	描述用于匹配的char的特征。
+	 * regex_traits<wchar_t>	描述用于匹配的wchar_t的特征。
+	 * regex_token_iterator	循环访问子匹配项。
+	 * sub_match	介绍子匹配项。
+	 * 
+	 * 类型定义
+	 * cmatch	Char match_results 的类型定义。
+	 * cregex_iterator	Char regex_iterator 的类型定义。
+	 * cregex_token_iterator	Char regex_token_iterator 的类型定义。
+	 * csub_match	Char sub_match 的类型定义。
+	 * regex	Char basic_regex 的类型定义。
+	 * smatch	string match_results 的类型定义。
+	 * sregex_iterator	string regex_iterator 的类型定义。
+	 * sregex_token_iterator	string regex_token_iterator 的类型定义。
+	 * ssub_match	string sub_match 的类型定义。
+	 * wcmatch	Wchar_t match_results 的类型定义。
+	 * wcregex_iterator	Wchar_t regex_iterator 的类型定义。
+	 * wcregex_token_iterator	Wchar_t regex_token_iterator 的类型定义。
+	 * wcsub_match	Wchar_t sub_match 的类型定义。
+	 * wregex	Wchar_t basic_regex 的类型定义。
+	 * wsmatch	wstring match_results 的类型定义。
+	 * wsregex_iterator	wstring regex_iterator 的类型定义。
+	 * wsregex_token_iterator	wstring regex_token_iterator 的类型定义。
+	 * wssub_match	wstring sub_match 的类型定义。
+	 * 
+	 * 函数
+	 * regex_match	与正则表达式完全匹配。
+	 * regex_replace	替换匹配正则表达式。
+	 * regex_search	搜索正则表达式匹配项。
+	 * swap	交换 basic_regex 或 match_results 对象。
+	 * 
+	 * 运算符
+	 * operator==	比较各种对象，相等。
+	 * operator!=	比较各种对象，不相等。
+	 * operator<	比较各种对象，小于。
+	 * operator<=	比较各种对象，小于或等于。
+	 * operator>	比较各种对象，大于。
+	 * operator>=	比较各种对象，大于或等于。
+	 * operator<<	将 sub_match 插入流中。
+	*/
+   // (1) with char*
+    // Note how const char* requires cmatch and regex
+    const char *first = "abc";
+    const char *last = first + strlen(first);
+    cmatch narrowMatch;
+    regex rx("a(b)c");
 
+    bool found = regex_match(first, last, narrowMatch, rx);
+    if (found)
+        wcout << L"Regex found in abc" << endl;
+
+    // (2) with std::wstring
+    // Note how wstring requires wsmatch and wregex.
+    // Note use of const iterators cbegin() and cend().
+    wstring target(L"Hello");
+    wsmatch wideMatch;
+    wregex wrx(L"He(l+)o");
+
+    if (regex_match(target.cbegin(), target.cend(), wideMatch, wrx))
+        wcout << L"The matching text is:" << wideMatch.str() << endl;
+
+    // (3) with std::string
+    string target2("Drizzle");
+    regex rx2(R"(D\w+e)"); // no double backslashes with raw string literal
+
+    found = regex_match(target2.cbegin(), target2.cend(), rx2);
+    if (found)
+        wcout << L"Regex found in Drizzle" << endl;
+
+    // (4) with wchar_t*
+    const wchar_t* target3 = L"2014-04-02";
+    wcmatch wideMatch2;
+
+    // LR"(...)" is a  raw wide-string literal. Open and close parens
+    // are delimiters, not string elements.
+    wregex wrx2(LR"(\d{4}(-|/)\d{2}(-|/)\d{2})");
+    if (regex_match(target3, wideMatch2, wrx2))
+    {
+        wcout << L"Matching text: " << wideMatch2.str() << endl;
+    }
+
+    char buf[20];
+    const char *first = "axayaz";
+    const char *last = first + strlen(first);
+    std::regex rx("a");
+    std::string fmt("A");
+    std::regex_constants::match_flag_type fonly =
+        std::regex_constants::format_first_only;
+
+    *std::regex_replace(&buf[0], first, last, rx, fmt) = '\0';
+    std::cout << "replacement == " << &buf[0] << std::endl;
+
+    *std::regex_replace(&buf[0], first, last, rx, fmt, fonly) = '\0';
+    std::cout << "replacement == " << &buf[0] << std::endl;
+
+    std::string str("adaeaf");
+    std::cout << "replacement == "
+        << std::regex_replace(str, rx, fmt) << std::endl;
+
+    std::cout << "replacement == "
+        << std::regex_replace(str, rx, fmt, fonly) << std::endl;
+
+    const char *first = "abcd";
+    const char *last = first + strlen(first);
+    std::cmatch mr;
+    std::regex rx("abc");
+    std::regex_constants::match_flag_type fl =
+        std::regex_constants::match_default;
+
+    std::cout << "search(f, f+1, \"abc\") == " << std::boolalpha
+        << regex_search(first, first + 1, rx, fl) << std::endl;
+
+    std::cout << "search(f, l, \"abc\") == " << std::boolalpha
+        << regex_search(first, last, mr, rx) << std::endl;
+    std::cout << "  matched: \"" << mr.str() << "\"" << std::endl;
+
+    std::cout << "search(\"a\", \"abc\") == " << std::boolalpha
+        << regex_search("a", rx) << std::endl;
+
+    std::cout << "search(\"xabcd\", \"abc\") == " << std::boolalpha
+        << regex_search("xabcd", mr, rx) << std::endl;
+    std::cout << "  matched: \"" << mr.str() << "\"" << std::endl;
+
+    std::cout << "search(string, \"abc\") == " << std::boolalpha
+        << regex_search(std::string("a"), rx) << std::endl;
+
+    std::string str("abcabc");
+    std::match_results<std::string::const_iterator> mr2;
+    std::cout << "search(string, \"abc\") == " << std::boolalpha
+        << regex_search(str, mr2, rx) << std::endl;
+    std::cout << "  matched: \"" << mr2.str() << "\"" << std::endl;
+
+    std::regex rx0("c(a*)|(b)");
+    std::regex rx1;
+    std::cmatch mr0;
+    std::cmatch mr1;
+
+    swap(rx0, rx1);
+    std::regex_search("xcaaay", mr1, rx1);
+    swap(mr0, mr1);
+
+    std::csub_match sub = mr0[1];
+    std::cout << "matched == " << std::boolalpha
+        << sub.matched << std::endl;
+    std::cout << "length == " << sub.length() << std::endl;
+    std::cout << "string == " << sub << std::endl;
+
+	typedef std::regex_token_iterator<const char *> Myiter;
+	    const char *pat = "aaxaayaaz";
+    Myiter::regex_type rx("(a)a");
+    Myiter next(pat, pat + strlen(pat), rx);
+    Myiter end;
+
+// show whole match
+    for (; next != end; ++next)
+        std::cout << "match == " << next->str() << std::endl;
+    std::cout << std::endl;
+
+// show prefix before match
+    next = Myiter(pat, pat + strlen(pat), rx, -1);
+    for (; next != end; ++next)
+        std::cout << "match == " << next->str() << std::endl;
+    std::cout << std::endl;
+
+// show (a) submatch only
+    next = Myiter(pat, pat + strlen(pat), rx, 1);
+    for (; next != end; ++next)
+        std::cout << "match == " << next->str() << std::endl;
+    std::cout << std::endl;
+
+// show prefixes and submatches
+    std::vector<int> vec;
+    vec.push_back(-1);
+    vec.push_back(1);
+    next = Myiter(pat, pat + strlen(pat), rx, vec);
+    for (; next != end; ++next)
+        std::cout << "match == " << next->str() << std::endl;
+    std::cout << std::endl;
+
+// show prefixes and whole matches
+    int arr[] = {-1, 0};
+    next = Myiter(pat, pat + strlen(pat), rx, arr);
+    for (; next != end; ++next)
+        std::cout << "match == " << next->str() << std::endl;
+    std::cout << std::endl;
+
+// other members
+    Myiter it1(pat, pat + strlen(pat), rx);
+    Myiter it2(it1);
+    next = it1;
+
+    Myiter::iterator_category cat = std::forward_iterator_tag();
+    Myiter::difference_type dif = -3;
+    Myiter::value_type mr = *it1;
+    Myiter::reference ref = mr;
+    Myiter::pointer ptr = &ref;
+
+    dif = dif; // to quiet "unused" warnings
+    ptr = ptr;
 }
 
 // <s>
 void header_scoped_allocator() { 
+	/*
+	 * 定义容器类模板 scoped_allocator。
+	 * 类模板封装一个或多个分配器的嵌套。 每个这样的类都具有一个类型为 outer_allocator_type 的最外层分配器，
+	 * 该类型也即 Outer，是 scoped_allocator_adaptor 对象的公共基类。 Outer 可用于分配容器要使用的内存。 
+	 * 通过调用 outer_allocator 可获取对此分配器基对象的引用。
+	 * 嵌套的其余部分具有 inner_allocator_type 类型。 内部分配器用于为容器中的元素分配内存。 
+	 * 通过调用 inner_allocator 可获取对此类型的存储对象的引用。 如果 Inner... 不为空，则 inner_allocator_type 将具有类型 
+	 * scoped_allocator_adaptor<Inner...>，inner_allocator 指示成员对象。 否则，inner_allocator_type 
+	 * 将具有类型 scoped_allocator_adaptor<Outer>，inner_allocator 指示整个对象。
+	 * 嵌套的表现行为好像可以具有任意深度，可根据需要复制其最里层的封装分配器。
+	 * 不属于可见界面的多个概念有助于描述此类模板的行为。 最外层分配器，可协调对构造和销毁方法的所有调用。 
+	 * 它实际上是由递归函数 OUTERMOST(X) 定义的，其中 OUTERMOST(X) 是以下项之一。
+	 * * 如果 X.outer_allocator() 的格式正确，则 OUTERMOST(X) 为 OUTERMOST(X.outer_allocator())。
+	 * * 否则 OUTERMOST(X) 为 X。
+	 * 
+	 * Typedef
+	 * const_pointer	此类型是 const_pointer（与分配器 Outer 关联）的同义词。
+	 * const_void_pointer	此类型是 const_void_pointer（与分配器 Outer 关联）的同义词。
+	 * difference_type	此类型是 difference_type（与分配器 Outer 关联）的同义词。
+	 * inner_allocator_type	此类型是嵌套适配器 scoped_allocator_adaptor<Inner...> 类型的同义词。
+	 * outer_allocator_type	此类型是基本分配器 Outer 类型的同义词。
+	 * pointer	此类型是 pointer（与分配器 Outer 关联）的同义词。
+	 * propagate_on_container_copy_assignment	仅当 Outer_traits::propagate_on_container_copy_assignment 或 inner_allocator_type::propagate_on_container_copy_assignment 为 true 时，该类型才为 true。
+	 * propagate_on_container_move_assignment	仅当 Outer_traits::propagate_on_container_move_assignment 或 inner_allocator_type::propagate_on_container_move_assignment 为 true 时，该类型才为 true。
+	 * propagate_on_container_swap	仅当 Outer_traits::propagate_on_container_swap 或 inner_allocator_type::propagate_on_container_swap 为 true 时，该类型才为 true。
+	 * size_type	此类型是 size_type（与分配器 Outer 关联）的同义词。
+	 * value_type	此类型是 value_type（与分配器 Outer 关联）的同义词。
+	 * void_pointer	此类型是 void_pointer（与分配器 Outer 关联）的同义词。
+	*/
+    using namespace std;
+    set <int> s1;
+    set <int>::iterator s1_Iter;
+    set <int>::const_iterator s1_cIter;
 
+    s1.insert( 1 );
+    s1.insert( 2 );
+    s1.insert( 3 );
+
+    s1_Iter = s1.begin( );
+    cout << "The first element of s1 is " << *s1_Iter << endl;
+
+    s1_Iter = s1.begin( );
+    s1.erase( s1_Iter );
+
+    // The following 2 lines would err because the iterator is const
+    // s1_cIter = s1.begin( );
+    // s1.erase( s1_cIter );
+
+    s1_cIter = s1.begin( );
+    cout << "The first element of s1 is now " << *s1_cIter << endl;
 }
 
 void header_set() { 
-
+	/*
+	 * 定义容器类模板集和多集及其支持的模板。
+	 * 参数
+	 * key
+	 * 要存储在集中的元素数据类型。
+	 * value
+	 * 一种提供函数对象的类型，该函数对象将两个元素值作为排序键进行比较，以确定其在集中的相对顺序。 此参数是可选自变量，默认值为二元谓词 less <Key> 。
+	 * 在 C++ 14 中可以通过指定没有类型参数的 std::less<> 或 std::greater<> 谓词来启用异类查找。 有关详细信息，请参阅关联容器中的异类查找
+	 * 分配器
+	 * 一种表示存储的分配器对象的类型，该分配器对象封装有关集的内存分配和解除分配的详细信息。 此参数是可选参数，默认值为 allocator<Key>。
+	 * 
+	 * C++ 标准库集是：
+	 * * 大小可变的关联容器，支持基于关联键值高效检索元素值。 此外，它是简单的关联容器，因为它的元素值即为它的键值。
+	 * * 可逆，因为它提供双向迭代器来访问其元素。
+	 * * 有序，因为它的元素在容器中根据指定的比较函数按键值排序。
+	 * * 唯一，每个元素必须具有唯一键。 集还是简单关联容器，因此它的元素也是唯一的。
+	 * 
+	 * 集还被描述为类模板，因为它提供的功能是通用的，独立于作为元素包含的特定数据类型。 
+	 * 可使用的数据类型作为类模板以及比较函数和分配器中的参数指定。
+	 * 容器类型选择通常应根据应用程序所需的搜索和插入的类型。 关联容器针对查找、插入和移除操作进行了优化。 
+	 * 显式支持这些操作的成员函数较为高效，执行这些操作的时间与容器中元素数量的对数平均成比例。 
+	 * 插入元素不会使迭代器失效，移除元素仅会使专门指向已移除元素的迭代器失效。
+	 * 当应用程序满足将值与其键关联的条件时，应选择集作为关联容器。 集的元素是唯一的，并用作其自己的排序键。 
+	 * 此类结构的模型是排序列表，如关键字排序列表，其中关键字只能出现一次。 如果允许关键字多次出现，则应使用多重集合作为适当的容器结构。 
+	 * 如果需要将值附加到唯一关键字的列表，则映射应为包含此数据的适当结构。 如果键不唯一，则应选择多重映射作为容器。
+	 * 集通过调用存储的 key_compare 类型的函数对象，对它控制的序列进行排序。 此存储对象是比较函数，可通过调用成员函数 key_comp 进行访问。 
+	 * 通常，元素仅需小于比较元素即可建立此顺序，因此，给定任意两个元素，可以确定这两个元素等效（即两者均不小于对方）或其中一个小于另一个。 
+	 * 这将导致在非等效元素之间进行排序。 在技术性更强的说明中，比较函数是一个二元谓词，在标准数学的意义上引发严格弱排序。 
+	 * 二元谓词 f( x,y) 是包含两个参数对象（x 和 y）以及一个返回值（true 或 false）的函数对象。 
+	 * 如果二元谓词具有自反性、反对称性和传递性且等效可传递，对集进行的排序将为严格弱排序，
+	 * 其中两个对象 x 和 y 定义为在 f(x,y) 和 f(y,x) 均为 false 时等效。 如果键之间的更强相等条件取代了等效性，
+	 * 则排序将为总排序（即所有元素彼此排序），并且匹配的键将难以彼此辨别。
+	 * 
+	 * 集类提供的迭代器是双向迭代器，但类成员函数 insert 和 set 具有将较弱输入迭代器作为模板参数的版本，
+	 * 较弱输入迭代器的功能需求比双向迭代器类保证的功能需求更少。 不同的迭代器概念形成一个系列，通过它们的功能优化相关联。
+	 * 每个迭代器概念有它自己的一套要求，使用这些概念的算法必须根据迭代器类型提供的要求限制它们的假设。 
+	 * 可以假定输入迭代器可取消引用以引用某个对象，并可递增到序列中的下一迭代器。 这是最小的功能集，
+	 * 但足以按有意义的方式提供类成员函数的上下文中的迭代器范围 [First, Last)。
+	 * 
+	 * 函数
+	 * begin	返回一个迭代器，此迭代器用于发现集中的第一个元素。
+	 * cbegin	返回一个常量迭代器，此迭代器用于发现集中的第一个元素。
+	 * cend	返回一个常量迭代器，此迭代器用于发现集中最后一个元素之后的位置。
+	 * clear	清除集的所有元素。
+	 * count	返回集中其键与指定为参数的键匹配的元素数量。
+	 * crbegin	返回一个常量迭代器，此迭代器用于发现反向集中的第一个元素。
+	 * crend	返回一个常量迭代器，此迭代器用于发现反向集中最后一个元素之后的位置。
+	 * emplace	将就地构造的元素插入到集中。
+	 * emplace_hint	将就地构造的元素插入到集中，附带位置提示。
+	 * empty	测试集是否为空。
+	 * end	返回一个迭代器，此迭代器用于发现集中最后一个元素之后的位置。
+	 * equal_range	返回一对迭代器，这两个迭代器分别用于发现集中其键大于指定键的第一个元素，以及集中其键等于或大于指定键的第一个元素。
+	 * erase	从集中的指定位置移除一个元素或元素范围，或者移除与指定键匹配的元素。
+	 * find	返回一个迭代器，此迭代器用于发现集中其键与指定键等效的元素的位置。
+	 * get_allocator	返回用于构造集的 allocator 对象的副本。
+	 * insert	将一个元素或元素范围插入到集。
+	 * key_comp	检索用于对集中的键进行排序的比较对象副本。
+	 * lower_bound	返回一个迭代器，此迭代器指向集中其键等于或大于指定键的第一个元素。
+	 * max_size	返回集的最大长度。
+	 * rbegin	返回一个迭代器，此迭代器用于发现反向集中的第一个元素。
+	 * rend	返回一个迭代器，此迭代器用于发现反向集中最后一个元素之后的位置。
+	 * size	返回集合中元素的数目。
+	 * swap	交换两个集的元素。
+	 * upper_bound	返回一个迭代器，此迭代器指向集中其键大于指定键的第一个元素。
+	 * value_comp	检索用于对集中的元素值进行排序的比较对象副本。
+	 * 
+	 * multiset类：C++ 标准库多重集合类用于存储和检索集合中的数据，此集合中包含的元素值无需唯一，
+	 * 并且用作数据自动排序所依据的键值。 不能直接更改多重集合中元素的键值。 必须先删除旧值，才能插入具有新值的元素。
+	*/
 }
 
 void header_shared_mutex() { 
+	/*
+	 * 提供了同步基元，用于保护可由多个线程访问的共享数据。 除由 mutex 类提供的独占访问控制之外，
+	 * 共享 mutex 类还允许共享多个线程的非独占访问所有权。 共享 mutex 可用于控制可通过多个线程读取的资源且不会引发争用条件问题，
+	 * 但必须以独占方式通过单个线程写入。
+	 * 头文件 <shared_mutex > 定义用于共享 mutex 支持的类 shared_mutex 和 shared_timed_mutex、类模板 shared_lock 和模板函数 swap。
+	 * 
+	 * 类
+	 * shared_mutex 类	一种共享 mutex 类型，可由单个代理以独占方式锁定，或由多个代理以非独占方式共享。
+	 * shared_timed_mutex 类	一种共享的定时 mutex 类型，可由单个代理以独占方式锁定，或由多个代理以非独占方式共享。
+	 * shared_lock 类	一个类模板，用于包装共享 mutex 以支持定时锁定操作和多个代理的非独占共享。
+	 * 
+	 * 共享 mutex 类型支持其他其他方法 lock_shared、unlock_shared 和 try_lock_shared：
+	 * * lock_shared 方法阻止调用线程，直到线程获取 mutex 共享所有权。
+	 * * unlock_shared 方法通过调用线程释放 mutex 共享所有权。
+	 * * try_lock_shared 方法尝试在不阻止的情况下获取 mutex 共享所有权。 如果该方法获取所有权，则其返回类型可转换为bool ，为true ，否则为false。
+	 * 
+	 * 类 shared_timed_mutex 是 共享定时 mutex 类型，满足共享 mutex 类型的两个要求并且是定时 mutex 类型。
+	 * 共享 mutex 类型支持其他方法 try_lock_shared_for 和 try_lock_shared_until：
+	 * * try_lock_shared_for 方法尝试获取 mutex 共享所有权，直到超过由参数指定的持续时间。 如果持续时间不为正，
+	 *     则该方法等效于 try_lock_shared。 除非已获得共享所有权，否则在指定持续时间内不会返回该方法。 如果该方法获取所有权，
+	 *     则其返回值为true ，否则为false。
+	 * try_lock_shared_until 方法尝试获取 mutex 共享所有权，直到超过指定的绝对持续时间。 
+	 *     如果指定的时间已过，该方法等效于 try_lock_shared。 除非已获得共享所有权，否则不会在指定时间之前返回该方法。 
+	 *     如果该方法获取所有权，则其返回值为true ，否则为false。
+	*/
+}
 
+template<class out_type,class in_value>
+out_type convert(const in_value & t) {
+   	stringstream ss;
+   	ss << t;//向流中传值
+   	out_type result;//这里存储转换结果
+   	ss >> result;//向result中写入值
+    return result;
 }
 
 void header_sstream() { 
+	/*
+	 * 定义多个类模板，这些模板支持对存储在已分配的数组对象中的序列进行 iostreams 操作。 
+	 * 此类序列可轻松地与类模板basic_string的对象相互转换。
+	 * 
+	 * Typedef
+	 * istringstream	创建一个 basic_istringstream 专用于char模板参数的类型。
+	 * ostringstream	创建一个 basic_ostringstream 专用于char模板参数的类型。
+	 * stringbuf	创建一个 basic_stringbuf 专用于char模板参数的类型。
+	 * stringstream	创建一个 basic_stringstream 专用于char模板参数的类型。
+	 * wistringstream	创建一个类型 basic_istringstream 专用于wchar_t模板参数的类型。
+	 * wostringstream	创建一个类型 basic_ostringstream 专用于wchar_t模板参数的类型。
+	 * wstringbuf	创建一个类型 basic_stringbuf 专用于wchar_t模板参数的类型。
+	 * wstringstream	创建一个类型 basic_stringstream 专用于wchar_t模板参数的类型。
+	 * 
+	 * 类
+	 * basic_stringbuf	描述对 Elem 类型的元素（其字符特征由类 Tr 确定）与数组对象中存储的元素序列之间的来回传输进行控制的流缓冲区。
+	 * basic_istringstream	描述一个对象，该对象控制从 > Alloc < basic_stringbuf类的流缓冲区提取元素和编码对象，
+	 *     并使用 Elem 类型的元素（其字符特征由确定）类 Tr，其元素由类 Alloc 的分配器进行分配。
+	 * basic_ostringstream	描述一个对象，该对象控制将元素和编码对象插入到类basic_stringbuf <Elem， Tr，Alloc >，并具有 Elem 类型的元素，
+	 *     其字符特征由类 Tr，其元素由类 Alloc 的分配器进行分配。
+	 * basic_stringstream	描述一个对象，该对象使用类basic_stringbuf <Elem， Tr，Alloc > 的流缓冲区控制元素和编码对象的插入和提取，
+	 *     并使用 Elem 类型的元素，其字符特征为由类 Tr 确定，其元素由类 Alloc 的分配器进行分配。
+	*/
+    std::string str = "I am coding ...";
+    std::istringstream is(str);
+    do
+    {
+        std::string substr;
+        is>>substr;
+        std::cout << substr << std::endl;
+    } while (is);
 
+	double d;
+	string salary;
+	string s = ”12.56”;
+
+	d = convert<double>(s);//d等于12.56
+ 	salary = convert<string>(9000.0);//salary等于”9000”
 }
 
 void header_stack() { 
+	/*
+	 * 定义类模板堆栈和两个支持模板。
+	 * 
+	 * 函数
+	 * empty	测试 stack 是否为空。
+	 * pop	从 stack 的顶部删除元素。
+	 * push	将元素添加到 stack 顶部。
+	 * size	返回 stack 中的元素数量。
+	 * top	返回对 stack 顶部元素的引用。
+	*/
+  // Declares stacks with vector base containers
+   stack <int, vector<int> > s1, s2, s3;
 
+   // The following would have cause an error because stacks with
+   // different base containers are not equality comparable
+   // stack <int, list<int> >  s3;
+
+   s1.push( 1 );
+   s2.push( 2 );
+   s3.push( 1 );
+
+   if ( s1 != s2 )
+      cout << "The stacks s1 and s2 are not equal." << endl;
+   else
+      cout << "The stacks s1 and s2 are equal." << endl;
+
+   if ( s1 != s3 )
+      cout << "The stacks s1 and s3 are not equal." << endl;
+   else
+      cout << "The stacks s1 and s3 are equal." << endl;
 }
 
 void header_stdexcept() { 
+	/*
+	 * 定义用于报告异常的多个标准类。 这些类构成派生自 exception 类的所有派生层次结构，并包括两种常规类型的异常：
+	 * 逻辑错误和运行时错误。 逻辑错误因程序员错误而引起。 它们派生自基类 logic_error，并且包括：
+	 * * domain_error
+	 * * invalid_argument
+	 * * length_error
+	 * * out_of_range
+	 * 
+	 * 出现运行时错误是因库函数或运行时系统出错引起。 它们派生自基类 runtime_error，并且包括：
+	 * * overflow_error
+	 * * range_error
+	 * * underflow_error
+	 * 
+	 * 类
+	 * domain_error 类	此类用作引发报告域错误的所有异常的基类。
+	 * invalid_argument 类	此类用作引发报告无效自变量的所有异常的基类。
+	 * length_error 类	此类用作引发报告尝试生成对象太长而难以指定的所有异常的基类。
+	 * logic_error 类	此类用作引发报告执行程序前大概可检测的错误（例如，违反逻辑前提条件）的所有异常的基类。
+	 * out_of_range 类	此类用作引发报告无效自变量的所有异常的基类。
+	 * overflow_error 类	此类用作引发报告算数溢出的所有异常的基类。
+	 * range_error 类	此类用作引发报告范围错误的所有异常的基类。
+	 * runtime_error 类	此类用作引发报告仅在执行程序时大概可检测的错误的所有异常的基类。
+	 * underflow_error 类	此类用作引发报告算数下溢的所有异常的基类。
+	*/
+   try
+   {
+      throw domain_error( "Your domain is in error!" );
+   }
+   catch (exception &e)
+   {
+      cerr << "Caught: " << e.what( ) << endl;
+      cerr << "Type: " << typeid(e).name( ) << endl;
+   };
 
+   try
+   {
+      bitset< 32 > bitset( string( "11001010101100001b100101010110000") );
+   }
+   catch ( exception &e )
+   {
+      cerr << "Caught " << e.what( ) << endl;
+      cerr << "Type " << typeid( e ).name( ) << endl;
+   };
+
+   try {
+      string str( "Micro" );
+      string rstr( "soft" );
+      str.append( rstr, 5, 3 );
+      cout << str << endl;
+   }
+   catch ( exception &e ) {
+      cerr << "Caught: " << e.what( ) << endl;
+   };
 }
 
 void header_streambuf() { 
+	/*
+	 * 包含 iostreams 标准头文件 <streambuf > 来定义类模板basic_streambuf，
+	 * 这是 iostreams 类操作的基本操作。 此头文件通常包含在另一 iostream 头文件中；很少会直接包含它。
+	 * 
+	 * Typedef
+	 * streambuf	使用char作为模板参数的 basic_streambuf 的专用化。
+	 * wstreambuf	使用wchar_t作为模板参数的 basic_streambuf 的专用化。
+	 * 
+	 * basic_streambuf 类	类模板描述用于派生流缓冲区的抽象基类，该缓冲区控制元素与特定的流表示形式之间的来回传输。
+	 * 
+	 * 类模板描述用于派生流缓冲区的抽象基类，该缓冲区控制元素与特定的流表示形式之间的来回传输。 
+	 * 类 basic_streambuf 的对象可帮助控制具有Tr类型（也称为char_type）的元素的流，其字符特征由类char_traits确定，也称为traits_type。
+	 * 从概念上来说，每个流缓冲区控制两个独立的流：一个用于提取（输入），另一个用于插入（输出）。 
+	 * 但是，特定的表示形式可能会导致这些流中的一个或两个不可访问。 通常，它在两个流之间保持有某种关系。
+	 * 例如，向 basic_stringbuf< Elem, Tr> 对象的输出流插入的内容，就是之后从其输入流中提取的内容。 
+	 * 当定位 basic_filebuf< Elem, Tr> 对象的一个流时，将同时定位其他流。
+	 * 类模板的公共接口 basic_streambuf 提供对所有流缓冲区通用的操作，但这些操作是专用的。 
+	 * 受保护的接口提供特定流的表示形式完成其工作所需的操作。 受保护的虚拟成员函数允许你为特定的流表示形式定制派生流缓冲区的行为。 
+	 * 此库中的每个派生流缓冲区描述它如何专用化其受保护虚拟成员函数的行为。 本主题中描述了基类的默认行为，基类通常不执行任何操作。
+	 * 剩余的受保护成员函数控制将内容复制到任何存储以及从此类存储中复制内容的操作，这类存储用于缓冲出入流的传输。 例如，输入缓冲区的特征是：
+	 * * eback，指向缓冲区开头的指针。
+	 * * gptr，指向要读取的下一个元素的指针。
+	 * * egptr，刚超出缓冲区末尾的指针。
+	 * 同样，输出缓冲区的特征是：
+	 * * pbase，指向缓冲区开头的指针。
+	 * * pptr，指向要写入的下一个元素的指针。
+	 * * epptr，刚超出缓冲区末尾的指针。
+	 * 
+	 * 对于任何缓冲区，使用以下协议：
+	 * * 如果下一个指针为 null，则不存在缓冲区。 否则，所有三个指针都将指向相同的序列。 可以安全地比较它们的顺序。
+	 * * 对于输出缓冲区，如果下一个指针与结束指针相比较小，则可以在下一个指针指定的写入位置处存储元素。
+	 * * 对于输入缓冲区，如果下一个指针与结束指针相比较小，则可以在下一个指针指定的读取位置处读取元素。
+	 * * 对于输入缓冲区，如果开始指针与下一个指针相比较小，则可以在递减的下一个指针指定的放回位置处放回元素。
+	 * 
+	 * 成员函数
+	 * eback	一个受保护的函数，该函数返回指向输入缓冲区开头的指针。
+	 * egptr	一个受保护的函数，该函数返回刚超出输入缓冲区末尾的指针。
+	 * epptr	一个受保护的函数，该函数返回刚超出输出缓冲区末尾的指针。
+	 * gbump	一个受保护的函数，该函数将 count 添加到输入缓冲区的下一个指针。
+	 * getloc	获取 basic_streambuf 对象的区域设置。
+	 * gptr	一个受保护的函数，该函数返回指向输入缓冲区的下一个元素的指针。
+	 * imbue	由 pubimbue 调用的受保护虚拟函数。
+	 * in_avail	返回可随时从缓冲区读取的元素数目。
+	 * overflow	将新字符插入到已满缓冲区时可以调用的受保护虚函数。
+	 * pbackfail	一个受保护虚拟成员函数，该函数尝试将元素放回输入流中，随后使它成为当前元素（由下一个指针指向）。
+	 * pbase	一个受保护的函数，该函数返回指向输出缓冲区开头的指针。
+	 * pbump	一个受保护的函数，该函数将 count 添加到输出缓冲区的下一个指针。
+	 * pptr	一个受保护的函数，该函数返回指向输出缓冲区的下一个元素的指针。
+	 * pubimbue	设置 basic_streambuf 对象的区域设置。
+	 * pubseekoff	调用 seekoff，它是在派生类中进行了重写的受保护虚拟函数。
+	 * pubseekpos	调用 seekpos，它是在派生类中进行了重写并且重置了当前指针位置的受保护虚拟函数。
+	 * pubsetbuf	调用 setbuf，它是在派生类中进行了重写的受保护虚拟函数。
+	 * pubsync	调用 sync，它是在派生类中进行了重写并且更新了与此缓冲区关联的外部流的受保护虚拟函数。
+	 * sbumpc	读取并返回当前元素，从而移动流指针。
+	 * seekoff	受保护虚拟成员函数尝试更改受控制流的当前位置。
+	 * seekpos	受保护虚拟成员函数尝试更改受控制流的当前位置。
+	 * setbuf	受保护虚拟成员函数执行特定于每个派生流缓冲区的操作。
+	 * setg	一个受保护的函数，该函数将 _Gbeg 存储到开始指针，将 _Gnext 存储到下一个指针，并将 _Gend 存储到输入缓冲区的结束指针。
+	 * setp	一个受保护的函数，该函数将 _Pbeg 存储到开始指针，并将 _Pend 存储到输出缓冲区的结束指针。
+	 * sgetc	返回当前元素，但不更改流中的位置。
+	 * sgetn	返回读取的元素数目。
+	 * showmanyc	一个受保护的虚拟成员函数，该函数返回可以从输入流中提取并确保该程序将不需要无限期等待的字符数计数。
+	 * snextc	读取当前元素并返回以下元素。
+	 * sputbackc	将 char_type 放入流中。
+	 * sputc	将一个字符放入流中。
+	 * sputn	将一个字符串放入流中。
+	 * stossc	越过流中的当前元素。
+	 * sungetc	从流中获取字符。
+	 * swap	将此对象中的值与所提供 basic_streambuf 对象参数中的值进行交换。
+	 * sync	一个受保护的虚拟函数，它尝试将受控流与任何关联的外部流同步。
+	 * uflow	一个受保护的虚拟函数，它从输入流中提取当前元素。
+	 * underflow	一个受保护的虚拟函数，它从输入流中提取当前元素。
+	 * xsgetn	一个受保护的虚拟函数，它从输入流中提取元素。
+	 * xsputn	一个受保护的虚拟函数，它将元素插入到输出流中。
+	*/
 
+	cout << cout.rdbuf( )->getloc( ).name( ).c_str( ) << endl;
+    char c;
+    // cin's buffer is empty, in_avail will return 0
+    cout << cin.rdbuf( )->in_avail( ) << endl;
+    cin >> c;
+    cout << cin.rdbuf( )->in_avail( ) << endl;
 }
 
 void header_string() { 
+	/*
+	 * C++ 语言和 C++ 标准库支持两种类型的字符串：
+	 * 以 null 结尾的字符数组通常作为 C 字符串被引用。
+	 * 类型 basic_string 的类模板对象，用于处理所有类似于字符的模板参数。
+	 * 
+	 * Typedef
+	 * string	一种类型，用于描述类模板的专用化，basic_string 将char类型的元素作为 string。
+	 * wstring	一种类型，用于描述类模板的专用化，basic_string 将 wstring 类型的元素作为。
+	 * u16string	一种类型，该类型描述基于 char16_t 类型的元素 basic_string 类模板的专用化。
+	 * u32string	一种类型，该类型描述基于 char32_t 类型的元素 basic_string 类模板的专用化。
+	 * 
+	 * 运算符	
+	 * operator+	连接两个字符串对象。
+	 * operator!=	测试运算符左侧的字符串对象是否不等于右侧的字符串对象。
+	 * operator==	测试运算符左侧的字符串对象是否等于右侧的字符串对象。
+	 * operator<	测试运算符左侧的字符串对象是否小于右侧的字符串对象。
+	 * operator<=	测试运算符左侧的字符串对象是否小于或等于右侧的字符串对象。
+	 * operator<<	一个模板函数，用于向输出流插入字符串。
+	 * operator>	测试运算符左侧的字符串对象是否大于右侧的字符串对象。
+	 * operator>=	测试运算符左侧的字符串对象是否大于或等于右侧的字符串对象。
+	 * operator>>	一个模板函数，用于从输入流提取字符串。
+	 * 
+	 * 专用化模板函数
+	 * hash	生成字符串的哈希。
+	 * swap	交换两个字符串的字符数组。
+	 * stod	将字符序列转换为双精度型。
+	 * stof	将字符序列转换为float。
+	 * stoi	将字符序列转换为整数。
+	 * stold	将字符序列转换为长双精度值。
+	 * stoll	将字符序列转换为长整型。
+	 * stoul	将字符序列转换为无符号长整数。
+	 * stoull	将字符序列转换为无符号长整数。
+	 * to_string	将一个值转换为 string。
+	 * to_wstring	将一个值转换为宽 string。
+	 * 
+	 * 函数
+	 * getline 模板	将字符串从输入流中一行一行地提取出来。
+	 * 
+	 * 类
+	 * basic_string 类	一个类模板，用于描述可存储任意类似于字符的对象序列的对象。
+	 * char_traits 结构	一个类模板，用于描述与类型 CharType 的字符关联的特性。
+	 * 
+	 * 专用化
+	 * char_traits<char> Struct	一个结构，它是模板结构 char_traits<CharType> 对类型 char 元素的专用化。
+	 * char_traits<wchar_t> 结构	一个结构，它是模板结构 char_traits<CharType> 对类型 wchar_t 元素的专用化。
+	 * char_traits<char16_t> 结构	一个结构，它是模板结构 char_traits<CharType> 对类型 char16_t 元素的专用化。
+	 * char_traits<char32_t> 结构	一个结构，它是模板结构 char_traits<CharType> 对类型 char32_t 元素的专用化。
+	 * 
+	 * 成员函数
+	 * append	向字符串的末尾添加字符。
+	 * assign	对字符串的内容赋新的字符值。
+	 * at	返回对字符串中指定位置的元素的引用。
+	 * back	
+	 * begin	返回发现字符串中第一个元素的位置的迭代器。
+	 * c_str	将字符串的内容转换为以 null 结尾的 C 样式字符串。
+	 * capacity	返回在不增加字符串内存分配的情况下可存储在字符串中的元素的最大数目。
+	 * cbegin	返回发现字符串中第一个元素的位置的常量迭代器。
+	 * cend	返回发现字符串中最后一个元素之后的位置的常量迭代器。
+	 * clear	清除字符串中的全部元素。
+	 * compare	将字符串与指定字符串比较，确定两个字符串是否相等或按字典顺序一个字符串是否小于另一个。
+	 * copy	将指定数目的字符从源字符串中的索引位置复制到目标字符组。 已否决。 改用 basic_string::_Copy_s。
+	 * crbegin	返回发现反向字符串中第一个元素的位置的常量迭代器。
+	 * crend	返回发现反向字符串中最后一个元素之后的位置的常量迭代器。
+	 * _Copy_s	将指定数目的字符从源字符串中的索引位置复制到目标字符组。
+	 * data	将字符串的内容转换为字符数组。
+	 * empty	测试字符串是否包含字符。
+	 * end	返回发现字符串中最后一个元素之后的位置的迭代器。
+	 * erase	从字符串中的指定位置删除一个或一系列元素。
+	 * find	向前搜索字符串，搜索与指定字符序列匹配的第一个子字符串。
+	 * find_first_not_of	在字符串中搜索不属于指定字符串中任何元素的第一个字符。
+	 * find_first_of	在字符串中搜索与指定字符串中任何元素匹配的第一个字符。
+	 * find_last_not_of	在字符串中搜索不属于指定字符串元素的最后一个字符。
+	 * find_last_of	在字符串中搜索属于指定字符串中一个元素的最后一个字符。
+	 * front	返回对字符串中第一个元素的引用。
+	 * get_allocator	返回用于构造字符串的 allocator 对象的副本。
+	 * insert	将一个、多个或一些列元素插入字符串中的指定位置。
+	 * length	返回字符串中元素的当前数目。
+	 * max_size	返回字符串可包含的字符的最大数目。
+	 * pop_back	删除字符串的最后一个元素。
+	 * push_back	在字符串的末尾处添加一个元素。
+	 * rbegin	返回指向反向字符串中第一个元素的迭代器。
+	 * rend	返回指向刚超出反向字符串的最后一个元素的位置的迭代器。
+	 * replace	用指定字符或者从其他范围、字符串或 C 字符串复制的字符来替代字符串中指定位置的元素。
+	 * reserve	将字符串的容量设置为一个数目，这个数目至少应与指定数目一样大。
+	 * resize	根据要求追加或删除元素，为字符串指定新的大小。
+	 * rfind	向后搜索字符串，搜索与指定字符序列匹配的第一个子字符串。
+	 * shrink_to_fit	放弃字符串的超出容量。
+	 * size	返回字符串中元素的当前数目。
+	 * substr	从字符串起始处的指定位置复制最多某个数目的字符的子字符串。
+	 * swap	交换两个字符串的内容。
+	 * 运算符
+	 * Operator	描述
+	 * operator+=	向字符串追加字符。
+	 * operator=	对字符串的内容赋新的字符值。
+	 * operator[]	使用字符串中的指定索引提供对字符的引用。
+	*/
+	string s1("Hello World");  // si = ""
+	string s2("Hello");  // s2 = "Hello"
+	string s3(4, 'K');  // s3 = "KKKK"
+	string s4("12345", 1, 3);  //s4 = "234"，即 "12345" 的从下标 1 开始，长度为 3 的子串
+
+	s3.assign(s1);  // s3 = s1
+	s2.assign(s1, 1, 2);  // s2 = "23"，即 s1 的子串(1, 2)
+	s2.assign(4, 'K');  // s2 = "KKKK"
+	s2.assign("abcde", 2, 3);  // s2 = "cde"，即 "abcde" 的子串(2, 3)
+
+	int n = s1.compare(s2);
+	n = s1.compare(1, 2, s2, 0, 3);  //比较s1的子串 (1,2) 和s2的子串 (0,3)
+	n = s1.compare(0, 2, s2);  // 比较s1的子串 (0,2) 和 s2
+	n = s1.compare("Hello");
+	n = s1.compare(1, 2, "Hello");  //比较 s1 的子串(1,2)和"Hello”
+	n = s1.compare(1, 2, "Hello", 1, 2);  //比较 s1 的子串(1,2)和 "Hello" 的子串(1,2)
+
+	auto s5 = s1.substr(2);  
+	s1.swap(s2);
+
+    string ss1("Source Code");
+    int n;
+    if ((n = ss1.find('u')) != string::npos) //查找 u 出现的位置
+        cout << "1) " << n << "," << ss1.substr(n) << endl;
+    //输出 l)2,urce Code
+    if ((n = ss1.find("Source", 3)) == string::npos)
+        //从下标3开始查找"Source"，找不到
+        cout << "2) " << "Not Found" << endl;  //输出 2) Not Found
+    if ((n = ss1.find("Co")) != string::npos)
+        //查找子串"Co"。能找到，返回"Co"的位置
+        cout << "3) " << n << ", " << ss1.substr(n) << endl;
+    //输出 3) 7, Code
+    if ((n = ss1.find_first_of("ceo")) != string::npos)
+        //查找第一次出现或 'c'、'e'或'o'的位置
+        cout << "4) " << n << ", " << ss1.substr(n) << endl;
+    //输出 4) l, ource Code
+    if ((n = ss1.find_last_of('e')) != string::npos)
+        //查找最后一个 'e' 的位置
+        cout << "5) " << n << ", " << ss1.substr(n) << endl;  //输出 5) 10, e
+    if ((n = ss1.find_first_not_of("eou", 1)) != string::npos)
+        //从下标1开始查找第一次出现非 'e'、'o' 或 'u' 字符的位置
+        cout << "6) " << n << ", " << ss1.substr(n) << endl;
+    //输出 6) 3, rce Code
+    return 0;
 
 }
 
 void header_string_view() { 
+	/*
+	 * 模板专用化的 string_view 系列提供了一种有效的方法, 可将只读、异常安全、非拥有的句柄传递给任何类似于字符串的对象, 
+	 * 并将其序列的第一个元素置于位置零。 类型string_view为 (是的basic_string_view<char>typedef) 的函数参数std::string可以接受诸如、 
+	 * char* 或任何其他类似于字符串的窄字符类 (其隐式转换为) string_view已定义。 同样, wstring_view u16string_view或的参数也可以接受
+	 * 为其定义了隐式转换的任何字符串类型。
+	 * 
+	 * Typedef
+	 * string_view	类模板basic_string_view的专用化, 其中包含char类型的元素。
+	 * wstring_view	类模板basic_string_view的专用化, 其中包含wchar_t类型的元素。
+	 * u16string_view	类模板basic_string_view的专用化, 其中包含类型char16_t的元素。
+	 * u32string_view	类模板basic_string_view的专用化, 其中包含类型char32_t的元素。
+	 * 
+	 * 运算符	
+	 * operator!=	测试运算符左侧的对象是否不等于右侧的对象。
+	 * operator==	测试运算符左侧的对象是否等于右侧的对象。
+	 * operator<	测试运算符左侧的对象是否小于右侧的对象的位置。
+	 * operator<=	测试运算符左侧的对象是否小于或等于右侧的对象。
+	 * operator<<	将插入string_view到输出流中的模板函数。
+	 * operator>	测试运算符左侧的对象是否大于右侧的对象的位置。
+	 * operator>=	测试运算符左侧的对象是否大于或等于右侧的对象。
+	 * 
+	 * 运算符	描述
+	 * sv	wstring_view构造、 、u16string_view或,u32string_view具体取决于将其追加到的字符串文本的类型。 string_view
+	 * 
+	 * 类
+	 * basic_string_view 类	一个类模板, 它提供一个只读视图, 并将其用作任意类似于字符的对象的序列。
+	 * hash	为 string_view 生成哈希值的函数对象。
+	 * 
+	 * 成员函数	
+	 * at	返回 const_reference 到指定位置的元素。
+	 * back	返回最后一个元素的 const_reference。
+	 * begin	返回寻址第一个元素的常量迭代器。 （string_views 是不可变的。）
+	 * cbegin	与begin相同。
+	 * cend	返回一个常量迭代器，该迭代器指向最后一个元素之后的一个。
+	 * copy	从源 string_view 中的索引位置到目标字符数组，最多复制指定数目的字符。 （不建议使用。 改用 _Copy_s。）
+	 * _Copy_s	安全 CRT 复制函数。
+	 * compare	将 string_view 与指定的 string_view 进行比较，以确定它们是否相等，或者按字典顺序是否小于另一个。
+	 * crbegin	与rbegin相同。
+	 * crend	与rend相同。
+	 * data	返回指向字符序列的原始非所有者指针。
+	 * empty	测试 string_view 是否包含字符。
+	 * end	与cend相同。
+	 * find	向前搜索与指定字符序列匹配的子字符串的第一个匹配项。
+	 * find_first_not_of	搜索不属于指定 string_view 或可转换的字符串对象的任何元素的第一个字符。
+	 * find_first_of	搜索与指定 string_view 或可转换的字符串对象的任何元素匹配的第一个字符。
+	 * find_last_not_of	搜索不属于指定 string_view 或可转换字符串对象的任何元素的最后一个字符。
+	 * find_last_of	搜索作为指定 string_view 或可转换的字符串对象的元素的最后一个字符。
+	 * front	返回第一个元素的 const_reference。
+	 * length	返回元素的当前数目。
+	 * max_size	返回 string_view 可包含的最大字符数。
+	 * rbegin	返回一个常量迭代器，该迭代器用于发现反向 string_view 中的第一个元素。
+	 * remove_prefix	将指针向后移动指定数量的元素。
+	 * remove_suffix	从后面开始，将视图的大小减少到指定数目的元素。
+	 * rend	返回一个常量迭代器，该迭代器指向反向 string_view 中最后一个元素之后的一个。
+	 * rfind	反向搜索 string_view 与指定字符序列匹配的第一个子字符串。
+	 * size	返回元素的当前数目。
+	 * substr	返回从指定索引处开始的指定长度的子字符串。
+	 * swap	交换两个 string_views 的内容。
+	*/
+    string_view sv1 { "ABA" };
+    string_view sv2{ "ABAC" };
+    string_view sv3{ "ABAD" };
+    string_view sv4{ "ABACE" };
+
+    bool result = sv2 > sv1; // true
+    result = sv3 > sv2; // true
+    result = sv3 != sv1; // true
+    result = sv4 < sv3; // true because `C` < `D`
+
+	string_view e = "embedded\0nulls"sv;
+
+	   // The first member function compares
+   // two string_views
+   string_view sv_A("CAB");
+   string_view sv_B("CAB");
+   cout << "sv_A is " << sv_A << endl;
+   cout << "sv_B is " << sv_B << endl;
+   int comp1 = sv_A.compare(sv_B);
+   cout << "sv_A is" << to_alpha(comp1) << "sv_B.\n";
+
+   // The second member function compares part of
+   // an operand string_view to another string_view
+   string_view sv_C("AACAB");
+   string_view sv_D("CAB");
+   cout << "sv_C is: " << sv_C << endl;
+   cout << "sv_D is: " << sv_D << endl;
+   int comp2a = sv_C.compare(2, 3, sv_D);
+   cout << "The last three characters of sv_C are"
+       << to_alpha(comp2a) << "sv_D.\n";
+
+   int comp2b = sv_C.compare(0, 3, sv_D);
+   cout << "The first three characters of sv_C are"
+       << to_alpha(comp2b) << "sv_D.\n";
+
+	auto to_alpha = [=](int result) -> string {
+   		if (result < 0) return " less than ";
+   		else if (result == 0) return " equal to ";
+   		else return " greater than ";
+	}
+
+   // The third member function compares part of
+   // an operand string_view to part of another string_view
+   string_view sv_E("AACAB");
+   string_view sv_F("DCABD");
+   cout << "sv_E: " << sv_E << endl;
+   cout << "sv_F is: " << sv_F << endl;
+   int comp3a = sv_E.compare(2, 3, sv_F, 1, 3);
+   cout << "The three characters from position 2 of sv_E are"
+       << to_alpha(comp3a)
+       << "the 3 characters of sv_F from position 1.\n";
+
+   // The fourth member function compares
+   // an operand string_view to a C string
+   string_view sv_G("ABC");
+   const char* cs_A = "DEF";
+   cout << "sv_G is: " << sv_G << endl;
+   cout << "cs_A is: " << cs_A << endl;
+   int comp4a = sv_G.compare(cs_A);
+   cout << "sv_G is" << to_alpha(comp4a) << "cs_A.\n";
+
+   // The fifth member function compares part of
+   // an operand string_view to a C string
+   string_view sv_H("AACAB");
+   const char* cs_B = "CAB";
+   cout << "sv_H is: " << sv_H << endl;
+   cout << "cs_B is: " << cs_B << endl;
+   int comp5a = sv_H.compare(2, 3, cs_B);
+   cout << "The last three characters of sv_H are"
+      << to_alpha(comp5a) << "cs_B.\n";
+
+   // The sixth member function compares part of
+   // an operand string_view to part of an equal length of
+   // a C string
+   string_view sv_I("AACAB");
+   const char* cs_C = "ACAB";
+   cout << "sv_I is: " << sv_I << endl;
+   cout << "cs_C: " << cs_C << endl;
+   int comp6a = sv_I.compare(1, 3, cs_C, 3);
+   cout << "The 3 characters from position 1 of sv_I are"
+      << to_alpha(comp6a) << "the first 3 characters of cs_C.\n";
 
 }
 
 void header_strstream() { 
+	/*
+	 * 定义多个类, 这些类支持存储在char对象的分配数组中的序列上的 iostreams 操作。 这类序列可轻松地转换为 C 字符串或者从 C 字符串进行转换。
+	 * 
+	 * 类
+	 * strstreambuf 类	此类描述一个流缓冲区, 该缓冲区控制元素与char数组对象中存储的元素序列之间的来回传输。
+	 * istrstream 类	此类描述了一种对象，该对象可控制从 strstreambuf 类的流缓冲区提取元素和编码对象。
+	 * ostrstream 类	此类描述了一种对象，该对象可控制在 strstreambuf 类的流缓冲区中插入元素和编码对象。
+	 * strstream 类	此类描述了一种对象，该对象使用 strstreambuf 类的流缓冲区控制元素和编码对象的插入和提取。
+	 * 
+	 * 类 strstreambuf 的对象将模式信息的几个位存储为其 strstreambuf 模式。 这些位指示受控序列是否：
+	 * * 已分配且最后需要释放。
+	 * * 是可修改的。
+	 * * 可通过重新分配存储进行扩展。
+	 * * 已被冻结并因此需要在对象被销毁前进行解冻，或者已由不是对象的某个代理释放（若已分配）。
+	 * 
+	 * 无论这些单独模式位的状态如何，都不能修改或扩展已冻结的受控序列。
+	 * 此对象还存储指向控制 strstreambuf 分配的两个函数的指针。 如果这些指针都是空指针，则对象会自行设计用于分配和释放受控序列存储的方法。
+	 * 
+	 * 成员函数	
+	 * freeze	导致无法通过流缓冲区操作使用流缓冲区。
+	 * overflow	将新字符插入到已满缓冲区时可以调用的受保护虚函数。
+	 * pbackfail	一个受保护的虚拟成员函数，该函数尝试将元素放回到输入流，然后使它成为当前元素（由下一个指针指向）。
+	 * pcount	返回写入到受控序列的元素计数。
+	 * seekoff	一个受保护的虚拟成员函数，它尝试更改受控流的当前位置。
+	 * seekpos	一个受保护的虚拟成员函数，它尝试更改受控流的当前位置。
+	 * str	调用 freeze，然后将返回指向受控序列开头的指针。
+	 * underflow	一个受保护的虚拟函数，用于从输入流中提取当前元素。
+	*/
+
+	auto report = [](strstream &x) {
+    	if (!x.good())
+        	cout << "stream bad" << endl;
+    	else
+        	cout << "stream good" << endl;
+	}
+
+    strstream x;
+
+    x << "test1";
+    cout << "before freeze: ";
+    report(x);
+
+    // Calling str freezes stream.
+    cout.write(x.rdbuf()->str(), 5) << endl;
+    cout << "after freeze: ";
+    report(x);
+
+    // Stream is bad now, wrote on frozen stream
+    x << "test1.5";
+    cout << "after write to frozen stream: ";
+    report(x);
+
+    // Unfreeze stream, but it is still bad
+    x.rdbuf()->freeze(false);
+    cout << "after unfreezing stream: ";
+    report(x);
+
+    // Clear stream
+    x.clear();
+    cout << "after clearing stream: ";
+    report(x);
+
+    x << "test3";
+    cout.write(x.rdbuf()->str(), 10) << endl;
+
+    // Clean up.  Failure to unfreeze stream will cause a
+    // memory leak.
+    x.rdbuf()->freeze(false);
 
 }
 
 void header_system_error() { 
+	/*
+	 * 包括头文件 <system_error > 定义异常类 system_error 和相关模板来处理低级别系统错误。
+	 * 
+	 * 对象
+	 * generic_category	表示一般错误的类别。
+	 * is_error_code_enum_v	
+	 * is_error_condition_enum_v	
+	 * system_category	表示因低级别系统溢出而引起的错误类别。
+	 * 
+	 * 函数
+	 * make_error_code	创建一个 error_code 对象。
+	 * make_error_condition	创建一个 error_condition 对象。
+	 * 
+	 * 运算符
+	 * operator==	测试运算符左侧的对象是否等于右侧的对象。
+	 * operator!=	测试运算符左侧的对象是否不等于右侧的对象。
+	 * operator<	测试一个对象是否小于要比较的传入对象。
+	 * operator<<	
+	 * 
+	 * 枚举
+	 * errc	为 <errno.h>中的 POSIX 定义的所有错误代码宏提供符号名称。
+	 * 
+	 * 类和结构
+	 * error_category	表示描述错误代码类别的对象的抽象、公用基。
+	 * error_code	表示特定于实现的低级别系统错误。
+	 * error_condition	表示用户定义的错误代码。
+	 * hash	
+	 * is_error_code_enum	表示测试 error_code 枚举的类型谓词。
+	 * is_error_condition_enum	表示测试 error_condition Class 枚举的类型谓词。
+	 * system_error	表示为报告低级别系统溢出而引发的所有异常的基类。
+	*/
+
+    cin.exceptions(ios::failbit | ios::badbit);
+
+    try {
+        cin.rdbuf(nullptr); // throws io_errc::stream
+    }
+    catch (ios::failure& e) {
+        cerr << "ios failure caught: ";
+        if (e.code() == make_error_condition(io_errc::stream)) {
+            cerr << "io_errc stream error condition" << endl;
+        }
+        else {
+            cerr << "unmatched error condition code " << e.code() << endl;
+        }
+    }
 
 }
 
 // <t>
 void header_thread() { 
+	/*
+	 * 包含标准头文件<线程 > 来定义类线程和各种支持函数。
+	 * 
+	 * 公共类
+	 * thread 类	定义一个对象, 该对象用于观察和管理应用程序中的执行线程。
+	 * 
+	 * 公共结构
+	 * hash 结构（C++ 标准库）	定义一个成员函数, 该函数返回由thread::id唯一确定的值。 
+	 *     成员函数定义的哈希函数适用于将类型thread::id的值映射到索引值的分布。
+	 * 
+	 * 公共函数
+	 * get_id	唯一标识当前的执行线程。
+	 * sleep_for	阻塞调用线程。
+	 * sleep_until	阻赛调用线程，至少直到指定的时间。
+	 * swap	交换两个线程对象的状态。
+	 * yield	表示要运行其他线程的操作系统，即使当前线程会照常继续运行。
+	 * 
+	 * 公共运算符
+	 * 运算符 > = 运算符	确定一个 thread::id 对象是否大于或等于另一个。
+	 * 运算符 > 运算符	确定一个 thread::id 对象是否大于另一个。
+	 * 运算符 < = 运算符	确定一个 thread::id 对象是否小于或等于另一个。
+	 * 运算符 < 运算符	确定一个 thread::id 对象是否小于另一个。
+	 * operator! = 运算符	比较两个 thread::id 对象是否相等。
+	 * operator = = 运算符	比较两个 thread::id 对象是否相等。
+	 * 运算符 < < 运算符	将 thread::id 对象的文本表示形式插入流。
+	 * 
+	 * thread类：可以使用线程对象观察和管理应用程序中的执行线程。 
+	 * 使用默认构造函数创建的线程对象不与任何执行线程相关联。 
+	 * 通过使用可调用对象构造的线程对象创建一个新的执行线程，并在该线程中调用可调用对象。 
+	 * 可移动线程对象，但不能复制。 因此，执行线程只与一个线程对象相关联。
+	 * 
+	 * 每个执行线程都具有 thread::id 类型的唯一标识符。 函数 this_thread::get_id 返回调用线程的标识符。 
+	 * 成员函数thread::get_id 返回由线程对象管理的线程标识符。 对于默认构造的线程对象，thread::get_id 
+	 * 方法返回具有值的对象，该值与所有默认构造线程对象的值相同但和 this_thread::get_id 
+	 * 返回的任何线程（可在调用时连接）的值不同。
+	 * 
+	 * 公共方法
+	 * detach	从线程对象分离关联的线程。
+	 * get_id	返回关联线程的唯一标识符。
+	 * hardware_concurrency	静态。 返回硬件线程上下文的估计数量。
+	 * join	阻止，直到完成关联的线程。
+	 * joinable	指定关联的线程是否可联接。
+	 * native_handle	返回表示线程句柄的特定于实现的类型。
+	 * swap	使用指定的线程对象交换对象状态。
+	*/
+
+    std::thread t([](){
+		std::cout << "hello thread." << std::endl;
+	});  
+    t.join();  
 
 }
 
 void header_tuple() { 
+	/*
+	 * 定义了一个模板 tuple它的实例包括不同类型的对象。
+	 * 
+	 * 类和结构
+	 * tuple 类	包装元素的固定长度序列。
+	 * tuple_element 类	包装的 tuple 类型的元素。
+	 * tuple_size 类	包装 tuple 元素计数。
+	 * uses_allocator	
+	 * 
+	 * 对象
+	 * tuple_element_t	
+	 * tuple_size_v
+	 * 
+	 * 运算符
+	 * operator==	tuple比较对象是否相等。
+	 * operator!=	比较对象tuple , 而不是。
+	 * operator<	tuple比较对象, 小于。
+	 * operator<=	tuple比较对象, 小于或等于。
+	 * operator>	tuple比较对象, 大于。
+	 * operator>=	对象的tuple比较, 大于或等于。
+	 * 
+	 * 函数
+	 * apply	使用元组调用函数。
+	 * forward_as_tuple	构造一个引用元组。
+	 * get	从 tuple 对象获取一个元素。
+	 * make_from_tuple	要生成的tuple速记。
+	 * make_tuple	从元素值中生成一个 tuple。
+	 * swap	
+	 * tie	从元素引用中生成一个 tuple。
+	 * tuple_cat	使用一系列类型元素构造元组对象。
+	*/
+    tuple<int, double, string> tup(0, 1.42, "Call me Tuple");
+
+    // get elements by index
+    cout << " " << get<0>(tup);
+    cout << " " << get<1>(tup);
+    cout << " " << get<2>(tup) << endl;
+
+    // get elements by type
+    cout << " " << get<int>(tup);
+    cout << " " << get<double>(tup);
+    cout << " " << get<string>(tup) << endl;
+
+	typedef tuple<int, double, string> MyTuple;
+
+	MyTuple c0{ 0, 1.5, "Tail" };
+
+    tuple_element_t<0, MyTuple> val = get<0>(c0); //get by index
+    tuple_element_t<1, MyTuple> val2 = get<1>(c0);
+    tuple_element_t<2, MyTuple> val3 = get<string>(c0); // get by type
+
+    cout << val << " " << val2 << " " << val3 << endl;
 
 }
 
 void header_type_traits() { 
+	/*
+	 * 定义编译时常数的模板，这些常数提供有关其类型参数的属性的信息或生成转换类型。
+	 * 头文件中的类和模板用于在编译时支持类型推理、分类和转换。 它们还用于检测与类型相关的错误，有助于优化一般代码。
+	 *  一元类型特征描述类型的属性，二进制类型特征描述类型之间的关系，转换特征修改类型的属性。
+	 * Helper 类 integral_constant 及其模板专用化 true_type 并 false_type 形成类型谓词的基类。 
+	 * 类型谓词是采用一个或多个类型参数的模板。 当类型谓词为 true时，它会直接或间接从true_type中派生。 
+	 * 当类型谓词为 false时，它会直接或间接从false_type中派生。
+	 * 类型修饰符或转换特征是一个模板，包含一个或多个参数以及一个成员 type（即修改后的类型）。
+	 * 
+	 * add_const_t	add_cv_t	add_lvalue_reference_t
+	 * add_pointer_t	add_rvalue_reference_t	add_volatile_t
+	 * aligned_storage_t	aligned_union_t	common_type_t
+	 * conditional_t	decay_t	enable_if_t
+	 * invoke_result_t	make_signed_t	make_unsigned_t
+	 * remove_all_extents_t	remove_const_t	remove_cv_t
+	 * remove_extent_t	remove_pointer_t	remove_reference_t
+	 * remove_volatile_t	result_of_t	underlying_type_t
+	 * 
+	 * 帮助程序类和 typedef
+	 * integral_constant	从类型和值生成整型常量。
+	 * true_type	保留包含值 true 的整数常量。
+	 * false_type	保留包含值 false 的整数常量。
+	 * 
+	 * 主要类型类别
+	 * is_void	测试类型是否为void。
+	 * is_null_pointer	测试类型是否为 std::nullptr_t。
+	 * is_integral	测试类型是否为整型。
+	 * is_floating_point	测试类型是否为浮点。
+	 * is_array	测试类型是否为数组。
+	 * is_pointer	测试类型是否为指针。
+	 * is_lvalue_reference	测试类型是否是左值引用。
+	 * is_rvalue_reference	测试类型是否是右值引用。
+	 * is_member_object_pointer	测试类型是否为指向成员对象的指针。
+	 * is_member_function_pointer	测试类型是否为指向成员函数的指针。
+	 * is_enum	测试类型是否为枚举。
+	 * is_union	测试类型是否为联合。
+	 * is_class	测试类型是否为类。
+	 * is_function	测试类型是否为函数类型。
+	 * 
+	 * 复合类型类别
+	 * is_reference	测试类型是否为引用。
+	 * is_arithmetic	测试类型是否为算术型。
+	 * is_fundamental	测试类型是否为void或算术。
+	 * is_object	测试类型是否为对象类型。
+	 * is_scalar	测试类型是否为标量类型。
+	 * is_compound	测试类型是否为非标量类型。
+	 * is_member_pointer	测试类型是否为指向成员的指针。
+	*/
+
+    std::cout << "is_array<int> == " << std::boolalpha
+        << std::is_array<int>::value << std::endl;
+    std::cout << "is_array<int[5]> == " << std::boolalpha
+        << std::is_array<int[5]>::value << std::endl;
+	
+	std::cout << "is_same<int, int> == " << std::boolalpha
+        << std::is_same<int, int>::value << std::endl;
+    std::cout << "is_same<int, const int> == " << std::boolalpha
+        << std::is_same<int, const int>::value << std::endl;
 
 }
 
 void header_typeindex() { 
-
+	/*
+	 * 包括标准头文件 <typeindex>，以定义支持类 type_info 的对象索引的类和函数。
+	 * 
+	 * hash 结构可定义适合将 type_index 类型的值映射到索引值的分布的 hash function。
+	 * type_index 类包装指向 type_info 对象的指针，以便辅助编写索引。
+	*/
 }
 
 void header_typeinfo() { 
+	/*
+	 * 包括标准头文件<typeinfo > 来定义多个类型与类型标识运算符关联typeid 运算符，其结果为静态和动态类型的信息。
+	 * 
+	 * Type_info类描述编译器在程序内生成的类型信息。 此类的对象可以有效存储指向类型的名称的指针。
+	 * Type_info类还存储了一个适合用于比较两个类型是否相等或排序的编码值。 
+	 * 类型的编码规则和排列顺序是未指定的，并且可能因程序而异。
+	 * 
+	 * 不能直接实例化type_info类的对象，因为该类只有一个私有复制构造函数。 构造（临时） type_info对象的唯一方法是使用typeid运算符。 由于赋值运算符也是私有的，因此不能复制或分配type_info类的对象。
+	 * type_info::hash_code 定义适用于将类型typeinfo的值映射到索引值分布的哈希函数。
+	 * 运算符 == 和 != 可用于分别比较是否与其他type_info对象比较是否相等。
+	 * 类型的排列顺序与继承关系之间没有关联。 使用 type_info::before 成员函数确定类型的排序顺序。 不保证 type_info::before 在同一程序的不同程序或不同的运行中产生相同的结果。 通过这种方式，type_info::before 类似于 (&) 运算符的地址。
+	 * type_info::name 成员函数返回一个表示类型的用户可读名称的以 null 结尾的字符串的 const char*。 
+	 * 将缓存所指向的内存，应该从不直接释放它。
+	 * type_info::raw_name 成员函数返回一个表示对象类型的修饰名称的以 null 结尾的字符串的 const char*。 
+	 * 该名称实际上以其修饰的形式存储以节省空间。 因此，此函数比 type_info::name 更快，因为它不需要取消修饰名称。
+	 * type_info::raw_name 函数返回的字符串在比较运算中非常有用，但不可读。 如果需要用户可读的字符串，
+	 * 请改用 type_info::name 函数。
+	*/
+	int i = 1;
+	float f = 1.222;
+		
+	//定义引用对象 
+	const type_info& t1 = typeid(f);
+	const type_info& t2 = typeid(int);
+	//获得类型名称 
+	const char* a=t1.name();
+	const char* b=t1.name();
+	//比较对象相等 
+	cout<<"ti==t2 ? "<< t1==t2<<endl;
 
 }
 
 // <u>
 void header_unordered_map() { 
+	/*
+	 * 定义容器类模板unordered_map和unordered_multimap及其支持的模板。
+	 * 类模板描述了一个对象，该对象控制 std::pair<const Key, Ty>类型的不同长度的元素序列。 
+	 * 序列由哈希函数弱排序，哈希函数将此序列分区到称为存储桶的有序序列集中。 
+	 * 在每个存储桶中，比较函数将确定任一元素对是否具有等效顺序。 每个元素存储两个对象，包括一个排序键和一个值。
+	 * 序列以允许查找、插入和移除任意元素的方式表示，并包含与序列中的元素数量无关的多个操作（常量时间），
+	 * 至少在所有存储桶长度大致相等时如此。 在最坏情况下，当所有元素位于一个存储桶中时，
+	 * 操作数量与序列中的元素数量成比例（线性时间）。 
+	 * 此外，插入元素不会使迭代器失效，移除元素仅会使指向已移除元素的迭代器失效。
+	 * 
+	 * 成员函数	
+	 * at	查找具有指定键的元素。
+	 * begin	指定受控序列的开头。
+	 * bucket	获取键值的存储桶编号。
+	 * bucket_count	获取存储桶数。
+	 * bucket_size	获取存储桶的大小。
+	 * cbegin	指定受控序列的开头。
+	 * cend	指定受控序列的末尾。
+	 * clear	删除所有元素。
+	 * count	查找与指定键匹配的元素数。
+	 * emplace	添加就地构造的元素。
+	 * emplace_hint	添加就地构造的元素，附带提示。
+	 * empty	测试元素是否存在。
+	 * end	指定受控序列的末尾。
+	 * equal_range	查找与指定键匹配的范围。
+	 * erase	移除指定位置处的元素。
+	 * find	查找与指定键匹配的元素。
+	 * get_allocator	获取存储的分配器对象。
+	 * hash_function	获取存储的哈希函数对象。
+	 * insert	添加元素。
+	 * key_eq	获取存储的比较函数对象。
+	 * load_factor	对每个存储桶的平均元素数进行计数。
+	 * max_bucket_count	获取最大的存储桶数。
+	 * max_load_factor	获取或设置每个存储桶的最多元素数。
+	 * max_size	获取受控序列的最大大小。
+	 * rehash	重新生成哈希表。
+	 * size	对元素数进行计数。
+	 * swap	交换两个容器的内容。
+	 * unordered_map	构造容器对象。
+	 * 
+	 * 运算符
+	 * unordered_map::operator[]	查找或插入具有指定键的元素。
+	 * unordered_map::operator=	复制哈希表。
+	*/
+
+	typedef std::unordered_map<char, int> Mymap;	
+	typedef std::allocator<std::pair<const char, int> > Myalloc;
+
+    Mymap c1;
+
+    Mymap::allocator_type al = c1.get_allocator();
+    std::cout << "al == std::allocator() is "
+        << std::boolalpha << (al == Myalloc()) << std::endl;
+
+    c1.insert(Mymap::value_type('a', 1));
+    c1.insert(Mymap::value_type('b', 2));
+    c1.insert(Mymap::value_type('c', 3));
+
+    // find and show elements
+    std::cout << "c1.at('a') == " << c1.at('a') << std::endl;
+    std::cout << "c1.at('b') == " << c1.at('b') << std::endl;
+    std::cout << "c1.at('c') == " << c1.at('c') << std::endl;
+
+    return (0);
 
 }
 
 void header_unordered_set() { 
+	/*
+	 * 定义容器类模板unordered_multiset和unordered_set及其支持的模板。
+	 * 
+	 * 类模板描述了一个对象，该对象控制 const Key类型的不同长度的元素序列。 
+	 * 序列由哈希函数弱排序，哈希函数将此序列分区到称为存储桶的有序序列集中。 
+	 * 在每个存储桶中，比较函数将确定任一元素对是否具有等效顺序。 每个元素同时用作排序键和值。 
+	 * 序列以允许查找、插入和移除任意元素的方式表示，并包含与序列中的元素数量无关的多个操作（常量时间），
+	 * 至少在所有存储桶长度大致相等时如此。 在最坏情况下，当所有元素位于一个存储桶中时，
+	 * 操作数量与序列中的元素数量成比例（线性时间）。 此外，插入元素不会使迭代器失效，
+	 * 移除元素仅会使指向已移除元素的迭代器失效。
+	 * 
+	 * 函数
+	 * begin	指定受控序列的开头。
+	 * bucket	获取键值的存储桶编号。
+	 * bucket_count	获取存储桶数。
+	 * bucket_size	获取存储桶的大小。
+	 * cbegin	指定受控序列的开头。
+	 * cend	指定受控序列的末尾。
+	 * clear	删除所有元素。
+	 * 计数	查找与指定键匹配的元素数。
+	 * emplace	添加就地构造的元素。
+	 * emplace_hint	添加就地构造的元素，附带提示。
+	 * empty	测试元素是否存在。
+	 * end	指定受控序列的末尾。
+	 * equal_range	查找与指定键匹配的范围。
+	 * erase	移除指定位置处的元素。
+	 * find	查找与指定键匹配的元素。
+	 * get_allocator	获取存储的分配器对象。
+	 * hash_function	获取存储的哈希函数对象。
+	 * insert	添加元素。
+	 * key_eq	获取存储的比较函数对象。
+	 * load_factor	对每个存储桶的平均元素数进行计数。
+	 * max_bucket_count	获取最大的存储桶数。
+	 * max_load_factor	获取或设置每个存储桶的最多元素数。
+	 * max_size	获取受控序列的最大大小。
+	 * rehash	重新生成哈希表。
+	 * size	对元素数进行计数。
+	 * swap	交换两个容器的内容。
+	 * unordered_set	构造容器对象。
+	*/
+
+    unordered_set<char> c1;
+
+    c1.insert('a');
+    c1.insert('b');
+    c1.insert('c');
+
+    // display contents using range-based for
+    for (auto it : c1) {
+    cout << "[" << it << "] ";
+    }
+
+    cout << endl;
+
+    // display contents using explicit for
+    for (unordered_set<char>::const_iterator it = c1.begin(); it != c1.end(); ++it) {
+        cout << "[" << *it << "] ";
+    }
+
+    cout << std::endl;
+
+    // display first two items
+    unordered_set<char>::iterator it2 = c1.begin();
+    cout << "[" << *it2 << "] ";
+    ++it2;
+    cout << "[" << *it2 << "] ";
+    cout << endl;
+
+    // display bucket containing 'a'
+    unordered_set<char>::const_local_iterator lit = c1.begin(c1.bucket('a'));
+    cout << "[" << *lit << "] ";
 
 }
 
 void header_utility() { 
+	/*
+	 * 定义有助于构造和管理对象对的 C++ 标准库类型、函数和运算符，这些项在每次需要将两个对象视为单个对象时都非常有用。
+	 * 
+	 * 类
+	 * chars_format	用于基元数值转换的浮点格式。
+	 * tuple_element	一个包装 pair 元素的类型的类。
+	 * tuple_size	一个包装 pair 元素计数的类。
+	 * 
+	 * 对象
+	 * index_sequence	
+	 * index_sequence_for	
+	 * make_index_sequence	
+	 * make_integer_sequence
+	 * 
+	 * 函数
+	 * as_const	返回类型。
+	 * declval	简写表达式计算。
+	 * exchange	将新值分配给对象并返回其旧值。
+	 * forward	保留参数的引用类型（lvalue 或 rvalue），使其不被完美转发掩盖。
+	 * from_chars	
+	 * get	一个从 pair 对象获取元素的函数。
+	 * make_pair	一个模板帮助程序函数，用于构造类型 pair 的对象，其中组件类型基于作为参数传递的数据类型。
+	 * move	将传入的参数作为 rvalue 引用返回。
+	 * move_if_noexcept	
+	 * swap	交换两个 pair 对象的元素。
+	 * to_chars	将值转换为字符串。
+	 * 
+	 * 结构
+	 * from_chars_result	用于的from_chars结构。
+	 * identity	一个将类型定义作为模板参数提供的结构。
+	 * in_place_t	还包括结构in_place_type_t和in_place_index_t。
+	 * integer_sequence	表示整数序列。
+	 * pair	一种类型，它提供了将两个对象视为单个对象的功能。
+	 * piecewise_construct_t	用于保留单独的构造函数和函数重载的类型。
+	 * to_chars_result	用于的to_chars结构。
+	*/
+
+    typedef pair<int, double> MyPair;
+
+    MyPair c0(9, 3.14);
+
+    // get elements by index
+    cout << " " << get<0>(c0);
+    cout << " " << get<1>(c0) << endl;
+
+    // get elements by type (C++14)
+    MyPair c1(1, 0.27);
+    cout << " " << get<int>(c1);
+    cout << " " << get<double>(c1) << endl;
 
 }
 
 // <v>
 void header_valarray() { 
+	/*
+	 * 定义类模板 valarray 和众多支持类模板和函数。
+	 * 这些类模板和函数允许使用异常纬度来提高性能。 具体而言，
+	 * 返回类型 valarray<T1> 的任何函数可能会返回某个其他类型 T2 的对象。 
+	 * 在这种情况下，任何接受类型 valarray<T2> 的一个或多个参数的函数必须具有接受这些参数的任意组合的重载，
+	 * 每个重载都替换为类型 T2 的参数。
+	 * 
+	 * 类
+	 * gslice 类	用于定义 valarray 多维切分的 valarray 实用程序类。
+	 * gslice_array 类	一个内部的辅助类模板，它通过提供由 valarray 的常规切片定义的子集数组之间的操作来支持常规切片对象。
+	 * indirect_array 类	一个内部的辅助类模板，它通过在通过指定父级 valarray 的索引子集定义的子集数组间提供操作来支持作为 valarray 子集的对象。
+	 * mask_array 类	一个内部的辅助类模板，它通过提供子集数组之间的操作来支持作为父 valarray 的子集的对象（使用布尔表达式指定）。
+	 * slice 类	一个用于定义 valarray 的一维矢量型子集的 valarray 实用程序类。
+	 * slice_array 类	一个内部的辅助类模板，它通过提供由 valarray 的切片定义的子集数组之间的操作来支持切片对象。
+	 * valarray 类	类模板描述了一个对象，该对象控制一个类型为 Type 的元素序列，这些元素存储为数组并针对计算性能进行了优化，用于执行高速数学运算。
+	 * 
+	 * valarray 类成员函数
+	 * apply	将指定函数应用到 valarray 的每个元素。
+	 * cshift	将 valarray 中的所有元素循环移动指定数目的位置。
+	 * free	释放 valarray 使用的内存。
+	 * max	查找 valarray 中的最大元素。
+	 * min	查找 valarray 中的最小元素。
+	 * resize	将 valarray 中元素的数量更改为指定数量，根据需要添加或删除元素。
+	 * shift	将 valarray 的所有元素移动指定数目的位置。
+	 * size	查找 valarray 中的元素数目。
+	 * sum	确定长度不为零的 valarray 中的所有元素的总和。
+	 * swap	
+	*/
+
+   int i;
+
+   valarray<int> va1 ( 9 ), va2 ( 9 );
+   for ( i = 0 ; i < 4 ; i++ )
+      va1 [ i ] =  -i;
+   for ( i = 4 ; i < 9 ; i++ )
+      va1 [ i ] =  i;
+
+   cout << "The initial valarray is: ";
+      for (i = 0 ; i < 9 ; i++ )
+         cout << va1 [ i ] << " ";
+   cout << "." << endl;
+
+   va2 = abs ( va1 );
+   cout << "The absolute value of the initial valarray is: ";
+      for (i = 0 ; i < 9 ; i++ )
+         cout << va2 [ i ] << " ";
+   cout << "." << endl;
 
 }
 
 void header_variant() { 
-
+	/*
+	 * 变体对象保存和管理值。 如果将该变量保留了一个值，该值的类型必须是提供给变体的模板自变量类型之一。 
+	 * 这些模板自变量被调用替代项。
+	 * 
+	 * 函数
+	 * get	获取一个对象的变体。
+	 * get_if	如果它存在，则获取一个对象的变体。
+	 * holds_alternative	返回 ，则返回 true如果存在一个变体。
+	 * swap	交换变体。
+	 * 
+	 * 类
+	 * bad_variant_access	向报表为变量对象的值的无效访问引发的对象。
+	 * variant	为对象保留一个及其替代的类型，或没有值的值。
+	 * 
+	 * 结构
+	 * hash	
+	 * monostate	要将变体类型默认可构造一个变体的替代类型。
+	 * uses_allocator	
+	 * variant_alternative	可帮助您的变体对象。
+	 * variant_size	可帮助您的变体对象。
+	 * 
+	 * 对象
+	 * variant_npos
+	*/
 }
 
 void header_vector() { 
+	/*
+	 * C++标准库 vector 类是序列容器的类模板。 矢量以线性方式存储给定类型的元素，
+	 * 并允许快速随机访问任何元素。 当随机访问性能处于高级版时，矢量是序列的首选容器。
+	 * 
+	 * 向量允许在序列末尾插入和删除常量事件。 若要在矢量中间插入或删除元素，则需要线性时间。 
+	 * Deque 类容器在序列的开头和结尾处速度更快。 列表类容器在序列内任何位置的插入和删除速度更快。
+	 * 当成员函数必须将矢量对象中所含序列增加到超过其当前存储容量时，将进行矢量重新分配。 
+	 * 其他的插入和删除均可能改变序列中的各个存储地址。 在所有此类情况下，指向序列更改部分的迭代器或引用将变为无效。 
+	 * 如果未进行重新分配，则只有插入/删除点前的迭代器和引用保持有效。
+	 * 
+	 * 函数
+	 * assign	清除矢量并将指定的元素复制到该空矢量。
+	 * at	返回对矢量中指定位置的元素的引用。
+	 * back	返回对向量中最后一个元素的引用。
+	 * begin	对该向量中第一个元素返回随机访问迭代器。
+	 * capacity	返回在不分配更多的存储的情况下向量可以包含的元素数。
+	 * cbegin	返回指向向量中第一个元素的随机访问常量迭代器。
+	 * cend	返回一个随机访问常量迭代器，它指向刚超过矢量末尾的位置。
+	 * crbegin	返回一个指向反向矢量中第一个元素的常量迭代器。
+	 * crend	返回一个指向反向矢量末尾的常量迭代器。
+	 * clear	清除向量的元素。
+	 * data	返回指向向量中第一个元素的指针。
+	 * emplace	将就地构造的元素插入到指定位置的向量中。
+	 * emplace_back	将一个就地构造的元素添加到向量末尾。
+	 * empty	测试矢量容器是否为空。
+	 * end	返回指向矢量末尾的随机访问迭代器。
+	 * erase	从指定位置删除向量中的一个元素或一系列元素。
+	 * front	返回对向量中第一个元素的引用。
+	 * get_allocator	将对象返回到矢量使用的 allocator 类。
+	 * insert	将一个元素或多个元素插入到指定位置的向量中。
+	 * max_size	返回向量的最大长度。
+	 * pop_back	删除矢量末尾处的元素。
+	 * push_back	在矢量末尾处添加一个元素。
+	 * rbegin	返回指向反向向量中第一个元素的迭代器。
+	 * rend	返回一个指向反向矢量末尾的迭代器。
+	 * reserve	保留向量对象的最小存储长度。
+	 * resize	为矢量指定新的大小。
+	 * shrink_to_fit	放弃额外容量。
+	 * size	返回向量中的元素数量。
+	 * swap	交换两个向量的元素。
+	 * 
+	 * 运算符
+	 * operator[]	返回对指定位置的矢量元素的引用。
+	 * operator=	用另一个向量的副本替换该向量中的元素。
+	*/
+    using namespace std;
+    vector<int> v1, v2, v3;
 
+    v1.push_back(10);
+    v1.push_back(20);
+    v1.push_back(30);
+    v1.push_back(40);
+    v1.push_back(50);
+
+    cout << "v1 = ";
+    for (auto& v : v1){
+        cout << v << " ";
+    }
+    cout << endl;
+
+    v2.assign(v1.begin(), v1.end());
+    cout << "v2 = ";
+    for (auto& v : v2){
+        cout << v << " ";
+    }
+    cout << endl;
+
+    v3.assign(7, 4);
+    cout << "v3 = ";
+    for (auto& v : v3){
+        cout << v << " ";
+    }
+    cout << endl;
+
+    v3.assign({ 5, 6, 7 });
+    for (auto& v : v3){
+        cout << v << " ";
+    }
+    cout << endl;
 }
 
 int msvc_main() {

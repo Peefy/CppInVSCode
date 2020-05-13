@@ -9,29 +9,25 @@
 #include <thread>
 #include <sstream>
 
-#include "demo.h"
-#include "smartpointer.h"
+//#include "demo.h"
+//#include "smartpointer.h"
+#include "iir.h"
 
 using namespace std;
 
 int main()
 { 
-    printf("hello cpp in vs code\n");
-    for(int i = 0; i < 3; i++)
-    {
-        printf("%d\n", i);
-    }
-
     //thread_local std::vector<int> v;
 
-    demo::typeOfDataDemo();
-    demo::noteDemo();
+    //demo::typeOfDataDemo();
+    //demo::noteDemo();
 
-    DuGu::smartPointerDemo();
+    //DuGu::smartPointerDemo();
 
-    auto plane = PlaneType::Bo737;
-    atomic<int> foo(0);
-    map<int, int> m;
+    //auto plane = PlaneType::Bo737;
+    //atomic<int> foo(0);
+    //map<int, int> m;
+    filter_test();
     return 0;
 }
 
